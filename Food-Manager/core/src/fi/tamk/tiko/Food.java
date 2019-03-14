@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
 // Ruoan luonti luokka.
 public class Food extends Actor {
@@ -15,6 +17,11 @@ public class Food extends Actor {
         setWidth(150);
         setHeight(150);
         setBounds(x, y, getWidth(), getHeight());
+        addListener(new DragListener() {
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                moveBy(x - getWidth() / 2, y - getHeight() / 2);
+            }
+        });
     }
 
     @Override
