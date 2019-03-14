@@ -49,9 +49,21 @@ class MyActor extends Actor {
 class FoodActor extends Actor {
 
     private Texture texture;
+    private String textureStr;
 
     //Ruoka tavaroiden constructor
-    public FoodActor(String textureStr, float x, float y, float w, float h, String type){
+    public FoodActor(int type, float x, float y, float w, float h){
+        switch(type){
+            case 0:
+                textureStr = "beans.png";
+                break;
+            case 1:
+                textureStr = "eggs.png";
+                break;
+            case 2:
+                textureStr = "rice.png";
+                break;
+        }
         texture = new Texture(Gdx.files.internal(textureStr));
         setWidth(w);
         setHeight(h);
@@ -167,12 +179,15 @@ class ApartmentScreen implements Screen {
 
 	OrthographicCamera camera;
 
+	Texture apartmentbg;
+
 	Stage apartmentStage;
 	MyActor fridgeActor;
 	MyActor fridgeMenuBg;
 	MyActor shopButton;
+    MyActor exitButton;
 
-	String[] foods = {"apple", "banana", "noodles"};
+	int[] foods = {0, 1, 2};
     ArrayList<FoodActor> foodActors = new ArrayList<FoodActor>();
 
 	Boolean fridgeOpen = false;
@@ -184,14 +199,19 @@ class ApartmentScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 600);
 
+		apartmentbg = new Texture("apartmentbg.png");
+
 		//Stagen määrittely
 		apartmentStage = new Stage(new FitViewport(800, 600), game.batch);
 		//Painikkeiden määrittely
         shopButton = new MyActor("shopbutton.png", 0, 0, 200, 50);
 		fridgeActor = new MyActor("test.png", 300, 200, 200, 200);
 		//Jääkaapin valikon tausta
-        fridgeMenuBg = new MyActor("test.png", 200, 100, 400, 400);
+        fridgeMenuBg = new MyActor("menubg.png", 200, 100, 400, 400);
         fridgeMenuBg.setVisible(fridgeOpen);
+        //Jääkaapin sulje painike
+        exitButton = new MyActor("exitbutton.png", fridgeMenuBg.getX() + 230, fridgeMenuBg.getY() + 10, 150, 50);
+        exitButton.setVisible(fridgeOpen);
         //Ruoka testi
         float margin = 10;
 
@@ -199,7 +219,7 @@ class ApartmentScreen implements Screen {
             float x = fridgeMenuBg.getX() + margin;
             float y = fridgeMenuBg.getTop() - 60;
 
-            foodActors.add(new FoodActor("test.png", x, y, 50, 50, foods[i]));
+            foodActors.add(new FoodActor(foods[i], x, y, 50, 50));
             foodActors.get(i).setVisible(fridgeOpen);
 
             margin += 60;
@@ -208,6 +228,7 @@ class ApartmentScreen implements Screen {
 		//Lisää painikkeet stageen
 		apartmentStage.addActor(fridgeActor);
         apartmentStage.addActor(fridgeMenuBg);
+        apartmentStage.addActor(exitButton);
         apartmentStage.addActor(shopButton);
         //Lisää ruokatavarat stageen
         for( int i = 0; i < foodActors.size(); i++){
@@ -227,15 +248,35 @@ class ApartmentScreen implements Screen {
                 }
 
                 fridgeMenuBg.setVisible(fridgeOpen);
+                exitButton.setVisible(fridgeOpen);
                 for(int i = 0; i < foodActors.size(); i++){
                     foodActors.get(i).setVisible(fridgeOpen);
-                    System.out.println(fridgeOpen);
                 }
 
 				return false;
 			}
 		});
-		//Lisää shopbutton
+		//Lisää jääkaapin sulje nappiin kosketuksen tunnistamisen
+        exitButton.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                //Sulkee fridge näkymän
+                if(fridgeOpen) {
+                    fridgeOpen = false;
+                } else {
+                    fridgeOpen = true;
+                }
+
+                fridgeMenuBg.setVisible(fridgeOpen);
+                exitButton.setVisible(fridgeOpen);
+                for(int i = 0; i < foodActors.size(); i++){
+                    foodActors.get(i).setVisible(fridgeOpen);
+                }
+
+                return false;
+            }
+        });
+
+        //Lisää kauppa painikkeeseen kosketuksen tunnistamisen
         shopButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Siirtyy kauppa näkymään
@@ -256,14 +297,15 @@ class ApartmentScreen implements Screen {
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
 
+        game.batch.begin();
+        //Piirtää taustan
+        game.batch.draw(apartmentbg, 0, 0, 800, 600);
+        game.batch.end();
+
 		//tekee actorien toiminnot
 		apartmentStage.act(Gdx.graphics.getDeltaTime());
 		//piirtää stagen actorit
 		apartmentStage.draw();
-
-		game.batch.begin();
-
-		game.batch.end();
 	}
 
 	@Override
