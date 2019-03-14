@@ -106,7 +106,7 @@ class MainMenuScreen implements Screen {
         playButton.addListener(new InputListener(){
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//Vaihtaa asunto näkymään
-				game.setScreen(new ShopScreen(game));
+				game.setScreen(new ApartmentScreen(game));
 				return false;
 			}
 		});
@@ -170,6 +170,8 @@ class ApartmentScreen implements Screen {
 	Stage apartmentStage;
 	MyActor fridgeActor;
 	MyActor fridgeMenuBg;
+	MyActor shopButton;
+
 	String[] foods = {"apple", "banana", "noodles"};
     ArrayList<FoodActor> foodActors = new ArrayList<FoodActor>();
 
@@ -185,6 +187,7 @@ class ApartmentScreen implements Screen {
 		//Stagen määrittely
 		apartmentStage = new Stage(new FitViewport(800, 600), game.batch);
 		//Painikkeiden määrittely
+        shopButton = new MyActor("shopbutton.png", 0, 0, 200, 50);
 		fridgeActor = new MyActor("test.png", 300, 200, 200, 200);
 		//Jääkaapin valikon tausta
         fridgeMenuBg = new MyActor("test.png", 200, 100, 400, 400);
@@ -207,6 +210,7 @@ class ApartmentScreen implements Screen {
 		//Lisää painikkeet stageen
 		apartmentStage.addActor(fridgeActor);
         apartmentStage.addActor(fridgeMenuBg);
+        apartmentStage.addActor(shopButton);
 
 		//Lisää stageen inputprocessorin
 		Gdx.input.setInputProcessor(apartmentStage);
@@ -226,6 +230,15 @@ class ApartmentScreen implements Screen {
 				return false;
 			}
 		});
+		//Lisää shopbutton
+        shopButton.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                //Siirtyy kauppa näkymään
+                game.setScreen(new ShopScreen(game));
+
+                return false;
+            }
+        });
 	}
 
 

@@ -32,7 +32,7 @@ class ShopScreen implements Screen {
     final Main game;
 
     // Takaisinpäin nappula.
-    Button backButton;
+    MyActor backButton;
 
     OrthographicCamera camera;
 
@@ -52,7 +52,7 @@ class ShopScreen implements Screen {
         cartActor = new Cart("kassakone.png", 350, 0);
 
         // Takaisin päin nappula
-        backButton = new Button("playbutton.png", 0, 0);
+        backButton = new MyActor("apartmentbutton.png", 0, 0, 200, 50);
 
         // Lisätään näytteljät.
         foodStage.addActor(foodActor);
@@ -65,7 +65,7 @@ class ShopScreen implements Screen {
         backButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa menu näkymään
-                game.setScreen(new MainMenuScreen(game));
+                game.setScreen(new ApartmentScreen(game));
                 return false;
             }
         });
