@@ -3,14 +3,18 @@ package fi.tamk.tiko;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -77,7 +81,7 @@ class MainMenuScreen implements Screen {
 		playButton.addListener(new InputListener(){
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//Vaihtaa asunto näkymään
-				game.setScreen(new ApartmentScreen(game));
+				game.setScreen(new ShopScreen(game));
 				return false;
 			}
 		});
@@ -146,6 +150,7 @@ class ApartmentScreen implements Screen {
 		camera.setToOrtho(false, 800, 600);
 	}
 
+
 	@Override
 	public void render(float delta) {
         //Asettaa taustan värin
@@ -189,69 +194,6 @@ class ApartmentScreen implements Screen {
 
 	}
 }
-//Kaupan pelinäkymä
-class ShopScreen implements Screen {
-
-	final Main game;
-
-	OrthographicCamera camera;
-
-	//Kauppanäkymän constructor
-	public ShopScreen(final Main game) {
-		this.game = game;
-
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 600);
-	}
-
-	@Override
-	public void show() {
-
-	}
-
-	@Override
-	public void render(float delta) {
-        //Asettaa taustan värin
-		Gdx.gl.glClearColor(0.7f, 0.5f, 0.5f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //Päivittää kameran
-		camera.update();
-		game.batch.setProjectionMatrix(camera.combined);
-        //Ruutua klikatessa vaihtaa päävalikkoon. Testausta varten, saa poistaa tarvittaessa.
-        if (Gdx.input.justTouched()) {
-            game.setScreen(new MainMenuScreen(game));
-        }
-
-		game.batch.begin();
-
-		game.batch.end();
-	}
-
-	@Override
-	public void resize(int width, int height) {
-
-	}
-
-	@Override
-	public void pause() {
-
-	}
-
-	@Override
-	public void resume() {
-
-	}
-
-	@Override
-	public void hide() {
-
-	}
-
-	@Override
-	public void dispose() {
-
-	}
-}
 
 public class Main extends Game {
 	SpriteBatch batch;
@@ -261,6 +203,7 @@ public class Main extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
+
 		//Asettaa päävalikon näkymäksi pelin auetessa.
 		this.setScreen(new MainMenuScreen(this));
 	}
