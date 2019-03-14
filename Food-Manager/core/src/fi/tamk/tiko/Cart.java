@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-// Ruoan luonti luokka.
+// Ostoskori
 public class Cart extends Actor {
     private Texture texture;
 
-    //Ruoan constructor
+    //Ostoskorin constructor
     public Cart(String textureStr, float x, float y) {
         texture = new Texture(Gdx.files.internal(textureStr));
         setWidth(150);
