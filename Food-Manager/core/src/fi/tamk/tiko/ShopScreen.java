@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 //Kaupan pelinäkymä
@@ -48,11 +49,11 @@ class ShopScreen implements Screen {
         foodGroup = new Group();
 
         // Luodaan ruokia ja ostoskori.
-        foodActor = new Food("kananmunat_1.png", 300, 450);
+        foodActor = new Food("kananmunat_1.png", 325, 380);
         cartActor = new Cart("kassakone.png", 350, 0);
 
         // Takaisin päin nappula
-        backButton = new MyActor("apartmentbutton.png", 0, 0, 200, 50);
+        backButton = new MyActor("exit.png", 0, 0, 200, 50);
 
         // Lisätään näytteljät.
         foodStage.addActor(foodActor);
@@ -96,7 +97,7 @@ class ShopScreen implements Screen {
 
         foodStage.act(Gdx.graphics.getDeltaTime());
         foodStage.getBatch().begin();
-        foodStage.getBatch().draw(background, 0, 0, 1000, 1000);
+        foodStage.getBatch().draw(background, 0, 0, 800, 600);
         foodStage.getBatch().end();
         foodStage.draw();
 

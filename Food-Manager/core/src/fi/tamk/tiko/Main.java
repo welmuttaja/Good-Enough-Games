@@ -210,7 +210,7 @@ class ApartmentScreen implements Screen {
         fridgeMenuBg = new MyActor("menubg.png", 200, 100, 400, 400);
         fridgeMenuBg.setVisible(fridgeOpen);
         //Jääkaapin sulje painike
-        exitButton = new MyActor("exitbutton.png", fridgeMenuBg.getX() + 230, fridgeMenuBg.getY() + 10, 150, 50);
+        exitButton = new MyActor("exit.png", fridgeMenuBg.getX() + 230, fridgeMenuBg.getY() + 10, 150, 50);
         exitButton.setVisible(fridgeOpen);
         //Ruoka testi
         float margin = 10;

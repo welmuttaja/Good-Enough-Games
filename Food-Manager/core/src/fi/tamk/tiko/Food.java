@@ -17,11 +17,7 @@ public class Food extends Actor {
         setWidth(150);
         setHeight(150);
         setBounds(x, y, getWidth(), getHeight());
-        addListener(new DragListener() {
-            public void drag(InputEvent event, float x, float y, int pointer) {
-                moveBy(x - getWidth() / 2, y - getHeight() / 2);
-            }
-        });
+
     }
 
     @Override
