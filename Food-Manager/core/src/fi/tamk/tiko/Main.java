@@ -193,24 +193,26 @@ class ApartmentScreen implements Screen {
         fridgeMenuBg = new MyActor("test.png", 200, 100, 400, 400);
         fridgeMenuBg.setVisible(fridgeOpen);
         //Ruoka testi
+        float margin = 10;
+
         for( int i = 0; i < foods.length; i++ ){
-            float margin = 10;
             float x = fridgeMenuBg.getX() + margin;
             float y = fridgeMenuBg.getTop() - 60;
+
             foodActors.add(new FoodActor("test.png", x, y, 50, 50, foods[i]));
             foodActors.get(i).setVisible(fridgeOpen);
 
             margin += 60;
         }
 
-        for( int i = 0; i < foodActors.size(); i++){
-            apartmentStage.addActor(foodActors.get(i));
-        }
-
 		//Lisää painikkeet stageen
 		apartmentStage.addActor(fridgeActor);
         apartmentStage.addActor(fridgeMenuBg);
         apartmentStage.addActor(shopButton);
+        //Lisää ruokatavarat stageen
+        for( int i = 0; i < foodActors.size(); i++){
+            apartmentStage.addActor(foodActors.get(i));
+        }
 
 		//Lisää stageen inputprocessorin
 		Gdx.input.setInputProcessor(apartmentStage);
@@ -225,7 +227,10 @@ class ApartmentScreen implements Screen {
                 }
 
                 fridgeMenuBg.setVisible(fridgeOpen);
-                //testFood.setVisible(fridgeOpen);
+                for(int i = 0; i < foodActors.size(); i++){
+                    foodActors.get(i).setVisible(fridgeOpen);
+                    System.out.println(fridgeOpen);
+                }
 
 				return false;
 			}
