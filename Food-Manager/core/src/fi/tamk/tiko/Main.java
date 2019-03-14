@@ -16,16 +16,18 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.ArrayList;
+
 //Päävalikon napit
-class Button extends Actor {
+class MyActor extends Actor {
 
 	private Texture texture;
 
-	//Nappien constructor
-	public Button(String textureStr, float x, float y){
+	//Painikkeiden constructor
+	public MyActor(String textureStr, float x, float y, float w, float h){
 		texture = new Texture(Gdx.files.internal(textureStr));
-		setWidth(200);
-		setHeight(50);
+		setWidth(w);
+		setHeight(h);
 		setBounds(x, y, getWidth(), getHeight());
 	}
 
@@ -40,6 +42,29 @@ class Button extends Actor {
 	}
 }
 
+class FoodActor extends Actor {
+
+    private Texture texture;
+
+    //Ruoka tavaroiden constructor
+    public FoodActor(String textureStr, float x, float y, float w, float h, String type){
+        texture = new Texture(Gdx.files.internal(textureStr));
+        setWidth(w);
+        setHeight(h);
+        setBounds(x, y, getWidth(), getHeight());
+    }
+
+    @Override
+    public void draw(Batch batch, float alpha){
+        batch.draw(texture, getX(), getY(), getWidth(), getHeight());
+    }
+
+    @Override
+    public void act(float delta){
+        super.act(delta);
+    }
+}
+
 //Päävalikko
 class MainMenuScreen implements Screen {
 
@@ -49,9 +74,9 @@ class MainMenuScreen implements Screen {
 
 	//päävalikon stage ja napit
 	Stage menuStage;
-	Button playButton;
-	Button settingButton;
-	Button HTPButton;
+	MyActor playButton;
+	MyActor settingButton;
+	MyActor HTPButton;
 
 	//Päävalikon constructor, täällä määritellään uudet elementit
 	public MainMenuScreen(final Main game) {
@@ -62,19 +87,19 @@ class MainMenuScreen implements Screen {
 
 		//Stagen määrittely
 		menuStage = new Stage(new FitViewport(800, 600), game.batch);
-		//Nappien määrittely
-		playButton = new Button("playbutton.png", 300, 400);
-		settingButton = new Button("settingsbutton.png", 300, 300);
-		HTPButton = new Button("howtoplaybutton.png", 300, 200);
-		//Lisää napit stageen
+		//Painikkeiden määrittely
+		playButton = new MyActor("playbutton.png", 300, 400, 200, 50);
+		settingButton = new MyActor("settingsbutton.png", 300, 300, 200, 50);
+		HTPButton = new MyActor("howtoplaybutton.png", 300, 200, 200, 50);
+		//Lisää painikkeet stageen
 		menuStage.addActor(playButton);
 		menuStage.addActor(settingButton);
 		menuStage.addActor(HTPButton);
 
 		//Lisää stageen inputprocessorin
 		Gdx.input.setInputProcessor(menuStage);
-		//Lisää play nappiin kosketuksen tunnistamisen
-		playButton.addListener(new InputListener(){
+		//Lisää play painikkeeseen kosketuksen tunnistamisen
+        playButton.addListener(new InputListener(){
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//Vaihtaa asunto näkymään
 				game.setScreen(new ApartmentScreen(game));
@@ -138,26 +163,80 @@ class ApartmentScreen implements Screen {
 
 	OrthographicCamera camera;
 
+	Stage apartmentStage;
+	MyActor fridgeActor;
+	MyActor fridgeMenuBg;
+	String[] foods = {"apple", "banana", "noodles"};
+    ArrayList<FoodActor> foodActors = new ArrayList<FoodActor>();
+
+	Boolean fridgeOpen = false;
+
 	//Asuntonäkymän constructor
 	public ApartmentScreen(final Main game) {
 		this.game = game;
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 600);
+
+		//Stagen määrittely
+		apartmentStage = new Stage(new FitViewport(800, 600), game.batch);
+		//Painikkeiden määrittely
+		fridgeActor = new MyActor("test.png", 300, 200, 200, 200);
+		//Jääkaapin valikon tausta
+        fridgeMenuBg = new MyActor("test.png", 200, 100, 400, 400);
+        fridgeMenuBg.setVisible(fridgeOpen);
+        //Ruoka testi
+        for( int i = 0; i < foods.length; i++ ){
+            float margin = 10;
+            float x = fridgeMenuBg.getX() + margin;
+            float y = fridgeMenuBg.getTop() - 60;
+            foodActors.add(new FoodActor("test.png", x, y, 50, 50, foods[i]));
+            foodActors.get(i).setVisible(fridgeOpen);
+
+            margin += 60;
+        }
+
+        for( int i = 0; i < foodActors.size(); i++){
+            apartmentStage.addActor(foodActors.get(i));
+        }
+
+		//Lisää painikkeet stageen
+		apartmentStage.addActor(fridgeActor);
+        apartmentStage.addActor(fridgeMenuBg);
+
+		//Lisää stageen inputprocessorin
+		Gdx.input.setInputProcessor(apartmentStage);
+		//Lisää jääkaappiin kosketuksen tunnistamisen
+		fridgeActor.addListener(new InputListener(){
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				//Avaa fridge näkymän
+                if(fridgeOpen) {
+                    fridgeOpen = false;
+                } else {
+                    fridgeOpen = true;
+                }
+
+                fridgeMenuBg.setVisible(fridgeOpen);
+                //testFood.setVisible(fridgeOpen);
+
+				return false;
+			}
+		});
 	}
 
 	@Override
 	public void render(float delta) {
-        //Asettaa taustan värin
+		//Asettaa taustan värin
 		Gdx.gl.glClearColor(0.5f, 0.7f, 0.5f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //Päivitää kameran
+		//Päivittää kameran
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
-        //Ruutua klikatessa vaihtaa asunto pelinäkymään. Testausta varten, saa poistaa tarvittaessa.
-        if (Gdx.input.justTouched()) {
-            game.setScreen(new ShopScreen(game));
-        }
+
+		//tekee actorien toiminnot
+		apartmentStage.act(Gdx.graphics.getDeltaTime());
+		//piirtää stagen actorit
+		apartmentStage.draw();
 
 		game.batch.begin();
 

@@ -28,7 +28,7 @@ public class Shop extends Game {
     @Override
     public void create() {
         //Asettaa ruokavalikon näkymäksi.
-        this.setScreen(new ShopScreen(this));
+        //this.setScreen(new ShopScreen(this));
 
         // Luodaan näyttämö ja näyttelijät.
         stage = new Stage(new FitViewport(width, height), batch);
@@ -40,9 +40,9 @@ public class Shop extends Game {
     }
 
     // Perus osuma detection.
-    public Actor hit (float x, float y, boolean touchable) {
-        if (touchable && getTouchable() != Touchable.enabled) return null;
-        return x >= 0 && x < width && y >= 0 && y < height ? this : null;
-    }
+    //public Actor hit (float x, float y, boolean touchable) {
+        //if (touchable && getTouchable() != Touchable.enabled) return null;
+        //return x >= 0 && x < width && y >= 0 && y < height ? this : null;
+        //}
 
 }
