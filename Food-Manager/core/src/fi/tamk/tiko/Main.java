@@ -22,6 +22,52 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
 
+class Player {
+	private float energy;
+	private float weight;
+	private float healthiness;
+	private float happiness;
+
+	public Player(float en, float we, float he, float ha){
+		energy = en;
+		weight = we;
+		healthiness = he;
+		happiness = ha;
+	}
+
+    public float getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(float energy) {
+        this.energy = energy;
+    }
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+
+    public float getHealthiness() {
+        return healthiness;
+    }
+
+    public void setHealthiness(float healthiness) {
+        this.healthiness = healthiness;
+    }
+
+    public float getHappiness() {
+        return happiness;
+    }
+
+    public void setHappiness(float happiness) {
+        this.happiness = happiness;
+    }
+}
+
 //Päävalikon napit
 class MyActor extends Actor {
 
@@ -51,17 +97,34 @@ class FoodActor extends Actor {
     private Texture texture;
     private String textureStr;
 
+    private float energy;
+	private float weight;
+	private float healthiness;
+	private float happiness;
+
     //Ruoka tavaroiden constructor
     public FoodActor(int type, float x, float y, float w, float h){
         switch(type){
             case 0:
                 textureStr = "beans.png";
+                energy = 0.25f;
+                weight = 0.25f;
+                healthiness = 0.25f;
+                happiness = 0.25f;
                 break;
             case 1:
                 textureStr = "eggs.png";
+				energy = 0.25f;
+				weight = 0.25f;
+				healthiness = 0.25f;
+				happiness = 0.25f;
                 break;
             case 2:
                 textureStr = "rice.png";
+				energy = 0.25f;
+				weight = 0.25f;
+				healthiness = 0.25f;
+				happiness = 0.25f;
                 break;
         }
         texture = new Texture(Gdx.files.internal(textureStr));
@@ -70,7 +133,23 @@ class FoodActor extends Actor {
         setBounds(x, y, getWidth(), getHeight());
     }
 
-    @Override
+	public float getEnergy(){
+    	return this.energy;
+	}
+
+	public float getWeight(){
+		return this.weight;
+	}
+
+	public float getHealthiness(){
+		return this.healthiness;
+	}
+
+	public float getHappiness(){
+		return this.happiness;
+	}
+
+	@Override
     public void draw(Batch batch, float alpha){
         batch.draw(texture, getX(), getY(), getWidth(), getHeight());
     }
@@ -181,11 +260,19 @@ class ApartmentScreen implements Screen {
 
 	Texture apartmentbg;
 
+	Player player;
+
 	Stage apartmentStage;
 	MyActor fridgeActor;
 	MyActor fridgeMenuBg;
 	MyActor shopButton;
     MyActor exitButton;
+
+    MyActor statBg;
+    MyActor charEnergy;
+    MyActor charWeight;
+    MyActor charHealthiness;
+    MyActor charHappiness;
 
 	int[] foods = {0, 1, 2};
     ArrayList<FoodActor> foodActors = new ArrayList<FoodActor>();
@@ -201,17 +288,26 @@ class ApartmentScreen implements Screen {
 
 		apartmentbg = new Texture("apartmentbg.png");
 
+		player = new Player(0.30f, 0.50f, 0.20f, 0.75f);
+
 		//Stagen määrittely
 		apartmentStage = new Stage(new FitViewport(800, 600), game.batch);
 		//Painikkeiden määrittely
         shopButton = new MyActor("shopbutton.png", 0, 0, 200, 50);
-		fridgeActor = new MyActor("test.png", 300, 200, 200, 200);
+		fridgeActor = new MyActor("test-transparent.png", 225, 45, 100, 260);
 		//Jääkaapin valikon tausta
         fridgeMenuBg = new MyActor("menubg.png", 200, 100, 400, 400);
         fridgeMenuBg.setVisible(fridgeOpen);
         //Jääkaapin sulje painike
         exitButton = new MyActor("exit.png", fridgeMenuBg.getX() + 230, fridgeMenuBg.getY() + 10, 150, 50);
         exitButton.setVisible(fridgeOpen);
+
+        statBg = new MyActor("menubg.png", 490, 460, 300, 130);
+        charEnergy = new MyActor("blue.png", 500, 560, 280 * player.getEnergy(), 20);
+        charWeight = new MyActor("red.png", 500, 530, 280 * player.getWeight(), 20);
+        charHealthiness = new MyActor("green.png", 500, 500, 280 * player.getHealthiness(), 20);
+        charHappiness = new MyActor("yellow.png", 500, 470, 280 * player.getHappiness(), 20);
+
         //Ruoka testi
         float margin = 10;
 
@@ -230,6 +326,13 @@ class ApartmentScreen implements Screen {
         apartmentStage.addActor(fridgeMenuBg);
         apartmentStage.addActor(exitButton);
         apartmentStage.addActor(shopButton);
+
+        apartmentStage.addActor(statBg);
+        apartmentStage.addActor(charEnergy);
+        apartmentStage.addActor(charWeight);
+        apartmentStage.addActor(charHealthiness);
+        apartmentStage.addActor(charHappiness);
+
         //Lisää ruokatavarat stageen
         for( int i = 0; i < foodActors.size(); i++){
             apartmentStage.addActor(foodActors.get(i));
