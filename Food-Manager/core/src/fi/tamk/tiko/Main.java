@@ -293,7 +293,7 @@ class ApartmentScreen implements Screen {
 		//Stagen määrittely
 		apartmentStage = new Stage(new FitViewport(800, 600), game.batch);
 		//Painikkeiden määrittely
-        shopButton = new MyActor("shopbutton.png", 0, 0, 200, 50);
+        shopButton = new MyActor("kauppa.png", 0, 0, 80, 80);
 		fridgeActor = new MyActor("test-transparent.png", 225, 45, 100, 260);
 		//Jääkaapin valikon tausta
         fridgeMenuBg = new MyActor("menubg.png", 200, 100, 400, 400);

@@ -2,24 +2,35 @@ package fi.tamk.tiko;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import jdk.nashorn.internal.runtime.Source;
 
 //Kaupan pelinäkymä
 class ShopScreen implements Screen {
     // Tausta
     private Stage foodStage;
     // Ruoat
-    private Actor foodActor;
+    private Actor foodActorEggs;
+    private Actor foodActorBeans;
+    private Actor foodActorRice;
+
     // Ostoskori
     private Actor cartActor;
     // Ruokaryhmä
@@ -49,14 +60,18 @@ class ShopScreen implements Screen {
         foodGroup = new Group();
 
         // Luodaan ruokia ja ostoskori.
-        foodActor = new Food("kananmunat_1.png", 325, 380);
-        cartActor = new Cart("kassakone.png", 350, 0);
+        foodActorEggs = new MyActor("eggs.png", 200, 400, 100, 100);
+        foodActorBeans = new MyActor("beans.png", 350, 400, 90, 90);
+        foodActorRice = new MyActor("rice.png", 500, 400, 80, 80);
+        cartActor = new MyActor("ostoskori.png", 350, 20, 120, 120);
 
         // Takaisin päin nappula
-        backButton = new MyActor("exit.png", 0, 0, 200, 50);
+        backButton = new MyActor("koti.png", 0, 0, 80, 80);
 
         // Lisätään näytteljät.
-        foodStage.addActor(foodActor);
+        foodStage.addActor(foodActorEggs);
+        foodStage.addActor(foodActorBeans);
+        foodStage.addActor(foodActorRice);
         foodStage.addActor(cartActor);
         foodStage.addActor(backButton);
 
@@ -68,6 +83,44 @@ class ShopScreen implements Screen {
                 //Vaihtaa menu näkymään
                 game.setScreen(new ApartmentScreen(game));
                 return false;
+            }
+        });
+
+        // Ruokien draggaus
+
+        foodActorEggs.addListener(new DragListener() {
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                foodActorEggs.moveBy(x - foodActorEggs.getWidth() / 2, y - foodActorEggs.getHeight() / 2);
+                foodActorEggs.toFront();
+                System.out.println(foodActorEggs.getX());
+                if(foodActorEggs.getX() > cartActor.getX() && foodActorEggs.getY() < cartActor.getY()) {
+                    foodActorEggs.setX(200);
+                    foodActorEggs.setY(400);
+                }
+            }
+        });
+
+        foodActorBeans.addListener(new DragListener() {
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                foodActorBeans.moveBy(x - foodActorBeans.getWidth() / 2, y - foodActorBeans.getHeight() / 2);
+                foodActorBeans.toFront();
+                System.out.println(foodActorBeans.getX());
+                if(foodActorBeans.getX() > cartActor.getX() && foodActorBeans.getY() < cartActor.getY()) {
+                    foodActorBeans.setX(350);
+                    foodActorBeans.setY(400);
+                }
+            }
+        });
+
+        foodActorRice.addListener(new DragListener() {
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                foodActorRice.moveBy(x - foodActorRice.getWidth() / 2, y - foodActorRice.getHeight() / 2);
+                foodActorRice.toFront();
+                System.out.println(foodActorRice.getX());
+                if(foodActorRice.getX() > cartActor.getX() && foodActorRice.getY() < cartActor.getY()) {
+                    foodActorRice.setX(500);
+                    foodActorRice.setY(400);
+                }
             }
         });
 
@@ -86,10 +139,6 @@ class ShopScreen implements Screen {
         //Päivittää kameran
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
-        //Ruutua klikatessa vaihtaa kauppavalikkoon. Testausta varten, saa poistaa tarvittaessa.
-        if (Gdx.input.justTouched()) {
-            game.setScreen(new ShopScreen(game));
-        }
 
         // Kaupan tausta
         Texture background;
@@ -100,10 +149,6 @@ class ShopScreen implements Screen {
         foodStage.getBatch().draw(background, 0, 0, 800, 600);
         foodStage.getBatch().end();
         foodStage.draw();
-
-        game.batch.begin();
-
-        game.batch.end();
     }
 
     @Override
