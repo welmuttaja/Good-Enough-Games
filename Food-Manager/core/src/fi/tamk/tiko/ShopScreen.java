@@ -60,9 +60,12 @@ class ShopScreen implements Screen {
         foodGroup = new Group();
 
         // Luodaan ruokia ja ostoskori.
-        foodActorEggs = new MyActor("eggs.png", 200, 400, 100, 100);
-        foodActorBeans = new MyActor("beans.png", 350, 400, 90, 90);
-        foodActorRice = new MyActor("rice.png", 500, 400, 80, 80);
+        foodActorEggs = new Food("eggs.png", 200, 400, 100, 100,
+                45, 3, 2, 1, 3);
+        foodActorBeans = new Food("beans.png", 350, 400, 90, 90,
+                30, 2, 1 , 4 , 5);
+        foodActorRice = new Food("rice.png", 500, 400, 80, 80,
+                35, 1,2 ,3 ,6 );
         cartActor = new MyActor("ostoskori.png", 350, 20, 120, 120);
 
         // Takaisin päin nappula
@@ -85,46 +88,9 @@ class ShopScreen implements Screen {
                 return false;
             }
         });
-
-        // Ruokien draggaus
-
-        foodActorEggs.addListener(new DragListener() {
-            public void drag(InputEvent event, float x, float y, int pointer) {
-                foodActorEggs.moveBy(x - foodActorEggs.getWidth() / 2, y - foodActorEggs.getHeight() / 2);
-                foodActorEggs.toFront();
-                System.out.println(foodActorEggs.getX());
-                if(foodActorEggs.getX() > cartActor.getX() && foodActorEggs.getY() < cartActor.getY()) {
-                    foodActorEggs.setX(200);
-                    foodActorEggs.setY(400);
-                }
-            }
-        });
-
-        foodActorBeans.addListener(new DragListener() {
-            public void drag(InputEvent event, float x, float y, int pointer) {
-                foodActorBeans.moveBy(x - foodActorBeans.getWidth() / 2, y - foodActorBeans.getHeight() / 2);
-                foodActorBeans.toFront();
-                System.out.println(foodActorBeans.getX());
-                if(foodActorBeans.getX() > cartActor.getX() && foodActorBeans.getY() < cartActor.getY()) {
-                    foodActorBeans.setX(350);
-                    foodActorBeans.setY(400);
-                }
-            }
-        });
-
-        foodActorRice.addListener(new DragListener() {
-            public void drag(InputEvent event, float x, float y, int pointer) {
-                foodActorRice.moveBy(x - foodActorRice.getWidth() / 2, y - foodActorRice.getHeight() / 2);
-                foodActorRice.toFront();
-                System.out.println(foodActorRice.getX());
-                if(foodActorRice.getX() > cartActor.getX() && foodActorRice.getY() < cartActor.getY()) {
-                    foodActorRice.setX(500);
-                    foodActorRice.setY(400);
-                }
-            }
-        });
-
     }
+
+
 
     @Override
     public void show() {
@@ -142,7 +108,7 @@ class ShopScreen implements Screen {
 
         // Kaupan tausta
         Texture background;
-        background = new Texture(Gdx.files.internal("kauppa.jpg"));
+        background = new Texture(Gdx.files.internal("hylly.png"));
 
         foodStage.act(Gdx.graphics.getDeltaTime());
         foodStage.getBatch().begin();
