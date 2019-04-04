@@ -51,7 +51,7 @@ class Food extends Actor {
 
         // Long-tap info
         addListener(new ActorGestureListener()  {
-            public void lonfggPress(InputEvent event, float xxx, float yyy) {
+            public void longPress(InputEvent event, float xxx, float yyy) {
             setX(200);
             setY(200);
             }
