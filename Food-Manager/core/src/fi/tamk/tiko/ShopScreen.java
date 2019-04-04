@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.ArrayList;
+
 //Kaupan pelinäkymä
 class ShopScreen implements Screen {
     // Tausta
@@ -31,6 +33,8 @@ class ShopScreen implements Screen {
 
     SpriteBatch batch;
     final Main game;
+    final Player player;
+    final ArrayList<Integer> foods;
 
     // Takaisinpäin nappula.
     MyActor backButton;
@@ -38,8 +42,10 @@ class ShopScreen implements Screen {
     OrthographicCamera camera;
 
     //Kauppanäkymän constructor
-    public ShopScreen(final Main game) {
+    public ShopScreen(final Main game, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
+        this.player = player;
+        this.foods = foods;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
@@ -66,7 +72,7 @@ class ShopScreen implements Screen {
         backButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa menu näkymään
-                game.setScreen(new ApartmentScreen(game));
+                game.setScreen(new ApartmentScreen(game, player, foods));
                 return false;
             }
         });
@@ -88,7 +94,7 @@ class ShopScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         //Ruutua klikatessa vaihtaa kauppavalikkoon. Testausta varten, saa poistaa tarvittaessa.
         if (Gdx.input.justTouched()) {
-            game.setScreen(new ShopScreen(game));
+            game.setScreen(new ShopScreen(game, player, foods));
         }
 
         // Kaupan tausta

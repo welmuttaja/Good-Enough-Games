@@ -35,6 +35,16 @@ class Player {
 		happiness = ha;
 	}
 
+	public void updateStats(){
+	    if(this.energy > 0 && this.weight > 0 && this.healthiness > 0 && this.happiness > 0) {
+            this.energy -= 0.0001f;
+            this.weight -= 0.0001f;
+            this.healthiness -= 0.0001f;
+            this.happiness -= 0.0001f;
+        }
+
+    }
+
     public float getEnergy() {
         return energy;
     }
@@ -97,6 +107,7 @@ class FoodActor extends Actor {
     private Texture texture;
     private String textureStr;
 
+    private int type;
     private float energy;
 	private float weight;
 	private float healthiness;
@@ -104,6 +115,7 @@ class FoodActor extends Actor {
 
     //Ruoka tavaroiden constructor
     public FoodActor(int type, float x, float y, float w, float h){
+        this.type = type;
         switch(type){
             case 0:
                 textureStr = "beans.png";
@@ -131,6 +143,14 @@ class FoodActor extends Actor {
         setWidth(w);
         setHeight(h);
         setBounds(x, y, getWidth(), getHeight());
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
 	public float getEnergy(){
@@ -165,6 +185,9 @@ class MainMenuScreen implements Screen {
 
 	final Main game;
 
+    final Player player;
+    final ArrayList<Integer> foods;
+
 	OrthographicCamera camera;
 
 	//päävalikon stage ja napit
@@ -174,8 +197,10 @@ class MainMenuScreen implements Screen {
 	MyActor HTPButton;
 
 	//Päävalikon constructor, täällä määritellään uudet elementit
-	public MainMenuScreen(final Main game) {
+	public MainMenuScreen(final Main game, final Player player, final ArrayList<Integer> foods) {
 		this.game = game;
+        this.player = player;
+        this.foods = foods;
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 600);
@@ -197,7 +222,7 @@ class MainMenuScreen implements Screen {
         playButton.addListener(new InputListener(){
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//Vaihtaa asunto näkymään
-				game.setScreen(new ApartmentScreen(game));
+				game.setScreen(new ApartmentScreen(game, player, foods));
 				return false;
 			}
 		});
@@ -260,9 +285,8 @@ class ApartmentScreen implements Screen {
 
 	Texture apartmentbg;
 
-	Player player;
-
 	Stage apartmentStage;
+
 	MyActor fridgeActor;
 	MyActor fridgeMenuBg;
 	MyActor shopButton;
@@ -274,21 +298,23 @@ class ApartmentScreen implements Screen {
     MyActor charHealthiness;
     MyActor charHappiness;
 
-	int[] foods = {0, 1, 2};
-    ArrayList<FoodActor> foodActors = new ArrayList<FoodActor>();
+    final Player player;
+    final ArrayList<Integer> foods;
+
+    ArrayList<FoodActor> foodActors=new ArrayList<FoodActor>();
 
 	Boolean fridgeOpen = false;
 
 	//Asuntonäkymän constructor
-	public ApartmentScreen(final Main game) {
+	public ApartmentScreen(final Main game, final Player player, final ArrayList<Integer> foods) {
 		this.game = game;
+        this.player = player;
+        this.foods = foods;
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 600);
 
-		apartmentbg = new Texture("apartmentbg.png");
-
-		player = new Player(0.30f, 0.50f, 0.20f, 0.75f);
+        apartmentbg = new Texture("apartmentbg.png");
 
 		//Stagen määrittely
 		apartmentStage = new Stage(new FitViewport(800, 600), game.batch);
@@ -308,30 +334,38 @@ class ApartmentScreen implements Screen {
         charHealthiness = new MyActor("green.png", 500, 500, 280 * player.getHealthiness(), 20);
         charHappiness = new MyActor("yellow.png", 500, 470, 280 * player.getHappiness(), 20);
 
-        //Ruoka testi
-        float margin = 10;
+        //Lisää ruoat jääkaappiin
+        float leftMargin = 10;
+        float topMargin = 10;
 
-        for( int i = 0; i < foods.length; i++ ){
-            float x = fridgeMenuBg.getX() + margin;
-            float y = fridgeMenuBg.getTop() - 60;
+        for( int i = 0; i < foods.size(); i++ ){
+            float x = fridgeMenuBg.getX() + leftMargin;
+            float y = fridgeMenuBg.getTop() - 50 - topMargin;
 
-            foodActors.add(new FoodActor(foods[i], x, y, 50, 50));
+            foodActors.add(new FoodActor(foods.get(i), x, y, 50, 50));
+            foodActors.get(i).setName("food" + foods.get(i));
             foodActors.get(i).setVisible(fridgeOpen);
 
-            margin += 60;
+            if(leftMargin == 310){
+                leftMargin = 10;
+                topMargin += 60;
+            } else{
+                leftMargin += 60;
+            }
+
         }
 
 		//Lisää painikkeet stageen
-		apartmentStage.addActor(fridgeActor);
-        apartmentStage.addActor(fridgeMenuBg);
-        apartmentStage.addActor(exitButton);
-        apartmentStage.addActor(shopButton);
-
         apartmentStage.addActor(statBg);
         apartmentStage.addActor(charEnergy);
         apartmentStage.addActor(charWeight);
         apartmentStage.addActor(charHealthiness);
         apartmentStage.addActor(charHappiness);
+
+		apartmentStage.addActor(fridgeActor);
+        apartmentStage.addActor(fridgeMenuBg);
+        apartmentStage.addActor(exitButton);
+        apartmentStage.addActor(shopButton);
 
         //Lisää ruokatavarat stageen
         for( int i = 0; i < foodActors.size(); i++){
@@ -362,6 +396,7 @@ class ApartmentScreen implements Screen {
 		//Lisää jääkaapin sulje nappiin kosketuksen tunnistamisen
         exitButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+
                 //Sulkee fridge näkymän
                 if(fridgeOpen) {
                     fridgeOpen = false;
@@ -371,6 +406,7 @@ class ApartmentScreen implements Screen {
 
                 fridgeMenuBg.setVisible(fridgeOpen);
                 exitButton.setVisible(fridgeOpen);
+
                 for(int i = 0; i < foodActors.size(); i++){
                     foodActors.get(i).setVisible(fridgeOpen);
                 }
@@ -382,17 +418,74 @@ class ApartmentScreen implements Screen {
         //Lisää kauppa painikkeeseen kosketuksen tunnistamisen
         shopButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+
+                foods.clear();
+
+                for(int i = 0; i < apartmentStage.getActors().size; i++) {
+
+                    String str = apartmentStage.getActors().get(i).getName();
+
+                    if (str != null) {
+                        if (str.contains("food")) {
+
+                            System.out.println("contains food");
+
+                            StringBuilder sb = new StringBuilder();
+                            boolean found = false;
+                            for (char c : str.toCharArray()) {
+                                if (Character.isDigit(c)) {
+                                    sb.append(c);
+                                    found = true;
+                                } else if (found) {
+                                    // If we already found a digit before and this char is not a digit, stop looping
+                                    break;
+                                }
+                            }
+
+                            String output = sb.toString();
+
+                            System.out.println("contains " + output);
+
+                            foods.add(Integer.valueOf(output));
+                        }
+                    }
+                }
+
                 //Siirtyy kauppa näkymään
-                game.setScreen(new ShopScreen(game));
+                game.setScreen(new ShopScreen(game, player, foods));
 
                 return false;
             }
         });
+
+        //Lisää ruokiin kosketuksen tunnistamisen
+        for(int i = 0; i < foodActors.size(); i++) {
+
+            final int fIndex = i;
+
+            foodActors.get(i).addListener(new InputListener() {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                    foodActors.get(fIndex).remove();
+
+                    return false;
+                }
+            });
+        }
 	}
 
 
 	@Override
 	public void render(float delta) {
+
+	    //päivittää pelaajan statsit ja statsi mittarit
+	    player.updateStats();
+        charEnergy.setWidth(player.getEnergy() * 280);
+        charWeight.setWidth(player.getWeight() * 280);
+        charHealthiness.setWidth(player.getHealthiness() * 280);
+        charHappiness.setWidth(player.getHappiness() * 280);
+
+
 		//Asettaa taustan värin
 		Gdx.gl.glClearColor(0.5f, 0.7f, 0.5f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -437,22 +530,142 @@ class ApartmentScreen implements Screen {
 	}
 }
 
+class GameTime {
+
+	// 1 sec = 8 min
+	// 1 min = 480 min = 3 h
+	// 3 min = 24 h
+
+	private double time;
+	private double minutes;
+    private int hours;
+    private int days;
+    private int weeks;
+    private int months;
+    private int years;
+
+	GameTime(){
+
+	}
+
+	public void updateTime(double dt){
+		this.time = dt * 8;
+        this.minutes += dt * 8;
+
+        if( this.minutes == 60 ){
+            this.minutes = 0;
+            this.hours += 1;
+        }
+        if( this.hours == 24 ){
+            this.hours = 0;
+            this.days += 1;
+        }
+        if( this.days == 7 ){
+            this.days = 0;
+            this.weeks += 1;
+        }
+        if( this.weeks == 4 ){
+            this.weeks = 0;
+            this.months += 1;
+        }
+        if(this.months == 12 ){
+            this.months = 0;
+            this.years += 1;
+        }
+	}
+
+	public double getTime(){
+        return this.time;
+    }
+
+    public void setMinutes(int m){
+	    this.minutes = m;
+	}
+
+	public int getMinutes(){
+	    return (int) this.minutes;
+    }
+
+    public void setHours(int h){
+        this.hours = h;
+    }
+
+    public int getHours(){
+        return this.hours;
+    }
+
+    public void setDays(int d){
+        this.days = d;
+    }
+
+    public int getDays(){
+        return this.days;
+    }
+
+    public void setWeeks(int w){
+        this.weeks = w;
+    }
+
+    public int getWeeks(){
+        return this.weeks;
+    }
+
+    public void setMonths(int m){
+        this.months = m;
+    }
+
+    public int getMonths(){
+        return this.months;
+    }
+
+    public void setYears(int y){
+        this.years = y;
+    }
+
+    public int getYears(){
+        return this.years;
+    }
+}
+
 public class Main extends Game {
 	SpriteBatch batch;
 	BitmapFont font;
+
+	GameTime gt;
+
+	Player player;
+	ArrayList<Integer> foods;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 
+		gt = new GameTime();
+
+        player = new Player(0.75f, 0.75f, 0.75f, 0.75f);
+		foods = new ArrayList<Integer>();
+
+        foods.add(0);
+        foods.add(1);
+        foods.add(2);
+        foods.add(0);
+        foods.add(1);
+        foods.add(2);
+        foods.add(0);
+        foods.add(1);
+        foods.add(2);
+        foods.add(0);
+
 		//Asettaa päävalikon näkymäksi pelin auetessa.
-		this.setScreen(new MainMenuScreen(this));
+		this.setScreen(new MainMenuScreen(this, player, foods));
 	}
 
 	@Override
 	public void render () {
 		super.render();
+		//päivittää peliaikaa
+		gt.updateTime(Gdx.graphics.getDeltaTime());
 	}
 
 	@Override
