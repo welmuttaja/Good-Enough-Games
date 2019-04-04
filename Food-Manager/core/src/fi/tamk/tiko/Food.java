@@ -5,11 +5,14 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
 // Ruoan luonti luokka.
-public class Food extends Actor {
+class Food extends Actor {
     private Texture texture;
 
     private float cartX = 350;
@@ -24,6 +27,8 @@ public class Food extends Actor {
         setWidth(w);
         setHeight(h);
         setBounds(x, y, getWidth(), getHeight());
+
+        // Ruoan draggaus kauppanäkymässä.
         addListener(new DragListener() {
             public void drag(InputEvent event, float xx, float yy, int pointer) {
                 moveBy(xx - getWidth() / 2, yy - getHeight() / 2);
@@ -39,7 +44,16 @@ public class Food extends Actor {
                 if(getX() < 0 || getY() < 0 || getX() > 800 || getY() > 600) {
                     setX(x);
                     setY(y);
+                    cancel();
                 }
+            }
+        });
+
+        // Long-tap info
+        addListener(new ActorGestureListener()  {
+            public void lonfggPress(InputEvent event, float xxx, float yyy) {
+            setX(200);
+            setY(200);
             }
         });
     }

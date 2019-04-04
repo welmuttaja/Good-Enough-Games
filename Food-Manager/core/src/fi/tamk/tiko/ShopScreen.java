@@ -57,6 +57,9 @@ class ShopScreen implements Screen {
     // Takaisinpäin nappula.
     MyActor backButton;
 
+    // Kategoriat.
+    MyActor Screen2;
+
     OrthographicCamera camera;
 
     //Kauppanäkymän constructor
@@ -83,10 +86,18 @@ class ShopScreen implements Screen {
                 35, 1,2 ,3 ,6 );
         Noodles = new Food("mikropizza.png", 500, 220, 80, 80,
                 35, 1,2 ,3 ,6 );
+
         cartActor = new MyActor("ostoskori.png", 350, 20, 120, 120);
 
-        // Takaisin päin nappula
+        // Takaisin päin nappula.
         backButton = new MyActor("koti.png", 0, 0, 80, 80);
+
+        // Kategoria nappulat.
+        //backButton = new MyActor("koti.png", 0, 400, 80, 80);
+        //backButton = new MyActor("koti.png", 0, 0, 80, 80);
+        //backButton = new MyActor("koti.png", 0, 0, 80, 80);
+        //backButton = new MyActor("koti.png", 0, 0, 80, 80);
+        //backButton = new MyActor("koti.png", 0, 0, 80, 80);
 
         // Lisätään näytteljät.
         foodStage.addActor(Eggs);
