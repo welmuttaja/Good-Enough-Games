@@ -50,7 +50,12 @@ class Player {
     }
 
     public void setEnergy(float energy) {
+
         this.energy = energy;
+
+	    if(this.energy > 1) {
+            this.energy = 1;
+        }
     }
 
     public float getWeight() {
@@ -58,7 +63,12 @@ class Player {
     }
 
     public void setWeight(float weight) {
+
         this.weight = weight;
+
+        if(this.weight > 1) {
+            this.weight = 1;
+        }
     }
 
     public float getHealthiness() {
@@ -66,7 +76,12 @@ class Player {
     }
 
     public void setHealthiness(float healthiness) {
+
         this.healthiness = healthiness;
+
+        if(this.healthiness > 1) {
+            this.healthiness = 1;
+        }
     }
 
     public float getHappiness() {
@@ -74,7 +89,12 @@ class Player {
     }
 
     public void setHappiness(float happiness) {
+
         this.happiness = happiness;
+
+        if(this.happiness > 1) {
+            this.happiness = 1;
+        }
     }
 }
 
@@ -119,23 +139,23 @@ class FoodActor extends Actor {
         switch(type){
             case 0:
                 textureStr = "beans.png";
-                energy = 0.25f;
-                weight = 0.25f;
-                healthiness = 0.25f;
-                happiness = 0.25f;
+                energy = 0.2f;
+                weight = 0.2f;
+                healthiness = 0.2f;
+                happiness = 0.1f;
                 break;
             case 1:
                 textureStr = "eggs.png";
 				energy = 0.25f;
-				weight = 0.25f;
+				weight = 0.15f;
 				healthiness = 0.25f;
 				happiness = 0.25f;
                 break;
             case 2:
                 textureStr = "rice.png";
-				energy = 0.25f;
-				weight = 0.25f;
-				healthiness = 0.25f;
+				energy = 0.1f;
+				weight = 0.2f;
+				healthiness = 0.1f;
 				happiness = 0.25f;
                 break;
         }
@@ -466,6 +486,11 @@ class ApartmentScreen implements Screen {
             foodActors.get(i).addListener(new InputListener() {
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
+                    player.setEnergy(player.getEnergy() + foodActors.get(fIndex).getEnergy());
+                    player.setWeight(player.getWeight() + foodActors.get(fIndex).getWeight());
+                    player.setHealthiness(player.getHealthiness() + foodActors.get(fIndex).getHealthiness());
+                    player.setHappiness(player.getHappiness() + foodActors.get(fIndex).getHappiness());
+
                     foodActors.get(fIndex).remove();
 
                     return false;
@@ -643,7 +668,7 @@ public class Main extends Game {
 
 		gt = new GameTime();
 
-        player = new Player(0.75f, 0.75f, 0.75f, 0.75f);
+        player = new Player(0.5f, 0.5f, 0.5f, 0.5f);
 		foods = new ArrayList<Integer>();
 
         foods.add(0);
