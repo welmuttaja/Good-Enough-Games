@@ -27,9 +27,20 @@ class ShopScreen implements Screen {
     // Tausta
     private Stage foodStage;
     // Ruoat
-    private Actor foodActorEggs;
-    private Actor foodActorBeans;
-    private Actor foodActorRice;
+    private Actor Eggs;
+    private Actor Beans;
+    private Actor Rice;
+    private Actor Tuna;
+    private Actor Macaroni;
+    private Actor Noodles;
+    private Actor Munakas;
+    private Actor Pasta;
+    private Actor Yogurt;
+    private Actor MeatBalls;
+    private Actor Lohi;
+    private Actor Pizza;
+    private Actor Porridge;
+    private Actor Cereals;
 
     // Ostoskori
     private Actor cartActor;
@@ -60,11 +71,17 @@ class ShopScreen implements Screen {
         foodGroup = new Group();
 
         // Luodaan ruokia ja ostoskori.
-        foodActorEggs = new Food("eggs.png", 200, 400, 100, 100,
+        Eggs = new Food("eggs.png", 200, 400, 100, 100,
                 45, 3, 2, 1, 3);
-        foodActorBeans = new Food("beans.png", 350, 400, 90, 90,
+        Beans = new Food("beans.png", 350, 400, 90, 90,
                 30, 2, 1 , 4 , 5);
-        foodActorRice = new Food("rice.png", 500, 400, 80, 80,
+        Rice = new Food("rice.png", 500, 400, 80, 80,
+                35, 1,2 ,3 ,6 );
+        Tuna = new Food("tuna.png", 200, 220, 80, 80,
+                35, 1,2 ,3 ,6 );
+        Macaroni = new Food("macaroni.png", 350, 220, 80, 80,
+                35, 1,2 ,3 ,6 );
+        Noodles = new Food("mikropizza.png", 500, 220, 80, 80,
                 35, 1,2 ,3 ,6 );
         cartActor = new MyActor("ostoskori.png", 350, 20, 120, 120);
 
@@ -72,9 +89,12 @@ class ShopScreen implements Screen {
         backButton = new MyActor("koti.png", 0, 0, 80, 80);
 
         // Lisätään näytteljät.
-        foodStage.addActor(foodActorEggs);
-        foodStage.addActor(foodActorBeans);
-        foodStage.addActor(foodActorRice);
+        foodStage.addActor(Eggs);
+        foodStage.addActor(Beans);
+        foodStage.addActor(Rice);
+        foodStage.addActor(Tuna);
+        foodStage.addActor(Macaroni);
+        foodStage.addActor(Noodles);
         foodStage.addActor(cartActor);
         foodStage.addActor(backButton);
 
