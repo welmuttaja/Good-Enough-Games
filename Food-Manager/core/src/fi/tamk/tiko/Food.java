@@ -11,11 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 // Ruoan luonti luokka.
 public class Food extends Actor {
     private Texture texture;
-    private float price;
-    private float energy;
-    private float weight;
-    private float healthiness;
-    private float happiness;
 
     private float cartX = 350;
     private float cartY = 20;
@@ -39,6 +34,7 @@ public class Food extends Actor {
                     setX(x);
                     setY(y);
                     long id = sound.play(1.0f);
+                    cancel();
                 }
                 if(getX() < 0 || getY() < 0 || getX() > 800 || getY() > 600) {
                     setX(x);
