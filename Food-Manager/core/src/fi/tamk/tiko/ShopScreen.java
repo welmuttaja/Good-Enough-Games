@@ -20,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.ArrayList;
+
 import jdk.nashorn.internal.runtime.Source;
 
 //Kaupan pelinäkymä
@@ -53,6 +55,8 @@ class ShopScreen implements Screen {
 
     SpriteBatch batch;
     final Main game;
+    final Player player;
+    final ArrayList<Integer> foods;
 
     // Takaisinpäin nappula.
     MyActor backButton;
@@ -63,8 +67,10 @@ class ShopScreen implements Screen {
     OrthographicCamera camera;
 
     //Kauppanäkymän constructor
-    public ShopScreen(final Main game) {
+    public ShopScreen(final Main game, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
+        this.player = player;
+        this.foods = foods;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
@@ -115,7 +121,7 @@ class ShopScreen implements Screen {
         backButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa menu näkymään
-                game.setScreen(new ApartmentScreen(game));
+                game.setScreen(new ApartmentScreen(game, player, foods));
                 return false;
             }
         });
