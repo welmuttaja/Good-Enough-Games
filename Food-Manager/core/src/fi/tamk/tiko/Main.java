@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -55,13 +57,22 @@ class FoodActor extends Actor {
 
     private int type;
     private float energy;
-	private float weight;
-	private float healthiness;
-	private float happiness;
+    private float weight;
+    private float healthiness;
+    private float happiness;
+    private float price;
+
+    private float cartX = 315;
+    private float cartY = 49;
+
+    ArrayList<Integer> foods;
+
+    Sound sound = Gdx.audio.newSound(Gdx.files.internal("cha-ching.wav"));
 
     //Ruoka tavaroiden constructor
-    public FoodActor(int type, float x, float y, float w, float h){
+    public FoodActor(final int type, final float x, final float y, final float w, final float h){
         this.type = type;
+        foods = new ArrayList<Integer>();
         switch(type){
             case 0:
                 textureStr = "beans.png";
@@ -69,26 +80,188 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.2f;
                 happiness = 0.1f;
+                price = 0.1f;
                 break;
             case 1:
                 textureStr = "eggs.png";
-				energy = 0.25f;
-				weight = 0.15f;
-				healthiness = 0.25f;
-				happiness = 0.25f;
+                energy = 0.25f;
+                weight = 0.15f;
+                healthiness = 0.25f;
+                happiness = 0.25f;
+                price = 0.1f;
                 break;
             case 2:
                 textureStr = "rice.png";
-				energy = 0.1f;
-				weight = 0.2f;
-				healthiness = 0.1f;
-				happiness = 0.25f;
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 3:
+                textureStr = "tuna.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 4:
+                textureStr = "macaroni.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 5:
+                textureStr = "mikropizza.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 6:
+                textureStr = "meatballs.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 7:
+                textureStr = "salmonsoup.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 8:
+                textureStr = "porridge.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 9:
+                textureStr = "pastabolognese.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 10:
+                textureStr = "makaronilaatikko.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 11:
+                textureStr = "munakas.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 12:
+                textureStr = "noodlesoup.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 13:
+                textureStr = "noodles.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 14:
+                textureStr = "chocolatecereal.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 15:
+                textureStr = "jogurttimyslillä.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 16:
+                textureStr = "coffee.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 17:
+                textureStr = "ratatouille.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 18:
+                textureStr = "chips.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
+                break;
+            case 19:
+                textureStr = "kaalilaatikko.png";
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.1f;
+                happiness = 0.25f;
+                price = 0.1f;
                 break;
         }
         texture = new Texture(Gdx.files.internal(textureStr));
         setWidth(w);
         setHeight(h);
         setBounds(x, y, getWidth(), getHeight());
+
+        // Ruoan draggaus kauppanäkymässä.
+        addListener(new DragListener() {
+            public void drag(InputEvent event, float xx, float yy, int pointer) {
+                moveBy(xx - getWidth() / 2, yy - getHeight() / 2);
+                toFront();
+                System.out.println(getX());
+                System.out.println(getY());
+                if(getX() > cartX && getY() < cartY && getX() < cartX + 100) {
+                    setX(x);
+                    setY(y);
+                    long id = sound.play(1.0f);
+                    cancel();
+                    foods.add(type);
+                }
+                if(getX() < -50 || getY() < -50 || getX() > 750 || getY() > 550) {
+                    setX(x);
+                    setY(y);
+                    cancel();
+                }
+            }
+        });
+
     }
 
     public int getType() {
@@ -99,23 +272,23 @@ class FoodActor extends Actor {
         this.type = type;
     }
 
-	public float getEnergy(){
-    	return this.energy;
-	}
+    public float getEnergy(){
+        return this.energy;
+    }
 
-	public float getWeight(){
-		return this.weight;
-	}
+    public float getWeight(){
+        return this.weight;
+    }
 
-	public float getHealthiness(){
-		return this.healthiness;
-	}
+    public float getHealthiness(){
+        return this.healthiness;
+    }
 
-	public float getHappiness(){
-		return this.happiness;
-	}
+    public float getHappiness(){
+        return this.happiness;
+    }
 
-	@Override
+    @Override
     public void draw(Batch batch, float alpha){
         batch.draw(texture, getX(), getY(), getWidth(), getHeight());
     }
@@ -240,7 +413,7 @@ public class Main extends Game {
 
 		gt = new GameTime();
 
-        player = new Player(0.5f, 0.5f, 0.5f, 0.5f);
+        player = new Player(0.5f, 0.5f, 0.5f, 0.5f, 50f);
 		foods = new ArrayList<Integer>();
 
         foods.add(0);
