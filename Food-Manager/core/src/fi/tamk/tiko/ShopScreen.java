@@ -288,6 +288,9 @@ class ShopScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
+        //Jatkaa pelaajan statsien päivittämistä
+        player.updateStats();
+
         // Kaupan tausta
         Texture background;
         background = new Texture(Gdx.files.internal("hylly.png"));
