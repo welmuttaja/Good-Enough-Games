@@ -2,6 +2,7 @@ package fi.tamk.tiko;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 
 import jdk.nashorn.internal.runtime.Source;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 //Kaupan pelinäkymä
 class ShopScreen implements Screen {
     // Tausta
@@ -35,14 +38,38 @@ class ShopScreen implements Screen {
     private Actor Tuna;
     private Actor Macaroni;
     private Actor Noodles;
+    private Actor Mikropizza;
+    private Actor SalmonSoup;
+    private Actor PastaBolognese;
+    private Actor MakaroniLaatikko;
     private Actor Munakas;
+    private Actor NoodleSoup;
+    private Actor ChocolateCereal;
     private Actor Pasta;
     private Actor Yogurt;
     private Actor MeatBalls;
+    private Actor YogurtMysli;
     private Actor Lohi;
     private Actor Pizza;
     private Actor Porridge;
     private Actor Cereals;
+    private Actor Coffee;
+    private Actor Ratatouille;
+    private Actor Chips;
+    private Actor Kaalilaatikko;
+
+    // Random alennukset
+    private Actor Random1;
+    private Actor Random2;
+    private Actor Random3;
+    private Actor Random4;
+    private Actor Random5;
+    private Actor Random6;
+
+    Sound sound = Gdx.audio.newSound(Gdx.files.internal("cha-ching.wav"));
+
+    private float cartX = 350;
+    private float cartY = 20;
 
     // Ostoskori
     private Actor cartActor;
@@ -58,11 +85,29 @@ class ShopScreen implements Screen {
     final Player player;
     final ArrayList<Integer> foods;
 
+    // Ruokien sijainti.
+    private float x1 = 200;
+    private float x2 = 350;
+    private float x3 = 500;
+    private float y1 = 400;
+    private float y2 = 220;
+
+    // Ruokien koot:
+    private float w = 100;
+    private float h = 100;
+
+
     // Takaisinpäin nappula.
     MyActor backButton;
 
     // Kategoriat.
-    MyActor Screen2;
+    MyActor Pakasteet;
+    MyActor Kastikkeet;
+    MyActor Juomat;
+    MyActor HeVi;
+    MyActor Maitotuotteet;
+    MyActor LihaKala;
+    MyActor Herkut;
 
     OrthographicCamera camera;
 
@@ -80,18 +125,34 @@ class ShopScreen implements Screen {
         foodGroup = new Group();
 
         // Luodaan ruokia ja ostoskori.
-        Eggs = new Food("eggs.png", 200, 400, 100, 100,
-                45, 3, 2, 1, 3);
-        Beans = new Food("beans.png", 350, 400, 90, 90,
-                30, 2, 1 , 4 , 5);
-        Rice = new Food("rice.png", 500, 400, 80, 80,
-                35, 1,2 ,3 ,6 );
-        Tuna = new Food("tuna.png", 200, 220, 80, 80,
-                35, 1,2 ,3 ,6 );
-        Macaroni = new Food("macaroni.png", 350, 220, 80, 80,
-                35, 1,2 ,3 ,6 );
-        Noodles = new Food("mikropizza.png", 500, 220, 80, 80,
-                35, 1,2 ,3 ,6 );
+        Eggs = new FoodActor(0, x1, y1, w, h);
+        Beans = new FoodActor(1, x2, y1, w, h);
+        Rice = new FoodActor(2, x3, y1, w, h);
+        Tuna = new FoodActor(3, x1, y2, w, h);
+        Macaroni = new FoodActor(4, x2, y2, w, h);
+        Mikropizza = new FoodActor(5, x3, y2, w, h);
+        MeatBalls = new FoodActor(6, x1, y1, w, h);
+        SalmonSoup = new FoodActor(7, x2, y1, w, h);
+        Porridge = new FoodActor(8, x3, y1, w, h);
+        PastaBolognese = new FoodActor(9, x1, y2, w, h);
+        MakaroniLaatikko = new FoodActor(10, x2, y2, w, h);
+        Munakas = new FoodActor(11, x3, y2, w, h);
+        NoodleSoup = new FoodActor(12, x1, y2, w, h);
+        Noodles = new FoodActor(13, x2, y1, w, h);
+        ChocolateCereal = new FoodActor(14, x3, y1, w, h);
+        YogurtMysli = new FoodActor(15, x1, y2, w, h);
+        Coffee = new FoodActor(16, x2, y2, w, h);
+        Ratatouille = new FoodActor(17, x3, y2, w, h);
+        Chips = new FoodActor(18, x1, y1, w, h);
+        Kaalilaatikko = new FoodActor(19, x2, y1, w, h);
+
+        // Random etusivu
+        Random1 = new FoodActor(random(19), x1, y1, w, h);
+        Random2 = new FoodActor(random(19), x2, y1, w, h);
+        Random3 = new FoodActor(random(19), x3, y1, w, h);
+        Random4 = new FoodActor(random(19), x1, y2, w, h);
+        Random5 = new FoodActor(random(19), x2, y2, w, h);
+        Random6 = new FoodActor(random(19), x3, y2, w, h);
 
         cartActor = new MyActor("ostoskori.png", 350, 20, 120, 120);
 
@@ -99,21 +160,20 @@ class ShopScreen implements Screen {
         backButton = new MyActor("koti.png", 0, 0, 80, 80);
 
         // Kategoria nappulat.
-        //backButton = new MyActor("koti.png", 0, 400, 80, 80);
-        //backButton = new MyActor("koti.png", 0, 0, 80, 80);
-        //backButton = new MyActor("koti.png", 0, 0, 80, 80);
-        //backButton = new MyActor("koti.png", 0, 0, 80, 80);
-        //backButton = new MyActor("koti.png", 0, 0, 80, 80);
+        Pakasteet = new MyActor("Pakasteet.png", 0, 500, 160, 80);
+        Kastikkeet = new MyActor("Kastikkeet.png", 0, 400, 160, 80);
+        Juomat = new MyActor("Juomat.png", 0, 300, 160, 80);
+        HeVi = new MyActor("HeVi.png", 0, 200, 160, 80);
+        Maitotuotteet = new MyActor("Maitotuotteet.png", 0, 100, 160, 80);
 
-        // Lisätään näytteljät.
-        foodStage.addActor(Eggs);
-        foodStage.addActor(Beans);
-        foodStage.addActor(Rice);
-        foodStage.addActor(Tuna);
-        foodStage.addActor(Macaroni);
-        foodStage.addActor(Noodles);
-        foodStage.addActor(cartActor);
-        foodStage.addActor(backButton);
+        // Alkunäkymä, sisältää random alennukset.
+        addUi();
+        foodStage.addActor(Random1);
+        foodStage.addActor(Random2);
+        foodStage.addActor(Random3);
+        foodStage.addActor(Random4);
+        foodStage.addActor(Random5);
+        foodStage.addActor(Random6);
 
         //Lisää stageen inputprocessorin
         Gdx.input.setInputProcessor(foodStage);
@@ -125,8 +185,93 @@ class ShopScreen implements Screen {
                 return false;
             }
         });
+
+        // Pakasteet
+        Pakasteet.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                foodStage.clear();
+                addUi();
+                foodStage.addActor(Eggs);
+                foodStage.addActor(Beans);
+                foodStage.addActor(Rice);
+                foodStage.addActor(Tuna);
+                foodStage.addActor(Macaroni);
+                foodStage.addActor(Noodles);
+                return false;
+            }
+        });
+
+        // Hedelmät ja Vihannekset
+        HeVi.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                foodStage.clear();
+                addUi();
+                foodStage.addActor(Chips);
+                foodStage.addActor(Kaalilaatikko);
+                foodStage.addActor(Porridge);
+                foodStage.addActor(NoodleSoup);
+                foodStage.addActor(Coffee);
+                foodStage.addActor(Ratatouille);
+                return false;
+            }
+        });
+
+        // Hedelmät ja Vihannekset
+        Juomat.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                foodStage.clear();
+                addUi();
+                foodStage.addActor(Chips);
+                foodStage.addActor(Kaalilaatikko);
+                foodStage.addActor(Porridge);
+                foodStage.addActor(NoodleSoup);
+                foodStage.addActor(Coffee);
+                foodStage.addActor(Ratatouille);
+                return false;
+            }
+        });
+
+        // Hedelmät ja Vihannekset
+        Kastikkeet.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                foodStage.clear();
+                addUi();
+                foodStage.addActor(Chips);
+                foodStage.addActor(Kaalilaatikko);
+                foodStage.addActor(Porridge);
+                foodStage.addActor(NoodleSoup);
+                foodStage.addActor(Coffee);
+                foodStage.addActor(Ratatouille);
+                return false;
+            }
+        });
+
+        // Hedelmät ja Vihannekset
+        Maitotuotteet.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                foodStage.clear();
+                addUi();
+                foodStage.addActor(Chips);
+                foodStage.addActor(Kaalilaatikko);
+                foodStage.addActor(Porridge);
+                foodStage.addActor(NoodleSoup);
+                foodStage.addActor(Coffee);
+                foodStage.addActor(Ratatouille);
+                return false;
+            }
+        });
     }
 
+    // Kauppanäkymän vakio elementit.
+    private void addUi() {
+        foodStage.addActor(cartActor);
+        foodStage.addActor(backButton);
+        foodStage.addActor(Pakasteet);
+        foodStage.addActor(Kastikkeet);
+        foodStage.addActor(Juomat);
+        foodStage.addActor(HeVi);
+        foodStage.addActor(Maitotuotteet);
+    }
 
 
     @Override
