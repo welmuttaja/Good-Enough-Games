@@ -5,12 +5,14 @@ class Player {
     private float weight;
     private float healthiness;
     private float happiness;
+    private float money;
 
-    public Player(float en, float we, float he, float ha){
-        energy = en;
-        weight = we;
-        healthiness = he;
-        happiness = ha;
+    public Player(float en, float we, float he, float ha, float m){
+        this.energy = en;
+        this.weight = we;
+        this.healthiness = he;
+        this.happiness = ha;
+        this.money = m;
     }
 
     public void updateStats(){
@@ -73,5 +75,13 @@ class Player {
         if(this.happiness > 1) {
             this.happiness = 1;
         }
+    }
+
+    public float getMoney() {
+        return money;
+    }
+
+    public void setMoney(float money) {
+        this.money = money;
     }
 }
