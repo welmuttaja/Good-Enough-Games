@@ -160,7 +160,6 @@ class GameTime {
         if( this.days == 7 ){
             this.days = 0;
             this.weeks += 1;
-            weeklyUpdate();
         }
         if( this.weeks == 4 ){
             this.weeks = 0;
@@ -171,14 +170,6 @@ class GameTime {
             this.years += 1;
         }
 	}
-
-    public boolean weeklyUpdate(){
-        if(this.weeks % 2 == 0) {
-            return true;
-        } else{
-            return false;
-        }
-    }
 
 	public double getTime(){
         return this.time;
@@ -249,7 +240,7 @@ public class Main extends Game {
 
 		gt = new GameTime();
 
-        player = new Player(0.5f, 0.5f, 0.5f, 0.5f, 50f);
+        player = new Player(0.5f, 0.5f, 0.5f, 0.5f);
 		foods = new ArrayList<Integer>();
 
         foods.add(0);
@@ -272,12 +263,6 @@ public class Main extends Game {
 		super.render();
 		//päivittää peliaikaa
 		gt.updateTime(Gdx.graphics.getDeltaTime());
-
-		float money = 50f + Math.round((float)Math.random() * 5);
-
-        if(gt.weeklyUpdate()){
-		    player.setMoney(player.getMoney() + money);
-        }
 	}
 
 	@Override
