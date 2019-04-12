@@ -3,6 +3,7 @@ package fi.tamk.tiko;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -33,6 +34,11 @@ class ApartmentScreen implements Screen {
     MyActor charHealthiness;
     MyActor charHappiness;
 
+    MyActor energyIcon;
+    MyActor weightIcon;
+    MyActor healthinessIcon;
+    MyActor happinessIcon;
+
     boolean foodSelected = false;
     float selectedFoodX = 0;
     float selectedFoodY = 0;
@@ -43,6 +49,8 @@ class ApartmentScreen implements Screen {
     ArrayList<FoodActor> foodActors=new ArrayList<FoodActor>();
 
     Boolean fridgeOpen = false;
+
+    Sound sound = Gdx.audio.newSound(Gdx.files.internal("eating.mp3"));
 
     //Asuntonäkymän constructor
     public ApartmentScreen(final Main game, final Player player, final ArrayList<Integer> foods) {
@@ -59,7 +67,7 @@ class ApartmentScreen implements Screen {
         apartmentStage = new Stage(new FitViewport(800, 600), game.batch);
         //Painikkeiden määrittely
         shopButton = new MyActor("kauppa.png", 0, 0, 80, 80);
-        fridgeActor = new MyActor("test-transparent.png", 225, 45, 100, 260);
+        fridgeActor = new MyActor("test-transparent.png", 100, 45, 100, 260);
         //Jääkaapin valikon tausta
         fridgeMenuBg = new MyActor("menubg.png", 200, 100, 400, 400);
         fridgeMenuBg.setVisible(fridgeOpen);
@@ -72,6 +80,11 @@ class ApartmentScreen implements Screen {
         charWeight = new MyActor("red.png", 500, 530, 280 * player.getWeight(), 20);
         charHealthiness = new MyActor("green.png", 500, 500, 280 * player.getHealthiness(), 20);
         charHappiness = new MyActor("yellow.png", 500, 470, 280 * player.getHappiness(), 20);
+
+        energyIcon = new MyActor("energia.png", 455, 555, 30, 30);
+        weightIcon = new MyActor("paino.png", 455, 525, 30, 30);
+        healthinessIcon = new MyActor("terveys.png", 455, 495, 30, 30);
+        happinessIcon = new MyActor("onnellisuus.png", 455, 460, 30, 30);
 
         //Lisää ruoat jääkaappiin
         float leftMargin = 10;
@@ -100,6 +113,11 @@ class ApartmentScreen implements Screen {
         apartmentStage.addActor(charWeight);
         apartmentStage.addActor(charHealthiness);
         apartmentStage.addActor(charHappiness);
+
+        apartmentStage.addActor(happinessIcon);
+        apartmentStage.addActor(weightIcon);
+        apartmentStage.addActor(healthinessIcon);
+        apartmentStage.addActor(energyIcon);
 
         apartmentStage.addActor(fridgeActor);
         apartmentStage.addActor(fridgeMenuBg);
@@ -248,6 +266,8 @@ class ApartmentScreen implements Screen {
                                 close.remove();
 
                                 foodSelected = false;
+
+                                long id = sound.play(1.0f);
 
                                 return false;
                             }

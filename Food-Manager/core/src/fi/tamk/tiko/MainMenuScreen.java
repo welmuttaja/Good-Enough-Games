@@ -39,7 +39,7 @@ class MainMenuScreen implements Screen {
         menuStage = new Stage(new FitViewport(800, 600), game.batch);
         //Painikkeiden määrittely
         playButton = new MyActor("startgame.png", 300, 400, 200, 50);
-        HTPButton = new MyActor("howtoplaybutton.png", 300, 300, 200, 50);
+        HTPButton = new MyActor("Peliohjeet.png", 300, 300, 200, 50);
         //Lisää painikkeet stageen
         menuStage.addActor(playButton);
         menuStage.addActor(HTPButton);

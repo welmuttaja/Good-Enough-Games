@@ -68,13 +68,10 @@ class ShopScreen implements Screen {
 
     Sound sound = Gdx.audio.newSound(Gdx.files.internal("cha-ching.wav"));
 
-    private float cartX = 350;
-    private float cartY = 20;
-
     // Ostoskori
     private Actor cartActor;
     // Ruokaryhmä
-    private Group foodGroup;
+    ArrayList<FoodActor> foodActors=new ArrayList<FoodActor>();
 
     // Väliaikainen testi koko.
     private float width = 8f;
@@ -111,18 +108,19 @@ class ShopScreen implements Screen {
 
     OrthographicCamera camera;
 
+    boolean foodSelected = false;
+
     //Kauppanäkymän constructor
     public ShopScreen(final Main game, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
         this.player = player;
-        this.foods = foods;
+        this.foods = FoodActor.getFoods();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
 
         // Luodaan näyttämö ja näyttelijät sekä tausta.
         foodStage = new Stage(new FitViewport(800, 600), game.batch);
-        foodGroup = new Group();
 
         // Luodaan ruokia ja ostoskori.
         Eggs = new FoodActor(0, x1, y1, w, h);
@@ -138,13 +136,14 @@ class ShopScreen implements Screen {
         MakaroniLaatikko = new FoodActor(10, x2, y2, w, h);
         Munakas = new FoodActor(11, x3, y2, w, h);
         NoodleSoup = new FoodActor(12, x1, y2, w, h);
-        Noodles = new FoodActor(13, x2, y1, w, h);
+        Noodles = new FoodActor(13, x3, y2, w, h);
         ChocolateCereal = new FoodActor(14, x3, y1, w, h);
         YogurtMysli = new FoodActor(15, x1, y2, w, h);
         Coffee = new FoodActor(16, x2, y2, w, h);
         Ratatouille = new FoodActor(17, x3, y2, w, h);
         Chips = new FoodActor(18, x1, y1, w, h);
         Kaalilaatikko = new FoodActor(19, x2, y1, w, h);
+
 
         // Random etusivu
         Random1 = new FoodActor(random(19), x1, y1, w, h);
@@ -272,6 +271,7 @@ class ShopScreen implements Screen {
         foodStage.addActor(HeVi);
         foodStage.addActor(Maitotuotteet);
     }
+
 
 
     @Override

@@ -52,6 +52,7 @@ class MyActor extends Actor {
 
 class FoodActor extends Actor {
 
+    private static ArrayList<Integer> foods;
     private Texture texture;
     private String textureStr;
 
@@ -60,12 +61,10 @@ class FoodActor extends Actor {
     private float weight;
     private float healthiness;
     private float happiness;
-    private float price;
+    private float money;
 
     private float cartX = 315;
     private float cartY = 49;
-
-    ArrayList<Integer> foods;
 
     Sound sound = Gdx.audio.newSound(Gdx.files.internal("cha-ching.wav"));
 
@@ -80,7 +79,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.2f;
                 happiness = 0.1f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 1:
                 textureStr = "eggs.png";
@@ -88,7 +87,7 @@ class FoodActor extends Actor {
                 weight = 0.15f;
                 healthiness = 0.25f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 2:
                 textureStr = "rice.png";
@@ -96,7 +95,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 3:
                 textureStr = "tuna.png";
@@ -104,7 +103,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 4:
                 textureStr = "macaroni.png";
@@ -112,7 +111,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 5:
                 textureStr = "mikropizza.png";
@@ -120,7 +119,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 6:
                 textureStr = "meatballs.png";
@@ -128,7 +127,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 7:
                 textureStr = "salmonsoup.png";
@@ -136,7 +135,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 8:
                 textureStr = "porridge.png";
@@ -144,7 +143,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 9:
                 textureStr = "pastabolognese.png";
@@ -152,7 +151,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 10:
                 textureStr = "makaronilaatikko.png";
@@ -160,7 +159,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 11:
                 textureStr = "munakas.png";
@@ -168,7 +167,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 12:
                 textureStr = "noodlesoup.png";
@@ -176,7 +175,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 13:
                 textureStr = "noodles.png";
@@ -184,7 +183,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 14:
                 textureStr = "chocolatecereal.png";
@@ -192,7 +191,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 15:
                 textureStr = "jogurttimyslillä.png";
@@ -200,7 +199,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 16:
                 textureStr = "coffee.png";
@@ -208,7 +207,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 17:
                 textureStr = "ratatouille.png";
@@ -216,7 +215,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 18:
                 textureStr = "chips.png";
@@ -224,7 +223,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
             case 19:
                 textureStr = "kaalilaatikko.png";
@@ -232,7 +231,7 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                money = 0.1f;
                 break;
         }
         texture = new Texture(Gdx.files.internal(textureStr));
@@ -262,6 +261,16 @@ class FoodActor extends Actor {
             }
         });
 
+
+
+    }
+
+    public void setFoods(ArrayList<Integer> foods) {
+        this.foods = foods;
+    }
+
+    public static ArrayList<Integer> getFoods() {
+        return foods;
     }
 
     public int getType() {
