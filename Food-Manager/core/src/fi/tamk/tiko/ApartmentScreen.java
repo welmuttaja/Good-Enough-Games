@@ -14,8 +14,12 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
 
+import static java.lang.String.valueOf;
+
 class ApartmentScreen implements Screen {
     final Main game;
+    final int SCREEN_WIDTH = 800;
+    final int SCREEN_HEIGHT = 600;
 
     OrthographicCamera camera;
 
@@ -43,6 +47,7 @@ class ApartmentScreen implements Screen {
     float selectedFoodX = 0;
     float selectedFoodY = 0;
 
+    final GameTime gt;
     final Player player;
     final ArrayList<Integer> foods;
 
@@ -53,23 +58,24 @@ class ApartmentScreen implements Screen {
     Sound sound = Gdx.audio.newSound(Gdx.files.internal("eating.mp3"));
 
     //Asuntonäkymän constructor
-    public ApartmentScreen(final Main game, final Player player, final ArrayList<Integer> foods) {
+    public ApartmentScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
+        this.gt = gt;
         this.player = player;
         this.foods = foods;
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 600);
+        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         apartmentbg = new Texture("apartmentbg.png");
 
         //Stagen määrittely
-        apartmentStage = new Stage(new FitViewport(800, 600), game.batch);
+        apartmentStage = new Stage(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT), game.batch);
         //Painikkeiden määrittely
         shopButton = new MyActor("kauppa.png", 10, 0, 110, 110);
         fridgeActor = new MyActor("test-transparent.png", 0, 50, 200, 540);
         //Jääkaapin valikon tausta
-        fridgeMenuBg = new MyActor("fridgebg2.png", 0, 0, 800, 600);
+        fridgeMenuBg = new MyActor("fridgebg2.png", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         fridgeMenuBg.setVisible(fridgeOpen);
         //Jääkaapin sulje painike
         exitButton = new MyActor("exit.png", 550, 10, 210, 70);
@@ -211,7 +217,7 @@ class ApartmentScreen implements Screen {
                 }
 
                 //Siirtyy kauppa näkymään
-                game.setScreen(new ShopScreen(game, player, foods));
+                game.setScreen(new ShopScreen(game, gt, player, foods));
 
                 return false;
             }
@@ -310,6 +316,9 @@ class ApartmentScreen implements Screen {
     @Override
     public void render(float delta) {
 
+        //päivittää peliaikaa
+        gt.updateTime(Gdx.graphics.getDeltaTime());
+
         //päivittää pelaajan statsit ja statsi mittarit
         player.updateStats();
         charEnergy.setWidth(player.getEnergy() * 280);
@@ -324,9 +333,84 @@ class ApartmentScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
+        String timeString = "";
+
+        if(gt.getHours() <= 9){
+            timeString += "0";
+        }
+
+        timeString += gt.getHours() + ":";
+
+        if(Math.round(gt.getMinutes()) < 10){
+            timeString += "0";
+        }
+
+        timeString += Math.round(gt.getMinutes());
+
+        String dateString = String.valueOf(gt.getDays());
+
+        switch(gt.getDays()){
+            case 1:
+                dateString += "st";
+                break;
+            case 2:
+                dateString += "nd";
+                break;
+            case 3:
+                dateString += "rd";
+                break;
+            default:
+                dateString += "th";
+                break;
+        }
+
+        dateString += " of ";
+
+        switch(gt.getMonths()){
+            case 1:
+                dateString += "January";
+                break;
+            case 2:
+                dateString += "February";
+                break;
+            case 3:
+                dateString += "March";
+                break;
+            case 4:
+                dateString += "April";
+                break;
+            case 5:
+                dateString += "May";
+                break;
+            case 6:
+                dateString += "June";
+                break;
+            case 7:
+                dateString += "July";
+                break;
+            case 8:
+                dateString += "August";
+                break;
+            case 9:
+                dateString += "September";
+                break;
+            case 10:
+                dateString += "October";
+                break;
+            case 11:
+                dateString += "November";
+                break;
+            case 12:
+                dateString += "December";
+                break;
+        }
+
         game.batch.begin();
         //Piirtää taustan
-        game.batch.draw(apartmentbg, 0, 0, 800, 600);
+        game.batch.draw(apartmentbg, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        game.font.draw(game.batch, "Time: " + timeString + "    " + dateString, 10, 580);
+        game.font.draw(game.batch, "Money: " + player.getMoney(), 10, 550);
+
         game.batch.end();
 
         //tekee actorien toiminnot

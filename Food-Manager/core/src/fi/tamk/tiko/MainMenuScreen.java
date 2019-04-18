@@ -16,6 +16,7 @@ class MainMenuScreen implements Screen {
 
     final Main game;
 
+    final GameTime gt;
     final Player player;
     final ArrayList<Integer> foods;
 
@@ -30,8 +31,9 @@ class MainMenuScreen implements Screen {
     MyActor HTPButton;
 
     //Päävalikon constructor, täällä määritellään uudet elementit
-    public MainMenuScreen(final Main game, final Player player, final ArrayList<Integer> foods) {
+    public MainMenuScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
+        this.gt = gt;
         this.player = player;
         this.foods = foods;
 
@@ -55,7 +57,7 @@ class MainMenuScreen implements Screen {
         playButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa asunto näkymään
-                game.setScreen(new ApartmentScreen(game, player, foods));
+                game.setScreen(new ApartmentScreen(game, gt, player, foods));
                 return false;
             }
         });

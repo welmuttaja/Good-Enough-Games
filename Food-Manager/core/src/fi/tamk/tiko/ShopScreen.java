@@ -79,6 +79,7 @@ class ShopScreen implements Screen {
 
     SpriteBatch batch;
     final Main game;
+    final GameTime gt;
     final Player player;
     final ArrayList<Integer> foods;
 
@@ -111,8 +112,9 @@ class ShopScreen implements Screen {
     boolean foodSelected = false;
 
     //Kauppanäkymän constructor
-    public ShopScreen(final Main game, final Player player, final ArrayList<Integer> foods) {
+    public ShopScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
+        this.gt = gt;
         this.player = player;
         this.foods = FoodActor.getFoods();
 
@@ -180,7 +182,7 @@ class ShopScreen implements Screen {
         backButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa menu näkymään
-                game.setScreen(new ApartmentScreen(game, player, foods));
+                game.setScreen(new ApartmentScreen(game, gt, player, foods));
                 return false;
             }
         });
@@ -281,6 +283,10 @@ class ShopScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+        //päivittää peliaikaa
+        gt.updateTime(Gdx.graphics.getDeltaTime());
+
         //Asettaa taustan värin
         Gdx.gl.glClearColor(1.7f, 1.5f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

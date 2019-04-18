@@ -8,6 +8,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -324,14 +326,18 @@ class GameTime {
     private int years;
 
 	GameTime(){
-
+	    this.minutes = 1;
+	    this.hours = 12;
+        this.days = 1;
+        this.months = 1;
+        this.years = 1;
 	}
 
 	public void updateTime(double dt){
 		this.time = dt * 8;
         this.minutes += dt * 8;
 
-        if( this.minutes == 60 ){
+        if( Math.round(this.minutes) == 60 ){
             this.minutes = 0;
             this.hours += 1;
         }
@@ -409,6 +415,7 @@ class GameTime {
 public class Main extends Game {
 	SpriteBatch batch;
 	BitmapFont font;
+    FreeTypeFontGenerator generator;
 
 	GameTime gt;
 
@@ -418,7 +425,14 @@ public class Main extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		font = new BitmapFont();
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Black.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 24;
+        parameter.color = Color.BLACK;
+        parameter.borderWidth = 1;
+        parameter.borderColor = Color.WHITE;
+        font = generator.generateFont(parameter);
 
 		gt = new GameTime();
 
@@ -453,19 +467,18 @@ public class Main extends Game {
         foods.add(1);
 
 		//Asettaa päävalikon näkymäksi pelin auetessa.
-		this.setScreen(new MainMenuScreen(this, player, foods));
+		this.setScreen(new MainMenuScreen(this, gt, player, foods));
 	}
 
 	@Override
 	public void render () {
 		super.render();
-		//päivittää peliaikaa
-		gt.updateTime(Gdx.graphics.getDeltaTime());
 	}
 
 	@Override
 	public void dispose () {
 		batch.dispose();
 		font.dispose();
+        generator.dispose();
 	}
 }
