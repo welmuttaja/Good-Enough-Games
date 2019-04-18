@@ -67,12 +67,12 @@ class ApartmentScreen implements Screen {
         apartmentStage = new Stage(new FitViewport(800, 600), game.batch);
         //Painikkeiden määrittely
         shopButton = new MyActor("kauppa.png", 0, 0, 80, 80);
-        fridgeActor = new MyActor("test-transparent.png", 100, 45, 100, 260);
+        fridgeActor = new MyActor("test-transparent.png", 0, 50, 200, 540);
         //Jääkaapin valikon tausta
-        fridgeMenuBg = new MyActor("menubg.png", 200, 100, 400, 400);
+        fridgeMenuBg = new MyActor("fridgebg2.png", 0, 0, 800, 600);
         fridgeMenuBg.setVisible(fridgeOpen);
         //Jääkaapin sulje painike
-        exitButton = new MyActor("exit.png", fridgeMenuBg.getX() + 230, fridgeMenuBg.getY() + 10, 150, 50);
+        exitButton = new MyActor("exit.png", 550, 10, 210, 70);
         exitButton.setVisible(fridgeOpen);
 
         statBg = new MyActor("menubg.png", 490, 460, 300, 130);
@@ -98,7 +98,7 @@ class ApartmentScreen implements Screen {
             foodActors.get(i).setName("food" + foods.get(i));
             foodActors.get(i).setVisible(fridgeOpen);
 
-            if(leftMargin == 310){
+            if(leftMargin == 500){
                 leftMargin = 10;
                 topMargin += 60;
             } else{
