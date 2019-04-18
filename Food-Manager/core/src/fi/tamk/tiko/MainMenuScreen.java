@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,6 +21,8 @@ class MainMenuScreen implements Screen {
 
     OrthographicCamera camera;
 
+    Texture tausta;
+
     //päävalikon stage ja napit
     Stage menuStage;
     MyActor playButton;
@@ -34,6 +37,8 @@ class MainMenuScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
+
+        tausta = new Texture("taustaFHD.png");
 
         //Stagen määrittely
         menuStage = new Stage(new FitViewport(800, 600), game.batch);
@@ -70,14 +75,14 @@ class MainMenuScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
+        game.batch.begin();
+        game.batch.draw(tausta, 0, 0, 800, 600);
+        game.batch.end();
+
         //tekee actorien toiminnot
         menuStage.act(Gdx.graphics.getDeltaTime());
         //piirtää stagen actorit
         menuStage.draw();
-
-        game.batch.begin();
-
-        game.batch.end();
     }
 
     @Override

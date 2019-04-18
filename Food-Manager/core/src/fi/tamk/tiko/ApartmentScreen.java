@@ -66,7 +66,7 @@ class ApartmentScreen implements Screen {
         //Stagen määrittely
         apartmentStage = new Stage(new FitViewport(800, 600), game.batch);
         //Painikkeiden määrittely
-        shopButton = new MyActor("kauppa.png", 0, 0, 80, 80);
+        shopButton = new MyActor("kauppa.png", 10, 0, 110, 110);
         fridgeActor = new MyActor("test-transparent.png", 0, 50, 200, 540);
         //Jääkaapin valikon tausta
         fridgeMenuBg = new MyActor("fridgebg2.png", 0, 0, 800, 600);
@@ -75,34 +75,34 @@ class ApartmentScreen implements Screen {
         exitButton = new MyActor("exit.png", 550, 10, 210, 70);
         exitButton.setVisible(fridgeOpen);
 
-        statBg = new MyActor("menubg.png", 490, 460, 300, 130);
+        statBg = new MyActor("menubg.png", 450, 460, 340, 130);
         charEnergy = new MyActor("blue.png", 500, 560, 280 * player.getEnergy(), 20);
         charWeight = new MyActor("red.png", 500, 530, 280 * player.getWeight(), 20);
         charHealthiness = new MyActor("green.png", 500, 500, 280 * player.getHealthiness(), 20);
         charHappiness = new MyActor("yellow.png", 500, 470, 280 * player.getHappiness(), 20);
 
-        energyIcon = new MyActor("energia.png", 455, 555, 30, 30);
-        weightIcon = new MyActor("paino.png", 455, 525, 30, 30);
-        healthinessIcon = new MyActor("terveys.png", 455, 495, 30, 30);
-        happinessIcon = new MyActor("onnellisuus.png", 455, 460, 30, 30);
+        energyIcon = new MyActor("energia.png", 460, 555, 25, 25);
+        weightIcon = new MyActor("paino.png", 460, 527, 25, 25);
+        healthinessIcon = new MyActor("terveys.png", 460, 498, 25, 25);
+        happinessIcon = new MyActor("onnellisuus.png", 460, 465, 25, 25);
 
         //Lisää ruoat jääkaappiin
-        float leftMargin = 10;
-        float topMargin = 10;
+        float leftMargin = 50;
+        float topMargin = 130;
 
         for( int i = 0; i < foods.size(); i++ ){
             float x = fridgeMenuBg.getX() + leftMargin;
-            float y = fridgeMenuBg.getTop() - 50 - topMargin;
+            float y = fridgeMenuBg.getTop() - topMargin;
 
-            foodActors.add(new FoodActor(foods.get(i), x, y, 50, 50));
+            foodActors.add(new FoodActor(foods.get(i), x, y, 80, 80));
             foodActors.get(i).setName("food" + foods.get(i));
             foodActors.get(i).setVisible(fridgeOpen);
 
-            if(leftMargin == 500){
-                leftMargin = 10;
-                topMargin += 60;
+            if(leftMargin > 600){
+                leftMargin = 50;
+                topMargin += 210;
             } else{
-                leftMargin += 60;
+                leftMargin += 70;
             }
 
         }
@@ -121,13 +121,14 @@ class ApartmentScreen implements Screen {
 
         apartmentStage.addActor(fridgeActor);
         apartmentStage.addActor(fridgeMenuBg);
-        apartmentStage.addActor(exitButton);
-        apartmentStage.addActor(shopButton);
 
         //Lisää ruokatavarat stageen
         for( int i = 0; i < foodActors.size(); i++){
             apartmentStage.addActor(foodActors.get(i));
         }
+
+        apartmentStage.addActor(shopButton);
+        apartmentStage.addActor(exitButton);
 
         //Lisää stageen inputprocessorin
         Gdx.input.setInputProcessor(apartmentStage);
@@ -228,8 +229,17 @@ class ApartmentScreen implements Screen {
 
                         foodSelected = true;
 
-                        float thisX = foodActors.get(fIndex).getX() + 50;
-                        float thisY = foodActors.get(fIndex).getY() - 100;
+                        float thisX = 490;
+                        float thisY = 50;
+
+                        if(foodActors.get(fIndex).getX() < 490) {
+
+                            thisX = foodActors.get(fIndex).getX() + 50;
+                        }
+                        if(foodActors.get(fIndex).getY() > 50) {
+
+                            thisY = foodActors.get(fIndex).getY() - 100;
+                        }
 
                         final MyActor eat = new MyActor("eatbutton.png", thisX + 10, thisY + 10, 90, 30);
                         final MyActor close = new MyActor("exitbutton.png", thisX + 110, thisY + 10, 90, 30);

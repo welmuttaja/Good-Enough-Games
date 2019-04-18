@@ -435,6 +435,22 @@ public class Main extends Game {
         foods.add(1);
         foods.add(2);
         foods.add(0);
+        foods.add(1);
+        foods.add(2);
+        foods.add(0);
+        foods.add(1);
+        foods.add(2);
+        foods.add(0);
+        foods.add(1);
+        foods.add(2);
+        foods.add(0);
+        foods.add(1);
+        foods.add(2);
+        foods.add(0);
+        foods.add(1);
+        foods.add(2);
+        foods.add(0);
+        foods.add(1);
 
 		//Asettaa päävalikon näkymäksi pelin auetessa.
 		this.setScreen(new MainMenuScreen(this, player, foods));
