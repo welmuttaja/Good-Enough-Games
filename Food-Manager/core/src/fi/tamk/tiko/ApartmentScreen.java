@@ -23,6 +23,8 @@ class ApartmentScreen implements Screen {
 
     OrthographicCamera camera;
 
+    Boolean gameOver;
+
     Texture apartmentbg;
 
     Stage apartmentStage;
@@ -316,11 +318,17 @@ class ApartmentScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        //päivittää peliaikaa
-        gt.updateTime(Gdx.graphics.getDeltaTime());
+        if(player.getEnergy() > 0 && player.getWeight() > 0 && player.getHealthiness() > 0 && player.getHappiness() > 0){
 
-        //päivittää pelaajan statsit ja statsi mittarit
-        player.updateStats();
+            //päivittää peliaikaa
+            gt.updateTime(Gdx.graphics.getDeltaTime());
+
+            //päivittää pelaajan statsit ja statsi mittarit
+            player.updateStats();
+        } else{
+            game.setScreen(new GameOverScreen(game, Math.round(gt.getTime())));
+        }
+
         charEnergy.setWidth(player.getEnergy() * 280);
         charWeight.setWidth(player.getWeight() * 280);
         charHealthiness.setWidth(player.getHealthiness() * 280);

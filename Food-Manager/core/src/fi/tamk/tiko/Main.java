@@ -334,7 +334,7 @@ class GameTime {
 	}
 
 	public void updateTime(double dt){
-		this.time = dt * 8;
+		this.time += dt * 8;
         this.minutes += dt * 8;
 
         if( Math.round(this.minutes) == 60 ){
@@ -415,6 +415,7 @@ class GameTime {
 public class Main extends Game {
 	SpriteBatch batch;
 	BitmapFont font;
+    BitmapFont font_white;
     FreeTypeFontGenerator generator;
 
 	GameTime gt;
@@ -433,6 +434,9 @@ public class Main extends Game {
         parameter.borderWidth = 1;
         parameter.borderColor = Color.WHITE;
         font = generator.generateFont(parameter);
+
+        parameter.color = Color.WHITE;
+        font_white = generator.generateFont(parameter);
 
 		gt = new GameTime();
 
@@ -479,6 +483,7 @@ public class Main extends Game {
 	public void dispose () {
 		batch.dispose();
 		font.dispose();
+        font_white.dispose();
         generator.dispose();
 	}
 }
