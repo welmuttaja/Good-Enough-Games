@@ -29,6 +29,8 @@ class MainMenuScreen implements Screen {
     MyActor playButton;
     MyActor settingButton;
     MyActor HTPButton;
+    MyActor ENGButton;
+    MyActor FINButton;
 
     //Päävalikon constructor, täällä määritellään uudet elementit
     public MainMenuScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
@@ -47,9 +49,13 @@ class MainMenuScreen implements Screen {
         //Painikkeiden määrittely
         playButton = new MyActor("startgame.png", 300, 400, 200, 50);
         HTPButton = new MyActor("Peliohjeet.png", 300, 300, 200, 50);
+        FINButton = new MyActor("fin.png", 670, 540, 100, 50);
+        ENGButton = new MyActor("eng.png", 550, 540, 100, 50);
         //Lisää painikkeet stageen
         menuStage.addActor(playButton);
         menuStage.addActor(HTPButton);
+        menuStage.addActor(FINButton);
+        menuStage.addActor(ENGButton);
 
         //Lisää stageen inputprocessorin
         Gdx.input.setInputProcessor(menuStage);

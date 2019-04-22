@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -105,6 +106,7 @@ class ApartmentScreen implements Screen {
             foodActors.add(new FoodActor(foods.get(i), x, y, 80, 80));
             foodActors.get(i).setName("food" + foods.get(i));
             foodActors.get(i).setVisible(fridgeOpen);
+            foodActors.get(i).clearListeners();
 
             if(leftMargin > 600){
                 leftMargin = 50;

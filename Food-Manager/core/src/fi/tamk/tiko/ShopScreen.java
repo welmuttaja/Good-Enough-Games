@@ -106,17 +106,20 @@ class ShopScreen implements Screen {
     MyActor Maitotuotteet;
     MyActor LihaKala;
     MyActor Herkut;
+    MyActor Alennukset;
 
     OrthographicCamera camera;
 
     boolean foodSelected = false;
+
+    int j = 0;
 
     //Kauppanäkymän constructor
     public ShopScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
         this.gt = gt;
         this.player = player;
-        this.foods = FoodActor.getFoods();
+        this.foods = foods;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
@@ -146,6 +149,25 @@ class ShopScreen implements Screen {
         Chips = new FoodActor(18, x1, y1, w, h);
         Kaalilaatikko = new FoodActor(19, x2, y1, w, h);
 
+        foodActors.add((FoodActor) Eggs);
+        foodActors.add((FoodActor) Rice);
+        foodActors.add((FoodActor) Tuna);
+        foodActors.add((FoodActor) Macaroni);
+        foodActors.add((FoodActor) Mikropizza);
+        foodActors.add((FoodActor) MeatBalls);
+        foodActors.add((FoodActor) SalmonSoup);
+        foodActors.add((FoodActor) Porridge);
+        foodActors.add((FoodActor) PastaBolognese);
+        foodActors.add((FoodActor) MakaroniLaatikko);
+        foodActors.add((FoodActor) Munakas);
+        foodActors.add((FoodActor) NoodleSoup);
+        foodActors.add((FoodActor) Noodles);
+        foodActors.add((FoodActor) ChocolateCereal);
+        foodActors.add((FoodActor) YogurtMysli);
+        foodActors.add((FoodActor) Coffee);
+        foodActors.add((FoodActor) Ratatouille);
+        foodActors.add((FoodActor) Chips);
+        foodActors.add((FoodActor) Kaalilaatikko);
 
         // Random etusivu
         Random1 = new FoodActor(random(19), x1, y1, w, h);
@@ -155,20 +177,29 @@ class ShopScreen implements Screen {
         Random5 = new FoodActor(random(19), x2, y2, w, h);
         Random6 = new FoodActor(random(19), x3, y2, w, h);
 
+        foodActors.add((FoodActor) Random1);
+        foodActors.add((FoodActor) Random2);
+        foodActors.add((FoodActor) Random3);
+        foodActors.add((FoodActor) Random4);
+        foodActors.add((FoodActor) Random5);
+        foodActors.add((FoodActor) Random6);
+
         cartActor = new MyActor("ostoskori.png", 350, 20, 120, 120);
 
         // Takaisin päin nappula.
         backButton = new MyActor("koti.png", 0, 0, 80, 80);
 
         // Kategoria nappulat.
-        Pakasteet = new MyActor("Pakasteet.png", 0, 500, 160, 80);
+        Pakasteet = new MyActor("Pakasteet.png", 635, 400, 160, 80);
         Kastikkeet = new MyActor("Kastikkeet.png", 0, 400, 160, 80);
-        Juomat = new MyActor("Juomat.png", 0, 300, 160, 80);
-        HeVi = new MyActor("HeVi.png", 0, 200, 160, 80);
-        Maitotuotteet = new MyActor("Maitotuotteet.png", 0, 100, 160, 80);
+        Juomat = new MyActor("Juomat.png", 0, 200, 160, 80);
+        HeVi = new MyActor("HeVi.png", 635, 200, 160, 80);
+        Maitotuotteet = new MyActor("Maitotuotteet.png", 0, 300, 160, 80);
+        Alennukset = new MyActor("alennukset.png", 317, 500, 160, 80);
 
         // Alkunäkymä, sisältää random alennukset.
         addUi();
+        foodStage.addActor(Alennukset);
         foodStage.addActor(Random1);
         foodStage.addActor(Random2);
         foodStage.addActor(Random3);
@@ -261,6 +292,100 @@ class ShopScreen implements Screen {
                 return false;
             }
         });
+
+        //Lisää ruokiin kosketuksen tunnistamisen
+        for(int i = 0; i < foodActors.size(); i++) {
+
+            final int fIndex = i;
+
+            // Ruoan draggaus kauppanäkymässä.
+            foodActors.get(i).addListener(new DragListener() {
+                public void drag(InputEvent event, float xx, float yy, int pointer) {
+                    float cartX = 315;
+                    float cartY = 49;
+                    foodActors.get(fIndex).moveBy(xx - foodActors.get(fIndex).getWidth() / 2, yy - foodActors.get(fIndex).getHeight() / 2);
+                    foodActors.get(fIndex).toFront();
+                    System.out.println(foodActors.get(fIndex).getX());
+                    System.out.println(foodActors.get(fIndex).getY());
+                    if(foodActors.get(fIndex).getX() > cartX && foodActors.get(fIndex).getY() < cartY && foodActors.get(fIndex).getX() < cartX + 100) {
+                        foodActors.get(fIndex).setX(x1);
+                        foodActors.get(fIndex).setY(y1);
+                        if(player.getMoney() - foodActors.get(j).getPrice() > 0){
+                            long id = sound.play(1.0f);
+                            cancel();
+                            foods.add(foodActors.get(fIndex).getType());
+                            System.out.println(foods);
+                            player.setMoney(player.getMoney() - foodActors.get(fIndex).getPrice());
+                        }
+
+                    }
+                    if(foodActors.get(fIndex).getX() < -50 || foodActors.get(fIndex).getY() < -50 || foodActors.get(fIndex).getX() > 750 || foodActors.get(fIndex).getY() > 550) {
+                        foodActors.get(fIndex).setX(x1);
+                        foodActors.get(fIndex).setY(y1);
+                        cancel();
+                    }
+                    while(foodSelected == true) {
+                        // dragStop(event, xx, yy, pointer);
+                    }
+                }
+            });
+
+            foodActors.get(i).addListener(new InputListener() {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                    if (foodSelected == false) {
+
+                        foodSelected = true;
+
+                        float thisX = 490;
+                        float thisY = 50;
+
+                        if(foodActors.get(fIndex).getX() < 490) {
+
+                            thisX = foodActors.get(fIndex).getX() + 50;
+                        }
+                        if(foodActors.get(fIndex).getY() > 50) {
+
+                            thisY = foodActors.get(fIndex).getY() - 100;
+                        }
+
+                        final MyActor eat = new MyActor("eatbutton.png", thisX + 10, thisY + 10, 90, 30);
+                        final MyActor close = new MyActor("exitbutton.png", thisX + 110, thisY + 10, 90, 30);
+                        final MyActor foodStatBg = new MyActor("menubg.png", thisX, thisY, 300, 150);
+                        final MyActor blueBar = new MyActor("blue.png", thisX + 10, thisY + 125, foodActors.get(fIndex).getEnergy() * 280, 15);
+                        final MyActor redBar = new MyActor("red.png", thisX + 10, thisY + 100, foodActors.get(fIndex).getWeight() * 280, 15);
+                        final MyActor greenBar = new MyActor("green.png", thisX + 10, thisY + 75, foodActors.get(fIndex).getHealthiness() * 280, 15);
+                        final MyActor yellowBar = new MyActor("yellow.png", thisX + 10, thisY + 50, foodActors.get(fIndex).getHappiness() * 280, 15);
+
+                        foodStage.addActor(foodStatBg);
+                        foodStage.addActor(blueBar);
+                        foodStage.addActor(redBar);
+                        foodStage.addActor(greenBar);
+                        foodStage.addActor(yellowBar);
+
+                        foodStage.addActor(close);
+
+                        close.addListener(new InputListener() {
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                                foodStatBg.remove();
+                                blueBar.remove();
+                                redBar.remove();
+                                greenBar.remove();
+                                yellowBar.remove();
+                                eat.remove();
+                                close.remove();
+
+                                foodSelected = false;
+
+                                return false;
+                            }
+                        });
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     // Kauppanäkymän vakio elementit.
