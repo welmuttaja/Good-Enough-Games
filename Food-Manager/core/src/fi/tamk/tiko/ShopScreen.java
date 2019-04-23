@@ -102,19 +102,19 @@ class ShopScreen implements Screen {
     MyActor backButton;
 
     // Kategoriat.
-    MyActor Pakasteet;
+    MyActor Vegetables;
     MyActor Kastikkeet;
-    MyActor Juomat;
-    MyActor HeVi;
+    MyActor Extras;
+    MyActor Meat;
     MyActor Maitotuotteet;
     MyActor LihaKala;
     MyActor Herkut;
     MyActor Alennukset;
 
-    MyActor PakasteetTop;
+    MyActor VegetablesTop;
     MyActor KastikkeetTop;
-    MyActor JuomatTop;
-    MyActor HeViTop;
+    MyActor ExtrasTop;
+    MyActor MeatTop;
     MyActor MaitotuotteetTop;
     MyActor LihaKalaTop;
     MyActor HerkutTop;
@@ -210,11 +210,9 @@ class ShopScreen implements Screen {
         backButton = new MyActor("koti.png", 0, 0, 80, 80);
 
         // Kategoria nappulat.
-        Pakasteet = new MyActor("Pakasteet.png", 645, 400, 160, 50);
-        Kastikkeet = new MyActor("Kastikkeet.png", 645, 350, 160, 50);
-        Juomat = new MyActor("Juomat.png", 645, 250, 160, 50);
-        HeVi = new MyActor("HeVi.png", 645, 200, 160, 50);
-        Maitotuotteet = new MyActor("Maitotuotteet.png", 645, 300, 160, 50);
+        Vegetables = new MyActor("Vegetables.png", 600, 0, 160, 50);
+        Extras = new MyActor("Extras.png", 400, 0, 160, 50);
+        Meat = new MyActor("Meat.png", 200, 0, 160, 50);
         Alennukset = new MyActor("alennukset.png", 317, 530, 200, 50);
 
         // Alkunäkymä, sisältää random alennukset.
@@ -238,15 +236,17 @@ class ShopScreen implements Screen {
             }
         });
 
-        // Pakasteet
-        Pakasteet.addListener(new InputListener(){
+        // Vegetables
+        Vegetables.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
-                PakasteetTop = new MyActor("Pakasteet.png", 317, 530, 200, 50);
-                foodStage.addActor(PakasteetTop);
+                VegetablesTop = new MyActor("Vegetables.png", 317, 530, 200, 50);
+                foodStage.addActor(VegetablesTop);
+                foodStage.addActor(NoodleSoup);
                 foodStage.addActor(Eggs);
                 foodStage.addActor(Beans);
+                foodStage.addActor(Ratatouille);
                 foodStage.addActor(Rice);
                 foodStage.addActor(Tuna);
                 foodStage.addActor(Macaroni);
@@ -256,12 +256,12 @@ class ShopScreen implements Screen {
         });
 
         // Hedelmät ja Vihannekset
-        HeVi.addListener(new InputListener(){
+        Meat.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
-                HeViTop = new MyActor("HeVi.png", 317, 530, 200, 50);
-                foodStage.addActor(HeViTop);
+                MeatTop = new MyActor("Meat.png", 317, 530, 200, 50);
+                foodStage.addActor(MeatTop);
                 foodStage.addActor(Chips);
                 foodStage.addActor(Kaalilaatikko);
                 foodStage.addActor(Porridge);
@@ -273,46 +273,12 @@ class ShopScreen implements Screen {
         });
 
         // Hedelmät ja Vihannekset
-        Juomat.addListener(new InputListener(){
+        Extras.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
-                JuomatTop = new MyActor("Juomat.png", 317, 530, 200, 50);
-                foodStage.addActor(JuomatTop);
-                foodStage.addActor(Chips);
-                foodStage.addActor(Kaalilaatikko);
-                foodStage.addActor(Porridge);
-                foodStage.addActor(NoodleSoup);
-                foodStage.addActor(Coffee);
-                foodStage.addActor(Ratatouille);
-                return false;
-            }
-        });
-
-        // Hedelmät ja Vihannekset
-        Kastikkeet.addListener(new InputListener(){
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                foodStage.clear();
-                addUi();
-                KastikkeetTop = new MyActor("Kastikkeet.png", 317, 530, 200, 50);
-                foodStage.addActor(KastikkeetTop);
-                foodStage.addActor(Chips);
-                foodStage.addActor(Kaalilaatikko);
-                foodStage.addActor(Porridge);
-                foodStage.addActor(NoodleSoup);
-                foodStage.addActor(Coffee);
-                foodStage.addActor(Ratatouille);
-                return false;
-            }
-        });
-
-        // Hedelmät ja Vihannekset
-        Maitotuotteet.addListener(new InputListener(){
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                foodStage.clear();
-                addUi();
-                MaitotuotteetTop = new MyActor("Maitotuotteet.png", 317, 530, 200, 50);
-                foodStage.addActor(MaitotuotteetTop);
+                ExtrasTop = new MyActor("Extras.png", 317, 530, 200, 50);
+                foodStage.addActor(ExtrasTop);
                 foodStage.addActor(Chips);
                 foodStage.addActor(Kaalilaatikko);
                 foodStage.addActor(Porridge);
@@ -444,11 +410,9 @@ class ShopScreen implements Screen {
     // Kauppanäkymän vakio elementit.
     private void addUi() {
         foodStage.addActor(backButton);
-        foodStage.addActor(Pakasteet);
-        foodStage.addActor(Kastikkeet);
-        foodStage.addActor(Juomat);
-        foodStage.addActor(HeVi);
-        foodStage.addActor(Maitotuotteet);
+        foodStage.addActor(Vegetables);
+        foodStage.addActor(Extras);
+        foodStage.addActor(Meat);
     }
 
 
