@@ -19,6 +19,8 @@ import static java.lang.String.valueOf;
 
 class ApartmentScreen implements Screen {
     final Main game;
+    final String LANG;
+
     final int SCREEN_WIDTH = 800;
     final int SCREEN_HEIGHT = 600;
 
@@ -63,8 +65,9 @@ class ApartmentScreen implements Screen {
     Sound click = Gdx.audio.newSound(Gdx.files.internal("klikkausaani.wav"));
 
     //Asuntonäkymän constructor
-    public ApartmentScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
+    public ApartmentScreen(final Main game, final String LANG, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
+        this.LANG = LANG;
         this.gt = gt;
         this.player = player;
         this.foods = foods;
@@ -225,7 +228,7 @@ class ApartmentScreen implements Screen {
 
                 //Siirtyy kauppa näkymään
                 long id = click.play(1.0f);
-                game.setScreen(new ShopScreen(game, gt, player, foods));
+                game.setScreen(new ShopScreen(game, LANG, gt, player, foods));
 
                 return false;
             }
@@ -332,7 +335,7 @@ class ApartmentScreen implements Screen {
             //päivittää pelaajan statsit ja statsi mittarit
             player.updateStats();
         } else{
-            game.setScreen(new GameOverScreen(game, Math.round(gt.getTime())));
+            game.setScreen(new GameOverScreen(game, LANG, Math.round(gt.getTime())));
         }
 
         charEnergy.setWidth(player.getEnergy() * 280);
