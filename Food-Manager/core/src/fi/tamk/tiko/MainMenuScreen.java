@@ -1,6 +1,7 @@
 package fi.tamk.tiko;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -66,6 +67,28 @@ class MainMenuScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa asunto näkymään
                 game.setScreen(new ApartmentScreen(game, LANG, gt, player, foods));
+                return false;
+            }
+        });
+
+        FINButton.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.getPreferences("my-preferences").putString("lang", "fi");
+                Gdx.app.getPreferences("my-preferences").flush();
+
+                game.setScreen(new MainMenuScreen(game, LANG, gt, player, foods));
+
+                return false;
+            }
+        });
+
+        ENGButton.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.getPreferences("my-preferences").putString("lang", "en");
+                Gdx.app.getPreferences("my-preferences").flush();
+
+                game.setScreen(new MainMenuScreen(game, LANG, gt, player, foods));
+
                 return false;
             }
         });
