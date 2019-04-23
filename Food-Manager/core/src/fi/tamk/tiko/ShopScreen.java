@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -37,7 +38,7 @@ class ShopScreen implements Screen {
     private Actor Rice;
     private Actor Tuna;
     private Actor Macaroni;
-    private Actor Noodles;
+    private Actor Leipa;
     private Actor Mikropizza;
     private Actor SalmonSoup;
     private Actor PastaBolognese;
@@ -47,7 +48,7 @@ class ShopScreen implements Screen {
     private Actor ChocolateCereal;
     private Actor Pasta;
     private Actor Yogurt;
-    private Actor MeatBalls;
+    private Actor MbuyBalls;
     private Actor YogurtMysli;
     private Actor Lohi;
     private Actor Pizza;
@@ -81,7 +82,6 @@ class ShopScreen implements Screen {
 
     SpriteBatch batch;
     final Main game;
-    final String LANG;
     final GameTime gt;
     final Player player;
     final ArrayList<Integer> foods;
@@ -124,16 +124,23 @@ class ShopScreen implements Screen {
     MyActor healthinessIcon;
     MyActor happinessIcon;
 
+    FoodActor FoodFont;
+
     OrthographicCamera camera;
 
     boolean foodSelected = false;
 
     BitmapFont font;
+    BitmapFont font_white;
+    FreeTypeFontGenerator generator;
+
+    boolean infoBox = false;
+    float xFont;
+    float yFont;
 
     //Kauppanäkymän constructor
-    public ShopScreen(final Main game, final String LANG, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
+    public ShopScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
-        this.LANG = LANG;
         this.gt = gt;
         this.player = player;
         this.foods = foods;
@@ -151,14 +158,14 @@ class ShopScreen implements Screen {
         Tuna = new FoodActor(3, x1, y2, w, h);
         Macaroni = new FoodActor(4, x2, y2, w, h);
         Mikropizza = new FoodActor(5, x3, y2, w, h);
-        MeatBalls = new FoodActor(6, x1, y1, w, h);
+        MbuyBalls = new FoodActor(6, x1, y1, w, h);
         SalmonSoup = new FoodActor(7, x2, y1, w, h);
         Porridge = new FoodActor(8, x3, y1, w, h);
         PastaBolognese = new FoodActor(9, x1, y2, w, h);
         MakaroniLaatikko = new FoodActor(10, x2, y2, w, h);
         Munakas = new FoodActor(11, x3, y2, w, h);
         NoodleSoup = new FoodActor(12, x1, y2, w, h);
-        Noodles = new FoodActor(13, x3, y2, w, h);
+        Leipa = new FoodActor(13, x3, y2, w, h);
         ChocolateCereal = new FoodActor(14, x3, y1, w, h);
         YogurtMysli = new FoodActor(15, x1, y2, w, h);
         Coffee = new FoodActor(16, x2, y2, w, h);
@@ -171,14 +178,14 @@ class ShopScreen implements Screen {
         foodActors.add((FoodActor) Tuna);
         foodActors.add((FoodActor) Macaroni);
         foodActors.add((FoodActor) Mikropizza);
-        foodActors.add((FoodActor) MeatBalls);
+        foodActors.add((FoodActor) MbuyBalls);
         foodActors.add((FoodActor) SalmonSoup);
         foodActors.add((FoodActor) Porridge);
         foodActors.add((FoodActor) PastaBolognese);
         foodActors.add((FoodActor) MakaroniLaatikko);
         foodActors.add((FoodActor) Munakas);
         foodActors.add((FoodActor) NoodleSoup);
-        foodActors.add((FoodActor) Noodles);
+        foodActors.add((FoodActor) Leipa);
         foodActors.add((FoodActor) ChocolateCereal);
         foodActors.add((FoodActor) YogurtMysli);
         foodActors.add((FoodActor) Coffee);
@@ -187,29 +194,27 @@ class ShopScreen implements Screen {
         foodActors.add((FoodActor) Kaalilaatikko);
 
         // Random etusivu
-        Random1 = new FoodActor(random(19), x1, y1, w, h);
-        Random2 = new FoodActor(random(19), x2, y1, w, h);
-        Random3 = new FoodActor(random(19), x3, y1, w, h);
-        Random4 = new FoodActor(random(19), x1, y2, w, h);
-        Random5 = new FoodActor(random(19), x2, y2, w, h);
-        Random6 = new FoodActor(random(19), x3, y2, w, h);
+        Random1 = new FoodActor(random(0,3), x1, y1, w, h);
+        Random2 = new FoodActor(random(4,7), x2, y1, w, h);
+        Random3 = new FoodActor(random(8,11), x3, y1, w, h);
+        Random4 = new FoodActor(random(12,15), x1, y2, w, h);
+        Random5 = new FoodActor(random(16,19), x2, y2, w, h);
 
         foodActors.add((FoodActor) Random1);
         foodActors.add((FoodActor) Random2);
         foodActors.add((FoodActor) Random3);
         foodActors.add((FoodActor) Random4);
         foodActors.add((FoodActor) Random5);
-        foodActors.add((FoodActor) Random6);
 
         // Takaisin päin nappula.
         backButton = new MyActor("koti.png", 0, 0, 80, 80);
 
         // Kategoria nappulat.
         Pakasteet = new MyActor("Pakasteet.png", 645, 400, 160, 50);
-        Kastikkeet = new MyActor("Kastikkeet.png", 0, 400, 160, 50);
-        Juomat = new MyActor("Juomat.png", 0, 200, 160, 50);
+        Kastikkeet = new MyActor("Kastikkeet.png", 645, 350, 160, 50);
+        Juomat = new MyActor("Juomat.png", 645, 250, 160, 50);
         HeVi = new MyActor("HeVi.png", 645, 200, 160, 50);
-        Maitotuotteet = new MyActor("Maitotuotteet.png", 0, 300, 160, 50);
+        Maitotuotteet = new MyActor("Maitotuotteet.png", 645, 300, 160, 50);
         Alennukset = new MyActor("alennukset.png", 317, 530, 200, 50);
 
         // Alkunäkymä, sisältää random alennukset.
@@ -220,7 +225,6 @@ class ShopScreen implements Screen {
         foodStage.addActor(Random3);
         foodStage.addActor(Random4);
         foodStage.addActor(Random5);
-        foodStage.addActor(Random6);
 
         //Lisää stageen inputprocessorin
         Gdx.input.setInputProcessor(foodStage);
@@ -229,7 +233,7 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa menu näkymään
                 long id = click.play(1.0f);
-                game.setScreen(new ApartmentScreen(game, LANG, gt, player, foods));
+                game.setScreen(new ApartmentScreen(game, gt, player, foods));
                 return false;
             }
         });
@@ -239,14 +243,14 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
-                PakasteetTop = new MyActor("pakasteet.png", 317, 530, 200, 50);
+                PakasteetTop = new MyActor("Pakasteet.png", 317, 530, 200, 50);
                 foodStage.addActor(PakasteetTop);
                 foodStage.addActor(Eggs);
                 foodStage.addActor(Beans);
                 foodStage.addActor(Rice);
                 foodStage.addActor(Tuna);
                 foodStage.addActor(Macaroni);
-                foodStage.addActor(Noodles);
+                foodStage.addActor(Leipa);
                 return false;
             }
         });
@@ -330,6 +334,7 @@ class ShopScreen implements Screen {
                     if (foodSelected == false) {
 
                         foodSelected = true;
+                        infoBox = true;
 
                         float thisX = 490;
                         float thisY = 50;
@@ -343,7 +348,7 @@ class ShopScreen implements Screen {
                             thisY = foodActors.get(fIndex).getY() - 100;
                         }
 
-                        final MyActor eat = new MyActor("eatbutton.png", thisX + 10, thisY + 10, 90, 30);
+                        final MyActor buy = new MyActor("osta.png", thisX + 10, thisY + 10, 90, 30);
                         final MyActor close = new MyActor("exitbutton.png", thisX + 110, thisY + 10, 90, 30);
                         final MyActor foodStatBg = new MyActor("menubg.png", thisX, thisY, 300, 180);
                         final MyActor blueBar = new MyActor("blue.png", thisX + 10, thisY + 125, foodActors.get(fIndex).getEnergy() * 280, 15);
@@ -352,26 +357,31 @@ class ShopScreen implements Screen {
                         final MyActor yellowBar = new MyActor("yellow.png", thisX + 10, thisY + 50, foodActors.get(fIndex).getHappiness() * 280, 15);
                         final MyActor orangeBar = new MyActor("orange.png", thisX + 10, thisY + 150, foodActors.get(fIndex).getPrice() * 280, 15);
                         final MyActor moneyBar = new MyActor("raha.png", thisX + 10, thisY + 150, 15, 15);
+
                         energyIcon = new MyActor("energia.png", thisX + 10, thisY + 125, 15, 15);
                         weightIcon = new MyActor("paino.png", thisX + 10, thisY + 100, 15, 15);
                         healthinessIcon = new MyActor("terveys.png", thisX + 10, thisY + 75, 15, 15);
                         happinessIcon = new MyActor("onnellisuus.png", thisX + 10, thisY + 50, 15, 15);
+
+                        FoodFont = foodActors.get(fIndex);
+                        xFont = thisX + 29;
+                        yFont = thisY + 163;
+
 
                         foodStage.addActor(foodStatBg);
                         foodStage.addActor(blueBar);
                         foodStage.addActor(redBar);
                         foodStage.addActor(greenBar);
                         foodStage.addActor(yellowBar);
-                        foodStage.addActor(orangeBar);
                         foodStage.addActor(moneyBar);
                         foodStage.addActor(energyIcon);
                         foodStage.addActor(weightIcon);
                         foodStage.addActor(healthinessIcon);
                         foodStage.addActor(happinessIcon);
-                        foodStage.addActor(eat);
+                        foodStage.addActor(buy);
                         foodStage.addActor(close);
 
-                        eat.addListener(new InputListener() {
+                        buy.addListener(new InputListener() {
                             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
                                 if(player.getMoney() - foodActors.get(fIndex).getPrice() > 0 &&
@@ -388,15 +398,15 @@ class ShopScreen implements Screen {
                                 greenBar.remove();
                                 yellowBar.remove();
                                 moneyBar.remove();
-                                orangeBar.remove();
                                 energyIcon.remove();
                                 weightIcon.remove();
                                 healthinessIcon.remove();
                                 happinessIcon.remove();
-                                eat.remove();
+                                buy.remove();
                                 close.remove();
 
                                 foodSelected = false;
+                                infoBox = false;
 
                                 return false;
                             }
@@ -411,15 +421,15 @@ class ShopScreen implements Screen {
                                 greenBar.remove();
                                 yellowBar.remove();
                                 moneyBar.remove();
-                                orangeBar.remove();
                                 energyIcon.remove();
                                 weightIcon.remove();
                                 healthinessIcon.remove();
                                 happinessIcon.remove();
-                                eat.remove();
+                                buy.remove();
                                 close.remove();
 
                                 foodSelected = false;
+                                infoBox = false;
 
                                 return false;
                             }
@@ -471,8 +481,26 @@ class ShopScreen implements Screen {
         foodStage.act(Gdx.graphics.getDeltaTime());
         foodStage.getBatch().begin();
         foodStage.getBatch().draw(background, 0, 0, 800, 600);
+
         foodStage.getBatch().end();
         foodStage.draw();
+
+        // Infoboksin ruoan hinta fontti.
+        foodStage.getBatch().begin();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Black.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 16;
+        parameter.color = Color.BLACK;
+        parameter.borderWidth = 0.5f;
+        parameter.borderColor = Color.WHITE;
+        font = generator.generateFont(parameter);
+
+        if (infoBox == true) {
+            font.draw(game.batch, FoodFont.getPrice() + "€", xFont, yFont);
+        }
+
+        foodStage.getBatch().end();
+
     }
 
     @Override
