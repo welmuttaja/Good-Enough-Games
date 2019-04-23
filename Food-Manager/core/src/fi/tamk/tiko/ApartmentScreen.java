@@ -46,6 +46,11 @@ class ApartmentScreen implements Screen {
     MyActor healthinessIcon;
     MyActor happinessIcon;
 
+    MyActor energyIconFridge;
+    MyActor weightIconFridge;
+    MyActor healthinessIconFridge;
+    MyActor happinessIconFridge;
+
     boolean foodSelected = false;
     float selectedFoodX = 0;
     float selectedFoodY = 0;
@@ -262,12 +267,20 @@ class ApartmentScreen implements Screen {
                         final MyActor redBar = new MyActor("red.png", thisX + 10, thisY + 100, foodActors.get(fIndex).getWeight() * 280, 15);
                         final MyActor greenBar = new MyActor("green.png", thisX + 10, thisY + 75, foodActors.get(fIndex).getHealthiness() * 280, 15);
                         final MyActor yellowBar = new MyActor("yellow.png", thisX + 10, thisY + 50, foodActors.get(fIndex).getHappiness() * 280, 15);
+                        energyIconFridge = new MyActor("energia.png", thisX + 10, thisY + 125, 15, 15);
+                        weightIconFridge = new MyActor("paino.png", thisX + 10, thisY + 100, 15, 15);
+                        healthinessIconFridge = new MyActor("terveys.png", thisX + 10, thisY + 75, 15, 15);
+                        happinessIconFridge = new MyActor("onnellisuus.png", thisX + 10, thisY + 50, 15, 15);
 
                         apartmentStage.addActor(foodStatBg);
                         apartmentStage.addActor(blueBar);
                         apartmentStage.addActor(redBar);
                         apartmentStage.addActor(greenBar);
                         apartmentStage.addActor(yellowBar);
+                        apartmentStage.addActor(energyIconFridge);
+                        apartmentStage.addActor(weightIconFridge);
+                        apartmentStage.addActor(healthinessIconFridge);
+                        apartmentStage.addActor(happinessIconFridge);
 
                         apartmentStage.addActor(eat);
                         apartmentStage.addActor(close);
@@ -286,6 +299,10 @@ class ApartmentScreen implements Screen {
                                 redBar.remove();
                                 greenBar.remove();
                                 yellowBar.remove();
+                                energyIconFridge.remove();
+                                weightIconFridge.remove();
+                                healthinessIconFridge.remove();
+                                happinessIconFridge.remove();
                                 eat.remove();
                                 close.remove();
 
@@ -305,6 +322,10 @@ class ApartmentScreen implements Screen {
                                 redBar.remove();
                                 greenBar.remove();
                                 yellowBar.remove();
+                                energyIconFridge.remove();
+                                weightIconFridge.remove();
+                                healthinessIconFridge.remove();
+                                happinessIconFridge.remove();
                                 eat.remove();
                                 close.remove();
 

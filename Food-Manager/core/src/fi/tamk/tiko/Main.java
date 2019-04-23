@@ -80,74 +80,74 @@ class FoodActor extends Actor {
             case 0:
                 textureStr = "beans.png";
                 energy = 0.2f;
-                weight = 0.2f;
+                weight = 0.1f;
                 healthiness = 0.2f;
                 happiness = 0.1f;
-                price = 0.1f;
+                price = 1f;
                 break;
             case 1:
                 textureStr = "eggs.png";
-                energy = 0.25f;
-                weight = 0.15f;
-                healthiness = 0.25f;
-                happiness = 0.25f;
-                price = 0.1f;
+                energy = 0.1f;
+                weight = 0.2f;
+                healthiness = 0.2f;
+                happiness = 0.1f;
+                price = 1.5f;
                 break;
             case 2:
                 textureStr = "rice.png";
-                energy = 0.1f;
+                energy = 0.3f;
                 weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                healthiness = 0.2f;
+                happiness = 0.1f;
+                price = 2.0f;
                 break;
             case 3:
                 textureStr = "tuna.png";
-                energy = 0.1f;
+                energy = 0.3f;
                 weight = 0.2f;
                 healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                happiness = 0.1f;
+                price = 1.0f;
                 break;
             case 4:
                 textureStr = "macaroni.png";
-                energy = 0.1f;
+                energy = 0.2f;
                 weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                healthiness = 0.2f;
+                happiness = 0.1f;
+                price = 1.0f;
                 break;
             case 5:
                 textureStr = "mikropizza.png";
-                energy = 0.1f;
-                weight = 0.2f;
+                energy = 0.3f;
+                weight = 0.3f;
                 healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                happiness = 0.2f;
+                price = 1.0f;
                 break;
             case 6:
                 textureStr = "meatballs.png";
-                energy = 0.1f;
+                energy = 0.2f;
                 weight = 0.2f;
                 healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                happiness = 0.3f;
+                price = 2.0f;
                 break;
             case 7:
                 textureStr = "salmonsoup.png";
-                energy = 0.1f;
+                energy = 0.3f;
                 weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                healthiness = 0.3f;
+                happiness = 0.4f;
+                price = 3.0f;
                 break;
             case 8:
                 textureStr = "porridge.png";
                 energy = 0.1f;
-                weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                weight = 0.1f;
+                healthiness = 0.4f;
+                happiness = 0.1f;
+                price = 0.5f;
                 break;
             case 9:
                 textureStr = "pastabolognese.png";
@@ -155,87 +155,87 @@ class FoodActor extends Actor {
                 weight = 0.2f;
                 healthiness = 0.1f;
                 happiness = 0.25f;
-                price = 0.1f;
+                price = 3.0f;
                 break;
             case 10:
                 textureStr = "makaronilaatikko.png";
-                energy = 0.1f;
+                energy = 0.2f;
                 weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                healthiness = 0.2f;
+                happiness = 0.1f;
+                price = 1.0f;
                 break;
             case 11:
                 textureStr = "munakas.png";
                 energy = 0.1f;
                 weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                healthiness = 0.4f;
+                happiness = 0.2f;
+                price = 1.2f;
                 break;
             case 12:
                 textureStr = "noodlesoup.png";
-                energy = 0.1f;
+                energy = 0.2f;
                 weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                healthiness = 0.2f;
+                happiness = 0.2f;
+                price = 1.5f;
                 break;
             case 13:
-                textureStr = "noodles.png";
+                textureStr = "leipa.png";
                 energy = 0.1f;
-                weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                weight = 0.1f;
+                healthiness = 0.3f;
+                happiness = 0.3f;
+                price = 1.5f;
                 break;
             case 14:
                 textureStr = "chocolatecereal.png";
                 energy = 0.1f;
                 weight = 0.2f;
                 healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                happiness = 0.2f;
+                price = 1.5f;
                 break;
             case 15:
                 textureStr = "jogurttimyslillä.png";
-                energy = 0.1f;
-                weight = 0.2f;
+                energy = 0.2f;
+                weight = 0.1f;
                 healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                happiness = 0.2f;
+                price = 1.0f;
                 break;
             case 16:
                 textureStr = "coffee.png";
-                energy = 0.1f;
-                weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                energy = 0.4f;
+                weight = 0f;
+                healthiness = 0f;
+                happiness = 0.2f;
+                price = 2.0f;
                 break;
             case 17:
                 textureStr = "ratatouille.png";
                 energy = 0.1f;
-                weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                weight = 0.1f;
+                healthiness = 0.4f;
+                happiness = 0.3f;
+                price = 1.5f;
                 break;
             case 18:
                 textureStr = "chips.png";
-                energy = 0.1f;
+                energy = 0.4f;
                 weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                healthiness = 0f;
+                happiness = 0.4f;
+                price = 2.0f;
                 break;
             case 19:
                 textureStr = "kaalilaatikko.png";
-                energy = 0.1f;
-                weight = 0.2f;
-                healthiness = 0.1f;
-                happiness = 0.25f;
-                price = 0.1f;
+                energy = 0.3f;
+                weight = 0.1f;
+                healthiness = 0.2f;
+                happiness = 0.1f;
+                price = 1.5f;
                 break;
         }
         texture = new Texture(Gdx.files.internal(textureStr));
@@ -320,8 +320,8 @@ class GameTime {
 	}
 
 	public void updateTime(double dt){
-		this.time += dt * 8;
-        this.minutes += dt * 8;
+		this.time += dt * 9;
+        this.minutes += dt * 9;
 
         if( Math.round(this.minutes) == 60 ){
             this.minutes = 0;
@@ -411,6 +411,8 @@ public class Main extends Game {
 
 	@Override
 	public void create () {
+	    // Alkusplash
+	    // setScreen(new SplashScreen());
 		batch = new SpriteBatch();
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Black.ttf"));

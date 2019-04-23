@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -47,7 +48,7 @@ class MainMenuScreen implements Screen {
         //Stagen määrittely
         menuStage = new Stage(new FitViewport(800, 600), game.batch);
         //Painikkeiden määrittely
-        playButton = new MyActor("startgame.png", 300, 400, 200, 50);
+        playButton = new MyActor("startGame.png", 300, 400, 200, 50);
         HTPButton = new MyActor("Peliohjeet.png", 300, 300, 200, 50);
         FINButton = new MyActor("fin.png", 670, 540, 100, 50);
         ENGButton = new MyActor("eng.png", 550, 540, 100, 50);
