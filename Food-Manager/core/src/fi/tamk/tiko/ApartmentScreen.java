@@ -48,6 +48,16 @@ class ApartmentScreen implements Screen {
     MyActor healthinessIcon;
     MyActor happinessIcon;
 
+    MyActor energyIconFridge;
+    MyActor weightIconFridge;
+    MyActor healthinessIconFridge;
+    MyActor happinessIconFridge;
+
+    Texture happyHuman;
+    Texture sadHuman;
+    Texture fatHuman;
+    Texture tiredHuman;
+
     boolean foodSelected = false;
     float selectedFoodX = 0;
     float selectedFoodY = 0;
@@ -77,6 +87,12 @@ class ApartmentScreen implements Screen {
 
         apartmentbg = new Texture("apartmentbg.png");
 
+        // Hahmot
+        happyHuman = new Texture("happyhuman.png");
+        sadHuman = new Texture("sadhuman.png");
+        tiredHuman = new Texture("tiredhuman.png");
+        fatHuman = new Texture("fathuman.png");
+
         //Stagen määrittely
         apartmentStage = new Stage(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT), game.batch);
         //Painikkeiden määrittely
@@ -99,6 +115,7 @@ class ApartmentScreen implements Screen {
         weightIcon = new MyActor("paino.png", 460, 527, 25, 25);
         healthinessIcon = new MyActor("terveys.png", 460, 498, 25, 25);
         happinessIcon = new MyActor("onnellisuus.png", 460, 465, 25, 25);
+
 
         //Lisää ruoat jääkaappiin
         float leftMargin = 50;
@@ -261,12 +278,20 @@ class ApartmentScreen implements Screen {
                         final MyActor redBar = new MyActor("red.png", thisX + 10, thisY + 100, foodActors.get(fIndex).getWeight() * 280, 15);
                         final MyActor greenBar = new MyActor("green.png", thisX + 10, thisY + 75, foodActors.get(fIndex).getHealthiness() * 280, 15);
                         final MyActor yellowBar = new MyActor("yellow.png", thisX + 10, thisY + 50, foodActors.get(fIndex).getHappiness() * 280, 15);
+                        energyIconFridge = new MyActor("energia.png", thisX + 10, thisY + 125, 15, 15);
+                        weightIconFridge = new MyActor("paino.png", thisX + 10, thisY + 100, 15, 15);
+                        healthinessIconFridge = new MyActor("terveys.png", thisX + 10, thisY + 75, 15, 15);
+                        happinessIconFridge = new MyActor("onnellisuus.png", thisX + 10, thisY + 50, 15, 15);
 
                         apartmentStage.addActor(foodStatBg);
                         apartmentStage.addActor(blueBar);
                         apartmentStage.addActor(redBar);
                         apartmentStage.addActor(greenBar);
                         apartmentStage.addActor(yellowBar);
+                        apartmentStage.addActor(energyIconFridge);
+                        apartmentStage.addActor(weightIconFridge);
+                        apartmentStage.addActor(healthinessIconFridge);
+                        apartmentStage.addActor(happinessIconFridge);
 
                         apartmentStage.addActor(eat);
                         apartmentStage.addActor(close);
@@ -285,6 +310,10 @@ class ApartmentScreen implements Screen {
                                 redBar.remove();
                                 greenBar.remove();
                                 yellowBar.remove();
+                                energyIconFridge.remove();
+                                weightIconFridge.remove();
+                                healthinessIconFridge.remove();
+                                happinessIconFridge.remove();
                                 eat.remove();
                                 close.remove();
 
@@ -304,6 +333,10 @@ class ApartmentScreen implements Screen {
                                 redBar.remove();
                                 greenBar.remove();
                                 yellowBar.remove();
+                                energyIconFridge.remove();
+                                weightIconFridge.remove();
+                                healthinessIconFridge.remove();
+                                happinessIconFridge.remove();
                                 eat.remove();
                                 close.remove();
 
@@ -424,6 +457,19 @@ class ApartmentScreen implements Screen {
         game.font.draw(game.batch, "Time: " + timeString + "    " + dateString, 10, 580);
         game.font.draw(game.batch, "Money: " + player.getMoney(), 10, 550);
 
+        // Piirtää hahmon
+        if (player.getHappiness() <= 0.3f) {
+            game.batch.draw(sadHuman, 460, 0, 400, 400);
+        }
+        if (player.getWeight() >= 0.8f) {
+            game.batch.draw(fatHuman, 460, 0, 400, 400);
+        }
+        if (player.getEnergy() <= 0.3f) {
+            game.batch.draw(tiredHuman, 460, 0, 400, 400);
+        }
+        else {
+            game.batch.draw(happyHuman, 460, 0, 400, 400);
+        }
         game.batch.end();
 
         //tekee actorien toiminnot

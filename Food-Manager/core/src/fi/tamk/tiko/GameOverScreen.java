@@ -21,7 +21,6 @@ import static java.lang.String.valueOf;
 class GameOverScreen implements Screen {
 
     final Main game;
-    final String LANG;
     final float points;
 
     final int SCREEN_WIDTH = 800;
@@ -34,10 +33,9 @@ class GameOverScreen implements Screen {
     Texture gameoverbg;
     MyActor exitbutton;
 
-    public GameOverScreen(final Main game, final String LANG, final float points) {
+    public GameOverScreen(final Main game, final float points) {
 
         this.game = game;
-        this.LANG = LANG;
         this.points = points;
 
         camera = new OrthographicCamera();
@@ -46,7 +44,7 @@ class GameOverScreen implements Screen {
         gameOverStage = new Stage(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT), game.batch);
 
         gameoverbg = new Texture("gameoverbg.png");
-        exitbutton = new MyActor("en_exit.png", 500, 150, 240, 80);
+        exitbutton = new MyActor("exit.png", 500, 150, 240, 80);
 
         gameOverStage.addActor(exitbutton);
 

@@ -1,7 +1,6 @@
 package fi.tamk.tiko;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 class MainMenuScreen implements Screen {
 
     final Main game;
-    final String LANG;
 
     final GameTime gt;
     final Player player;
@@ -37,7 +35,6 @@ class MainMenuScreen implements Screen {
     //Päävalikon constructor, täällä määritellään uudet elementit
     public MainMenuScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
-        this.LANG = Gdx.app.getPreferences("my-preferences").getString("lang");
         this.gt = gt;
         this.player = player;
         this.foods = foods;
@@ -50,18 +47,8 @@ class MainMenuScreen implements Screen {
         //Stagen määrittely
         menuStage = new Stage(new FitViewport(800, 600), game.batch);
         //Painikkeiden määrittely
-        if(LANG == "fi"){
-            playButton = new MyActor("fi_startgame.png", 300, 400, 200, 50);
-        } else{
-            playButton = new MyActor("en_startgame.png", 300, 400, 200, 50);
-        }
-
-        if(LANG == "fi"){
-            HTPButton = new MyActor("fi_instructions.png", 300, 300, 200, 50);
-        } else{
-            HTPButton = new MyActor("en_instructions.png", 300, 300, 200, 50);
-        }
-
+        playButton = new MyActor("startgame.png", 300, 400, 200, 50);
+        HTPButton = new MyActor("Peliohjeet.png", 300, 300, 200, 50);
         FINButton = new MyActor("fin.png", 670, 540, 100, 50);
         ENGButton = new MyActor("eng.png", 550, 540, 100, 50);
         //Lisää painikkeet stageen
@@ -76,31 +63,7 @@ class MainMenuScreen implements Screen {
         playButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa asunto näkymään
-                game.setScreen(new ApartmentScreen(game, LANG, gt, player, foods));
-                return false;
-            }
-        });
-
-        FINButton.addListener(new InputListener(){
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                //Vaihtaa asunto näkymään
-                Gdx.app.getPreferences("my-preferences").putString("lang", "fi");
-                Gdx.app.getPreferences("my-preferences").flush();
-
-                game.setScreen(new MainMenuScreen(game, gt, player, foods));
-
-                return false;
-            }
-        });
-
-        ENGButton.addListener(new InputListener(){
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                //Vaihtaa asunto näkymään
-                Gdx.app.getPreferences("my-preferences").putString("lang", "en");
-                Gdx.app.getPreferences("my-preferences").flush();
-
-                game.setScreen(new MainMenuScreen(game, gt, player, foods));
-
+                game.setScreen(new ApartmentScreen(game, gt, player, foods));
                 return false;
             }
         });
