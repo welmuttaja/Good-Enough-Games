@@ -157,6 +157,7 @@ class ApartmentScreen implements Screen {
 
                 fridgeMenuBg.setVisible(fridgeOpen);
                 exitButton.setVisible(fridgeOpen);
+                shopButton.setVisible(false);
                 for(int i = 0; i < foodActors.size(); i++){
                     foodActors.get(i).setVisible(fridgeOpen);
                 }
@@ -177,6 +178,7 @@ class ApartmentScreen implements Screen {
 
                 fridgeMenuBg.setVisible(fridgeOpen);
                 exitButton.setVisible(fridgeOpen);
+                shopButton.setVisible(true);
 
                 for(int i = 0; i < foodActors.size(); i++){
                     foodActors.get(i).setVisible(fridgeOpen);
@@ -189,7 +191,6 @@ class ApartmentScreen implements Screen {
         //Lisää kauppa painikkeeseen kosketuksen tunnistamisen
         shopButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-
                 foods.clear();
 
                 for(int i = 0; i < apartmentStage.getActors().size; i++) {
