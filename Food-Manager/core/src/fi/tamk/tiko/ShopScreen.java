@@ -68,6 +68,8 @@ class ShopScreen implements Screen {
 
     Sound sound = Gdx.audio.newSound(Gdx.files.internal("cha-ching.wav"));
 
+    Sound click = Gdx.audio.newSound(Gdx.files.internal("klikkausaani.wav"));
+
     // Ostoskori
     private Actor cartActor;
     // Ruokaryhmä
@@ -108,11 +110,24 @@ class ShopScreen implements Screen {
     MyActor Herkut;
     MyActor Alennukset;
 
+    MyActor PakasteetTop;
+    MyActor KastikkeetTop;
+    MyActor JuomatTop;
+    MyActor HeViTop;
+    MyActor MaitotuotteetTop;
+    MyActor LihaKalaTop;
+    MyActor HerkutTop;
+
+    MyActor energyIcon;
+    MyActor weightIcon;
+    MyActor healthinessIcon;
+    MyActor happinessIcon;
+
     OrthographicCamera camera;
 
     boolean foodSelected = false;
 
-    int j = 0;
+    BitmapFont font;
 
     //Kauppanäkymän constructor
     public ShopScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
@@ -184,18 +199,16 @@ class ShopScreen implements Screen {
         foodActors.add((FoodActor) Random5);
         foodActors.add((FoodActor) Random6);
 
-        cartActor = new MyActor("ostoskori.png", 350, 20, 120, 120);
-
         // Takaisin päin nappula.
         backButton = new MyActor("koti.png", 0, 0, 80, 80);
 
         // Kategoria nappulat.
-        Pakasteet = new MyActor("Pakasteet.png", 635, 400, 160, 80);
-        Kastikkeet = new MyActor("Kastikkeet.png", 0, 400, 160, 80);
-        Juomat = new MyActor("Juomat.png", 0, 200, 160, 80);
-        HeVi = new MyActor("HeVi.png", 635, 200, 160, 80);
-        Maitotuotteet = new MyActor("Maitotuotteet.png", 0, 300, 160, 80);
-        Alennukset = new MyActor("alennukset.png", 317, 500, 160, 80);
+        Pakasteet = new MyActor("Pakasteet.png", 645, 400, 160, 50);
+        Kastikkeet = new MyActor("Kastikkeet.png", 0, 400, 160, 50);
+        Juomat = new MyActor("Juomat.png", 0, 200, 160, 50);
+        HeVi = new MyActor("HeVi.png", 645, 200, 160, 50);
+        Maitotuotteet = new MyActor("Maitotuotteet.png", 0, 300, 160, 50);
+        Alennukset = new MyActor("alennukset.png", 317, 530, 200, 50);
 
         // Alkunäkymä, sisältää random alennukset.
         addUi();
@@ -213,6 +226,7 @@ class ShopScreen implements Screen {
         backButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa menu näkymään
+                long id = click.play(1.0f);
                 game.setScreen(new ApartmentScreen(game, gt, player, foods));
                 return false;
             }
@@ -223,6 +237,8 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
+                PakasteetTop = new MyActor("pakasteet.png", 317, 530, 200, 50);
+                foodStage.addActor(PakasteetTop);
                 foodStage.addActor(Eggs);
                 foodStage.addActor(Beans);
                 foodStage.addActor(Rice);
@@ -238,6 +254,8 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
+                HeViTop = new MyActor("HeVi.png", 317, 530, 200, 50);
+                foodStage.addActor(HeViTop);
                 foodStage.addActor(Chips);
                 foodStage.addActor(Kaalilaatikko);
                 foodStage.addActor(Porridge);
@@ -253,6 +271,8 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
+                JuomatTop = new MyActor("Juomat.png", 317, 530, 200, 50);
+                foodStage.addActor(JuomatTop);
                 foodStage.addActor(Chips);
                 foodStage.addActor(Kaalilaatikko);
                 foodStage.addActor(Porridge);
@@ -268,6 +288,8 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
+                KastikkeetTop = new MyActor("Kastikkeet.png", 317, 530, 200, 50);
+                foodStage.addActor(KastikkeetTop);
                 foodStage.addActor(Chips);
                 foodStage.addActor(Kaalilaatikko);
                 foodStage.addActor(Porridge);
@@ -283,6 +305,8 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
+                MaitotuotteetTop = new MyActor("Maitotuotteet.png", 317, 530, 200, 50);
+                foodStage.addActor(MaitotuotteetTop);
                 foodStage.addActor(Chips);
                 foodStage.addActor(Kaalilaatikko);
                 foodStage.addActor(Porridge);
@@ -297,38 +321,6 @@ class ShopScreen implements Screen {
         for(int i = 0; i < foodActors.size(); i++) {
 
             final int fIndex = i;
-
-            // Ruoan draggaus kauppanäkymässä.
-            foodActors.get(i).addListener(new DragListener() {
-                public void drag(InputEvent event, float xx, float yy, int pointer) {
-                    float cartX = 315;
-                    float cartY = 49;
-                    foodActors.get(fIndex).moveBy(xx - foodActors.get(fIndex).getWidth() / 2, yy - foodActors.get(fIndex).getHeight() / 2);
-                    foodActors.get(fIndex).toFront();
-                    System.out.println(foodActors.get(fIndex).getX());
-                    System.out.println(foodActors.get(fIndex).getY());
-                    if(foodActors.get(fIndex).getX() > cartX && foodActors.get(fIndex).getY() < cartY && foodActors.get(fIndex).getX() < cartX + 100) {
-                        foodActors.get(fIndex).setX(x1);
-                        foodActors.get(fIndex).setY(y1);
-                        if(player.getMoney() - foodActors.get(j).getPrice() > 0){
-                            long id = sound.play(1.0f);
-                            cancel();
-                            foods.add(foodActors.get(fIndex).getType());
-                            System.out.println(foods);
-                            player.setMoney(player.getMoney() - foodActors.get(fIndex).getPrice());
-                        }
-
-                    }
-                    if(foodActors.get(fIndex).getX() < -50 || foodActors.get(fIndex).getY() < -50 || foodActors.get(fIndex).getX() > 750 || foodActors.get(fIndex).getY() > 550) {
-                        foodActors.get(fIndex).setX(x1);
-                        foodActors.get(fIndex).setY(y1);
-                        cancel();
-                    }
-                    while(foodSelected == true) {
-                        // dragStop(event, xx, yy, pointer);
-                    }
-                }
-            });
 
             foodActors.get(i).addListener(new InputListener() {
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -351,19 +343,61 @@ class ShopScreen implements Screen {
 
                         final MyActor eat = new MyActor("eatbutton.png", thisX + 10, thisY + 10, 90, 30);
                         final MyActor close = new MyActor("exitbutton.png", thisX + 110, thisY + 10, 90, 30);
-                        final MyActor foodStatBg = new MyActor("menubg.png", thisX, thisY, 300, 150);
+                        final MyActor foodStatBg = new MyActor("menubg.png", thisX, thisY, 300, 180);
                         final MyActor blueBar = new MyActor("blue.png", thisX + 10, thisY + 125, foodActors.get(fIndex).getEnergy() * 280, 15);
                         final MyActor redBar = new MyActor("red.png", thisX + 10, thisY + 100, foodActors.get(fIndex).getWeight() * 280, 15);
                         final MyActor greenBar = new MyActor("green.png", thisX + 10, thisY + 75, foodActors.get(fIndex).getHealthiness() * 280, 15);
                         final MyActor yellowBar = new MyActor("yellow.png", thisX + 10, thisY + 50, foodActors.get(fIndex).getHappiness() * 280, 15);
+                        final MyActor orangeBar = new MyActor("orange.png", thisX + 10, thisY + 150, foodActors.get(fIndex).getPrice() * 280, 15);
+                        final MyActor moneyBar = new MyActor("raha.png", thisX + 10, thisY + 150, 15, 15);
+                        energyIcon = new MyActor("energia.png", thisX + 10, thisY + 125, 15, 15);
+                        weightIcon = new MyActor("paino.png", thisX + 10, thisY + 100, 15, 15);
+                        healthinessIcon = new MyActor("terveys.png", thisX + 10, thisY + 75, 15, 15);
+                        happinessIcon = new MyActor("onnellisuus.png", thisX + 10, thisY + 50, 15, 15);
 
                         foodStage.addActor(foodStatBg);
                         foodStage.addActor(blueBar);
                         foodStage.addActor(redBar);
                         foodStage.addActor(greenBar);
                         foodStage.addActor(yellowBar);
-
+                        foodStage.addActor(orangeBar);
+                        foodStage.addActor(moneyBar);
+                        foodStage.addActor(energyIcon);
+                        foodStage.addActor(weightIcon);
+                        foodStage.addActor(healthinessIcon);
+                        foodStage.addActor(happinessIcon);
+                        foodStage.addActor(eat);
                         foodStage.addActor(close);
+
+                        eat.addListener(new InputListener() {
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                                if(player.getMoney() - foodActors.get(fIndex).getPrice() > 0){
+                                    long id = sound.play(1.0f);
+                                    foods.add(foodActors.get(fIndex).getType());
+                                    System.out.println(foods);
+                                    player.setMoney(player.getMoney() - foodActors.get(fIndex).getPrice());
+                                }
+
+                                foodStatBg.remove();
+                                blueBar.remove();
+                                redBar.remove();
+                                greenBar.remove();
+                                yellowBar.remove();
+                                moneyBar.remove();
+                                orangeBar.remove();
+                                energyIcon.remove();
+                                weightIcon.remove();
+                                healthinessIcon.remove();
+                                happinessIcon.remove();
+                                eat.remove();
+                                close.remove();
+
+                                foodSelected = false;
+
+                                return false;
+                            }
+                        });
 
                         close.addListener(new InputListener() {
                             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -373,6 +407,12 @@ class ShopScreen implements Screen {
                                 redBar.remove();
                                 greenBar.remove();
                                 yellowBar.remove();
+                                moneyBar.remove();
+                                orangeBar.remove();
+                                energyIcon.remove();
+                                weightIcon.remove();
+                                healthinessIcon.remove();
+                                happinessIcon.remove();
                                 eat.remove();
                                 close.remove();
 
@@ -390,7 +430,6 @@ class ShopScreen implements Screen {
 
     // Kauppanäkymän vakio elementit.
     private void addUi() {
-        foodStage.addActor(cartActor);
         foodStage.addActor(backButton);
         foodStage.addActor(Pakasteet);
         foodStage.addActor(Kastikkeet);

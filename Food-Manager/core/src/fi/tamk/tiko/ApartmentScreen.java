@@ -60,6 +60,8 @@ class ApartmentScreen implements Screen {
 
     Sound sound = Gdx.audio.newSound(Gdx.files.internal("eating.mp3"));
 
+    Sound click = Gdx.audio.newSound(Gdx.files.internal("klikkausaani.wav"));
+
     //Asuntonäkymän constructor
     public ApartmentScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
@@ -221,6 +223,7 @@ class ApartmentScreen implements Screen {
                 }
 
                 //Siirtyy kauppa näkymään
+                long id = click.play(1.0f);
                 game.setScreen(new ShopScreen(game, gt, player, foods));
 
                 return false;

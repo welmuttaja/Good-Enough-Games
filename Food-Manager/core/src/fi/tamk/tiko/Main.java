@@ -281,6 +281,10 @@ class FoodActor extends Actor {
         return this.price;
     }
 
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     @Override
     public void draw(Batch batch, float alpha){
         batch.draw(texture, getX(), getY(), getWidth(), getHeight());
@@ -424,33 +428,6 @@ public class Main extends Game {
 
         player = new Player(0.5f, 0.5f, 0.5f, 0.5f, 50f);
 		foods = new ArrayList<Integer>();
-
-        foods.add(0);
-        foods.add(1);
-        foods.add(2);
-        foods.add(0);
-        foods.add(1);
-        foods.add(2);
-        foods.add(0);
-        foods.add(1);
-        foods.add(2);
-        foods.add(0);
-        foods.add(1);
-        foods.add(2);
-        foods.add(0);
-        foods.add(1);
-        foods.add(2);
-        foods.add(0);
-        foods.add(1);
-        foods.add(2);
-        foods.add(0);
-        foods.add(1);
-        foods.add(2);
-        foods.add(0);
-        foods.add(1);
-        foods.add(2);
-        foods.add(0);
-        foods.add(1);
 
 		//Asettaa päävalikon näkymäksi pelin auetessa.
 		this.setScreen(new MainMenuScreen(this, gt, player, foods));
