@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -33,6 +34,8 @@ class GameOverScreen implements Screen {
     Texture gameoverbg;
     MyActor exitbutton;
 
+    Music gameOver = Gdx.audio.newMusic(Gdx.files.internal("game_over.wav"));
+
     public GameOverScreen(final Main game, final float points) {
 
         this.game = game;
@@ -55,11 +58,8 @@ class GameOverScreen implements Screen {
 
                 ArrayList<Integer> foods = new ArrayList<Integer>();
 
-                foods.add(0);
-                foods.add(1);
-                foods.add(2);
-
                 game.setScreen(new MainMenuScreen(game, new GameTime(), new Player(0.5f, 0.5f, 0.5f, 0.5f, 50f), foods));
+                gameOver.stop();
 
                 return false;
             }
@@ -80,8 +80,11 @@ class GameOverScreen implements Screen {
         game.batch.begin();
         //Piirtää taustan
         game.batch.draw(gameoverbg, 0, 100, SCREEN_WIDTH, SCREEN_HEIGHT);
-
         game.font_white.draw(game.batch, "Points: " + points, 100, 200);
+
+        // Taustamusiikki
+        gameOver.setLooping(true);
+        gameOver.play();
 
         game.batch.end();
 
@@ -113,6 +116,5 @@ class GameOverScreen implements Screen {
 
     @Override
     public void dispose() {
-
     }
 }
