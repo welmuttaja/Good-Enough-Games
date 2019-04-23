@@ -53,6 +53,8 @@ class ApartmentScreen implements Screen {
 
     Texture happyHuman;
     Texture sadHuman;
+    Texture fatHuman;
+    Texture tiredHuman;
 
     boolean foodSelected = false;
     float selectedFoodX = 0;
@@ -81,8 +83,12 @@ class ApartmentScreen implements Screen {
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         apartmentbg = new Texture("apartmentbg.png");
+
+        // Hahmot
         happyHuman = new Texture("happyhuman.png");
         sadHuman = new Texture("sadhuman.png");
+        tiredHuman = new Texture("tiredhuman.png");
+        fatHuman = new Texture("fathuman.png");
 
         //Stagen määrittely
         apartmentStage = new Stage(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT), game.batch);
@@ -453,12 +459,18 @@ class ApartmentScreen implements Screen {
         game.font.draw(game.batch, "Money: " + player.getMoney(), 10, 550);
 
         // Piirtää hahmon
-        if (player.getHappiness() < 0.3f) {
+        if (player.getHappiness() <= 0.3f) {
             game.batch.draw(sadHuman, 460, 0, 400, 400);
-        } else {
-            game.batch.draw(happyHuman, 460, 0, 800, 800);
         }
-
+        if (player.getWeight() >= 0.8f) {
+            game.batch.draw(fatHuman, 460, 0, 400, 400);
+        }
+        if (player.getEnergy() <= 0.3f) {
+            game.batch.draw(tiredHuman, 460, 0, 400, 400);
+        }
+        else {
+            game.batch.draw(happyHuman, 460, 0, 400, 400);
+        }
         game.batch.end();
 
         //tekee actorien toiminnot
