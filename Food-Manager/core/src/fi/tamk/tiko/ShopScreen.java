@@ -205,12 +205,12 @@ class ShopScreen implements Screen {
         backButton = new MyActor("koti.png", 0, 0, 80, 80);
 
         // Kategoria nappulat.
-        Pakasteet = new MyActor("Pakasteet.png", 645, 400, 160, 50);
-        Kastikkeet = new MyActor("Kastikkeet.png", 0, 400, 160, 50);
-        Juomat = new MyActor("Juomat.png", 0, 200, 160, 50);
-        HeVi = new MyActor("HeVi.png", 645, 200, 160, 50);
-        Maitotuotteet = new MyActor("Maitotuotteet.png", 0, 300, 160, 50);
-        Alennukset = new MyActor("alennukset.png", 317, 530, 200, 50);
+        Pakasteet = new MyActor("en_frozen.png", 645, 400, 160, 50);
+        Kastikkeet = new MyActor("en_sauces.png", 0, 400, 160, 50);
+        Juomat = new MyActor("en_drinks.png", 0, 200, 160, 50);
+        HeVi = new MyActor("en_fruits-vegetables.png", 645, 200, 160, 50);
+        Maitotuotteet = new MyActor("en_dairy.png", 0, 300, 160, 50);
+        Alennukset = new MyActor("en_sales.png", 317, 530, 200, 50);
 
         // Alkunäkymä, sisältää random alennukset.
         addUi();
@@ -239,7 +239,7 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
-                PakasteetTop = new MyActor("pakasteet.png", 317, 530, 200, 50);
+                PakasteetTop = new MyActor("en_frozen.png", 317, 530, 200, 50);
                 foodStage.addActor(PakasteetTop);
                 foodStage.addActor(Eggs);
                 foodStage.addActor(Beans);
@@ -256,7 +256,7 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
-                HeViTop = new MyActor("HeVi.png", 317, 530, 200, 50);
+                HeViTop = new MyActor("en_fruits-vegetables.png", 317, 530, 200, 50);
                 foodStage.addActor(HeViTop);
                 foodStage.addActor(Chips);
                 foodStage.addActor(Kaalilaatikko);
@@ -273,7 +273,7 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
-                JuomatTop = new MyActor("Juomat.png", 317, 530, 200, 50);
+                JuomatTop = new MyActor("en_drinks.png", 317, 530, 200, 50);
                 foodStage.addActor(JuomatTop);
                 foodStage.addActor(Chips);
                 foodStage.addActor(Kaalilaatikko);
@@ -290,7 +290,7 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
-                KastikkeetTop = new MyActor("Kastikkeet.png", 317, 530, 200, 50);
+                KastikkeetTop = new MyActor("en_sauces.png", 317, 530, 200, 50);
                 foodStage.addActor(KastikkeetTop);
                 foodStage.addActor(Chips);
                 foodStage.addActor(Kaalilaatikko);
@@ -307,7 +307,7 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 foodStage.clear();
                 addUi();
-                MaitotuotteetTop = new MyActor("Maitotuotteet.png", 317, 530, 200, 50);
+                MaitotuotteetTop = new MyActor("en_dairy.png", 317, 530, 200, 50);
                 foodStage.addActor(MaitotuotteetTop);
                 foodStage.addActor(Chips);
                 foodStage.addActor(Kaalilaatikko);
@@ -343,8 +343,8 @@ class ShopScreen implements Screen {
                             thisY = foodActors.get(fIndex).getY() - 100;
                         }
 
-                        final MyActor eat = new MyActor("eatbutton.png", thisX + 10, thisY + 10, 90, 30);
-                        final MyActor close = new MyActor("exitbutton.png", thisX + 110, thisY + 10, 90, 30);
+                        final MyActor eat = new MyActor("en_eat.png", thisX + 10, thisY + 10, 90, 30);
+                        final MyActor close = new MyActor("en_exit.png", thisX + 110, thisY + 10, 90, 30);
                         final MyActor foodStatBg = new MyActor("menubg.png", thisX, thisY, 300, 180);
                         final MyActor blueBar = new MyActor("blue.png", thisX + 10, thisY + 125, foodActors.get(fIndex).getEnergy() * 280, 15);
                         final MyActor redBar = new MyActor("red.png", thisX + 10, thisY + 100, foodActors.get(fIndex).getWeight() * 280, 15);

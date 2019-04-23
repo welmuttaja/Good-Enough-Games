@@ -86,7 +86,7 @@ class ApartmentScreen implements Screen {
         fridgeMenuBg = new MyActor("fridgebg2.png", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         fridgeMenuBg.setVisible(fridgeOpen);
         //Jääkaapin sulje painike
-        exitButton = new MyActor("exit.png", 550, 10, 210, 70);
+        exitButton = new MyActor("en_close.png", 550, 10, 210, 70);
         exitButton.setVisible(fridgeOpen);
 
         statBg = new MyActor("menubg.png", 450, 460, 340, 130);
@@ -203,8 +203,6 @@ class ApartmentScreen implements Screen {
                     if (str != null) {
                         if (str.contains("food")) {
 
-                            System.out.println("contains food");
-
                             StringBuilder sb = new StringBuilder();
                             boolean found = false;
                             for (char c : str.toCharArray()) {
@@ -218,8 +216,6 @@ class ApartmentScreen implements Screen {
                             }
 
                             String output = sb.toString();
-
-                            System.out.println("contains " + output);
 
                             foods.add(Integer.valueOf(output));
                         }
@@ -258,8 +254,8 @@ class ApartmentScreen implements Screen {
                             thisY = foodActors.get(fIndex).getY() - 100;
                         }
 
-                        final MyActor eat = new MyActor("eatbutton.png", thisX + 10, thisY + 10, 90, 30);
-                        final MyActor close = new MyActor("exitbutton.png", thisX + 110, thisY + 10, 90, 30);
+                        final MyActor eat = new MyActor("en_eat.png", thisX + 10, thisY + 10, 90, 30);
+                        final MyActor close = new MyActor("en_exit.png", thisX + 110, thisY + 10, 90, 30);
                         final MyActor foodStatBg = new MyActor("menubg.png", thisX, thisY, 300, 150);
                         final MyActor blueBar = new MyActor("blue.png", thisX + 10, thisY + 125, foodActors.get(fIndex).getEnergy() * 280, 15);
                         final MyActor redBar = new MyActor("red.png", thisX + 10, thisY + 100, foodActors.get(fIndex).getWeight() * 280, 15);

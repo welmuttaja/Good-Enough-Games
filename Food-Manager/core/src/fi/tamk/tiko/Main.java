@@ -446,7 +446,7 @@ public class Main extends Game {
 		foods = new ArrayList<Integer>();
 
 		//Asettaa päävalikon näkymäksi pelin auetessa.
-		this.setScreen(new MainMenuScreen(this, LANG, gt, player, foods));
+		this.setScreen(new MainMenuScreen(this, gt, player, foods));
 	}
 
 	@Override
