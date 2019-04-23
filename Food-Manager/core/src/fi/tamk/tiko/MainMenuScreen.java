@@ -15,7 +15,7 @@ import java.util.ArrayList;
 class MainMenuScreen implements Screen {
 
     final Main game;
-
+    final String LANG;
     final GameTime gt;
     final Player player;
     final ArrayList<Integer> foods;
@@ -35,6 +35,7 @@ class MainMenuScreen implements Screen {
     //Päävalikon constructor, täällä määritellään uudet elementit
     public MainMenuScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
+        this.LANG = Gdx.app.getPreferences("my-preferences").getString("lang");
         this.gt = gt;
         this.player = player;
         this.foods = foods;
@@ -47,8 +48,8 @@ class MainMenuScreen implements Screen {
         //Stagen määrittely
         menuStage = new Stage(new FitViewport(800, 600), game.batch);
         //Painikkeiden määrittely
-        playButton = new MyActor("startgame.png", 300, 400, 200, 50);
-        HTPButton = new MyActor("Peliohjeet.png", 300, 300, 200, 50);
+        playButton = new MyActor("en_startgame.png", 300, 400, 200, 50);
+        HTPButton = new MyActor("en_instructions.png", 300, 300, 200, 50);
         FINButton = new MyActor("fin.png", 670, 540, 100, 50);
         ENGButton = new MyActor("eng.png", 550, 540, 100, 50);
         //Lisää painikkeet stageen
@@ -63,7 +64,7 @@ class MainMenuScreen implements Screen {
         playButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa asunto näkymään
-                game.setScreen(new ApartmentScreen(game, gt, player, foods));
+                game.setScreen(new ApartmentScreen(game, LANG, gt, player, foods));
                 return false;
             }
         });

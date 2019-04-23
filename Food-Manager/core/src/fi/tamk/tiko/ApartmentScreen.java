@@ -364,7 +364,7 @@ class ApartmentScreen implements Screen {
             //päivittää pelaajan statsit ja statsi mittarit
             player.updateStats();
         } else{
-            game.setScreen(new GameOverScreen(game, LANG, Math.round(gt.getTime())));
+            game.setScreen(new GameOverScreen(game, Math.round(gt.getTime())));
         }
 
         charEnergy.setWidth(player.getEnergy() * 280);

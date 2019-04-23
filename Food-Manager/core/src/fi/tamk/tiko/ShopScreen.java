@@ -81,6 +81,7 @@ class ShopScreen implements Screen {
 
     SpriteBatch batch;
     final Main game;
+    final String LANG;
     final GameTime gt;
     final Player player;
     final ArrayList<Integer> foods;
@@ -130,8 +131,9 @@ class ShopScreen implements Screen {
     BitmapFont font;
 
     //Kauppanäkymän constructor
-    public ShopScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
+    public ShopScreen(final Main game, final String LANG, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
+        this.LANG = LANG;
         this.gt = gt;
         this.player = player;
         this.foods = foods;
@@ -227,7 +229,7 @@ class ShopScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa menu näkymään
                 long id = click.play(1.0f);
-                game.setScreen(new ApartmentScreen(game, gt, player, foods));
+                game.setScreen(new ApartmentScreen(game, LANG, gt, player, foods));
                 return false;
             }
         });
