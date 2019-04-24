@@ -17,7 +17,7 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
-        applicationId "fi.tamk.tiko"
+        applicationId "fi.tamk.FoodManager"
         minSdkVersion 9
         targetSdkVersion 27
         versionCode 1
@@ -86,7 +86,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'fi.tamk.tiko/fi.tamk.tiko.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'fi.tamk.FoodManager/fi.tamk.FoodManager.AndroidLauncher'
 }
 
 // sets up the Android Eclipse project, using the old Ant based build.

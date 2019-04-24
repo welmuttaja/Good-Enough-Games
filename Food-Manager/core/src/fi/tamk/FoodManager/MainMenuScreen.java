@@ -54,17 +54,16 @@ class MainMenuScreen implements Screen {
         this.game = game;
         lang_pref = Gdx.app.getPreferences("preferences_lang");
 
-        if(lang_pref.getString("lang") != "preferences_en") {
+        if(lang_pref.getString("lang") == null ? "preferences_en" != null : !lang_pref.getString("lang").equals("preferences_en")) {
             lang_pref.putString("lang", "preferences_fi");
-            lang_pref.flush();
         }
 
         String lang = lang_pref.getString("lang");
-        this.prefs = Gdx.app.getPreferences(lang);
 
+        this.foods = foods;
+        this.prefs = Gdx.app.getPreferences(lang);
         this.gt = gt;
         this.player = player;
-        this.foods = foods;
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Black.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -77,7 +76,7 @@ class MainMenuScreen implements Screen {
 
         //asettaa localisaation
 
-        if(lang == "preferences_fi"){
+        if(lang == null ? "preferences_fi" == null : lang.equals("preferences_fi")){
 
             prefs.putString("close", "fi_close");
             prefs.putString("eat", "fi_eat.png");
@@ -98,7 +97,7 @@ class MainMenuScreen implements Screen {
             prefs.putString("extras", "fi_extras.png");
             prefs.putString("meat", "fi_meat.png");
 
-        } else if(lang == "preferences_en") {
+        } else if(lang == null ? "preferences_en" == null : lang.equals("preferences_en")) {
 
             prefs.putString("close", "en_close");
             prefs.putString("eat", "en_eat.png");
@@ -106,7 +105,7 @@ class MainMenuScreen implements Screen {
             prefs.putString("time", "Time: ");
             prefs.putString("money", "Money: ");
             prefs.putString("instructions", "en_instructions.png");
-            prefs.putString("startgame", "en_startgame.png");
+            prefs.putString("startgame", "en_startgame.png");;
             prefs.putString("frozen", "en_frozen.png");
             prefs.putString("sauces", "en_sauces.png");
             prefs.putString("drinks", "en_drinks.png");
@@ -122,6 +121,8 @@ class MainMenuScreen implements Screen {
 
         lang_pref.flush();
         prefs.flush();
+
+        System.out.println("testi" + prefs.getString("buy"));
 
         mute = new MyActor("mute_button.png", 700, 0, 100, 100);
         unmute = new MyActor("unmute_button.png", 700, 0, 100, 100);
@@ -156,8 +157,7 @@ class MainMenuScreen implements Screen {
                 return false;
             }
         });
-
-
+        System.out.println(prefs + "preferenssit" + prefs.getString("time"));
         //Painikkeiden määrittely
         playButton = new MyActor(prefs.getString("startgame"), 300, 300, 200, 50);
         FINButton = new MyActor("fin.png", 670, 540, 100, 50);
@@ -172,6 +172,7 @@ class MainMenuScreen implements Screen {
         FINButton.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 langSound.play();
+                Preferences lang_pref = Gdx.app.getPreferences("preferences_lang");
                 lang_pref.putString("lang", "preferences_fi");
                 lang_pref.flush();
 
@@ -186,6 +187,7 @@ class MainMenuScreen implements Screen {
         ENGButton.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 langSound.play();
+                Preferences lang_pref = Gdx.app.getPreferences("preferences_lang");
                 lang_pref.putString("lang", "preferences_en");
                 lang_pref.flush();
 
