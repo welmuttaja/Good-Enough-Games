@@ -48,8 +48,14 @@ class MainMenuScreen implements Screen {
         //Stagen määrittely
         menuStage = new Stage(new FitViewport(800, 600), game.batch);
         //Painikkeiden määrittely
-        playButton = new MyActor("en_startgame.png", 300, 400, 200, 50);
-        HTPButton = new MyActor("en_instructions.png", 300, 300, 200, 50);
+        if(LANG == "fi"){
+            playButton = new MyActor("fi_startgame.png", 300, 400, 200, 50);
+            HTPButton = new MyActor("fi_instructions.png", 300, 300, 200, 50);
+        } else{
+            playButton = new MyActor("en_startgame.png", 300, 400, 200, 50);
+            HTPButton = new MyActor("en_instructions.png", 300, 300, 200, 50);
+        }
+
         FINButton = new MyActor("fin.png", 670, 540, 100, 50);
         ENGButton = new MyActor("eng.png", 550, 540, 100, 50);
         //Lisää painikkeet stageen
@@ -65,6 +71,24 @@ class MainMenuScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //Vaihtaa asunto näkymään
                 game.setScreen(new ApartmentScreen(game, LANG, gt, player, foods));
+                return false;
+            }
+        });
+
+        FINButton.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.getPreferences("my-preferences").putString("lang", "fi");
+                Gdx.app.getPreferences("my-preferences").flush();
+                game.setScreen(new MainMenuScreen(game, gt, player, foods));
+                return false;
+            }
+        });
+
+        ENGButton.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.getPreferences("my-preferences").putString("lang", "en");
+                Gdx.app.getPreferences("my-preferences").flush();
+                game.setScreen(new MainMenuScreen(game, gt, player, foods));
                 return false;
             }
         });
