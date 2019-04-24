@@ -388,7 +388,7 @@ class ShopScreen implements Screen {
                             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
                                 if(player.getMoney() - foodActors.get(fIndex).getPrice() > 0 &&
-                                foods.size() < 25){
+                                foods.size() < 21){
                                     long id = sound.play(1.0f);
                                     foods.add(foodActors.get(fIndex).getType());
                                     System.out.println(foods);

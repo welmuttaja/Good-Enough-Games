@@ -159,7 +159,7 @@ class ApartmentScreen implements Screen {
 
         //Lisää ruoat jääkaappiin
         float leftMargin = 50;
-        float topMargin = 130;
+        float topMargin = 140;
 
         for( int i = 0; i < foods.size(); i++ ){
             float x = fridgeMenuBg.getX() + leftMargin;
@@ -174,7 +174,7 @@ class ApartmentScreen implements Screen {
                 leftMargin = 50;
                 topMargin += 210;
             } else{
-                leftMargin += 70;
+                leftMargin += 100;
             }
 
         }
