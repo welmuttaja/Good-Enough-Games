@@ -38,7 +38,8 @@ class GameOverScreen implements Screen {
 
         music.stop();
         this.game = game;
-        this.prefs = Gdx.app.getPreferences(Gdx.app.getPreferences("preferences_lang").getString("lang"));
+        Preferences prefs_lang = Gdx.app.getPreferences("preferences_lang");
+        this.prefs = Gdx.app.getPreferences(prefs_lang.getString("lang"));
         this.points = points;
 
         camera = new OrthographicCamera();
