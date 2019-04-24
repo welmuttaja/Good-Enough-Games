@@ -113,6 +113,6 @@ class GameOverScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        music.dispose();
     }
 }

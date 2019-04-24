@@ -519,5 +519,6 @@ class ShopScreen implements Screen {
     public void dispose() {
         batch.dispose();
         fontZ.dispose();
+        music.dispose();
     }
 }
