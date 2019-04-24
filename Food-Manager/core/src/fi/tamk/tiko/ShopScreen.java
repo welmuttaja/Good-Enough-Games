@@ -238,7 +238,7 @@ class ShopScreen implements Screen {
         Vegetables = new MyActor("Vegetables.png", 600, 0, 160, 50);
         Extras = new MyActor("Extras.png", 400, 0, 160, 50);
         Meat = new MyActor("Meat.png", 200, 0, 160, 50);
-        Alennukset = new MyActor("fi_discounts.png", 317, 530, 200, 50);
+        Alennukset = new MyActor("en_sales.png", 317, 530, 200, 50);
 
         // Alkunäkymä, sisältää random alennukset.
         addUi();
@@ -341,7 +341,7 @@ class ShopScreen implements Screen {
                             thisY = foodActors.get(fIndex).getY() - 100;
                         }
 
-                        final MyActor buy = new MyActor("osta.png", thisX + 10, thisY + 10, 90, 30);
+                        final MyActor buy = new MyActor("en_buy.png", thisX + 10, thisY + 10, 90, 30);
                         final MyActor close = new MyActor("en_close.png", thisX + 110, thisY + 10, 90, 30);
                         final MyActor foodStatBg = new MyActor("menubg.png", thisX, thisY, 300, 180);
                         final MyActor blueBar = new MyActor("blue.png", thisX + 10, thisY + 125, foodActors.get(fIndex).getEnergy() * 280, 15);

@@ -42,6 +42,7 @@ class MainMenuScreen implements Screen {
 
     private final Sound click = Gdx.audio.newSound(Gdx.files.internal("klikkausaani.wav"));
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("intro.mp3"));
+    private final Sound langSound = Gdx.audio.newSound(Gdx.files.internal("close.wav"));
 
     BitmapFont font;
 
@@ -98,17 +99,29 @@ class MainMenuScreen implements Screen {
 
 
         //Painikkeiden määrittely
-        playButton = new MyActor("en_startgame.png", 300, 400, 200, 50);
-        HTPButton = new MyActor("en_instructions.png", 300, 300, 200, 50);
+        playButton = new MyActor("en_startgame.png", 300, 300, 200, 50);
         FINButton = new MyActor("fin.png", 670, 540, 100, 50);
         ENGButton = new MyActor("eng.png", 550, 540, 100, 50);
         //Lisää painikkeet stageen
         menuStage.addActor(playButton);
-        menuStage.addActor(HTPButton);
         menuStage.addActor(FINButton);
         menuStage.addActor(ENGButton);
         menuStage.addActor(mute);
         menuStage.addActor(unmute);
+
+        FINButton.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                langSound.play();
+                return false;
+            }
+        });
+
+        ENGButton.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                langSound.play();
+                return false;
+            }
+        });
 
         //Lisää stageen inputprocessorin
         Gdx.input.setInputProcessor(menuStage);
