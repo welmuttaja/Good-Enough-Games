@@ -1,6 +1,8 @@
-package fi.tamk.FoodManager;
+package fi.tamk.tiko;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import static java.lang.String.valueOf;
 
 class ApartmentScreen implements Screen {
     final Main game;
-    final String LANG;
+    final Preferences prefs;
 
     final int SCREEN_WIDTH = 800;
     final int SCREEN_HEIGHT = 600;
@@ -80,9 +83,9 @@ class ApartmentScreen implements Screen {
     public boolean musicON = true;
 
     //Asuntonäkymän constructor
-    public ApartmentScreen(final Main game, final String LANG, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
+    public ApartmentScreen(final Main game, final Preferences prefs, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
-        this.LANG = LANG;
+        this.prefs = prefs;
         this.gt = gt;
         this.player = player;
         this.foods = foods;
@@ -111,7 +114,7 @@ class ApartmentScreen implements Screen {
         fridgeMenuBg = new MyActor("fridgebg2.png", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         fridgeMenuBg.setVisible(fridgeOpen);
         //Jääkaapin sulje painike
-        exitButton = new MyActor("en_close.png", 550, 10, 210, 70);
+        exitButton = new MyActor(prefs.getString("close"), 550, 10, 210, 70);
         exitButton.setVisible(fridgeOpen);
 
         statBg = new MyActor("menubg.png", 450, 460, 340, 130);
@@ -279,7 +282,7 @@ class ApartmentScreen implements Screen {
                 //Siirtyy kauppa näkymään
                 music.stop();
                 click.play(1.0f);
-                game.setScreen(new ShopScreen(game, LANG, gt, player, foods));
+                game.setScreen(new ShopScreen(game, prefs, gt, player, foods));
 
                 return false;
             }
@@ -309,8 +312,8 @@ class ApartmentScreen implements Screen {
                             thisY = foodActors.get(fIndex).getY() - 100;
                         }
 
-                        final MyActor eat = new MyActor("en_eat.png", thisX + 10, thisY + 10, 90, 30);
-                        final MyActor close = new MyActor("en_exit.png", thisX + 110, thisY + 10, 90, 30);
+                        final MyActor eat = new MyActor(prefs.getString("eat"), thisX + 10, thisY + 10, 90, 30);
+                        final MyActor close = new MyActor(prefs.getString("close"), thisX + 110, thisY + 10, 90, 30);
                         final MyActor foodStatBg = new MyActor("menubg.png", thisX, thisY, 300, 150);
                         final MyActor blueBar = new MyActor("blue.png", thisX + 10, thisY + 125, foodActors.get(fIndex).getEnergy() * 280, 15);
                         final MyActor redBar = new MyActor("red.png", thisX + 10, thisY + 100, foodActors.get(fIndex).getWeight() * 280, 15);
@@ -496,8 +499,8 @@ class ApartmentScreen implements Screen {
         game.batch.begin();
         //Piirtää taustan
         game.batch.draw(apartmentbg, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        game.font.draw(game.batch, "Time: " + timeString + "    " + dateString, 10, 580);
-        game.font.draw(game.batch, "Money: " + player.getMoney() + "€", 10, 550);
+        game.font.draw(game.batch, prefs.getString("time") + timeString + "    " + dateString, 10, 580);
+        game.font.draw(game.batch, prefs.getString("money") + player.getMoney() + "€", 10, 550);
 
         // Piirtää hahmon
         if (player.getHappiness() <= 0.3f || player.getEnergy() <= 0.3f
@@ -544,5 +547,6 @@ class ApartmentScreen implements Screen {
 
     @Override
     public void dispose() {
+
     }
 }

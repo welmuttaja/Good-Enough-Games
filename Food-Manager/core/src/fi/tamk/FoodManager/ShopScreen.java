@@ -1,6 +1,7 @@
 package fi.tamk.FoodManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -12,12 +13,21 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
+
+import jdk.nashorn.internal.runtime.Source;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -61,12 +71,12 @@ class ShopScreen implements Screen {
     private float width = 8f;
     private float height = 5f;
 
-    private SpriteBatch batch;
-    private final Main game;
-    private final GameTime gt;
-    private final Player player;
-    private final ArrayList<Integer> foods;
-    private final String LANG;
+    SpriteBatch batch;
+    final Main game;
+    final Preferences prefs;
+    final GameTime gt;
+    final Player player;
+    final ArrayList<Integer> foods;
 
     // Ruokien sijainti.
     private float x1 = 200;
@@ -115,12 +125,10 @@ class ShopScreen implements Screen {
     final int SCREEN_WIDTH = 800;
     final int SCREEN_HEIGHT = 600;
 
-    MyActor mute;
-    MyActor unmute;
-
-    //Kauppanäkymän constructori.
-    public ShopScreen(final Main game, final String LANG, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
+    //Kauppanäkymän constructor
+    public ShopScreen(final Main game, final Preferences prefs, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
+        this.prefs = prefs;
         this.gt = gt;
         this.player = player;
         this.foods = foods;
@@ -339,8 +347,8 @@ class ShopScreen implements Screen {
                             thisY = foodActors.get(fIndex).getY() - 100;
                         }
 
-                        final MyActor buy = new MyActor("en_buy.png", thisX + 10, thisY + 10, 90, 30);
-                        final MyActor close = new MyActor("en_close.png", thisX + 110, thisY + 10, 90, 30);
+                        final MyActor buy = new MyActor(prefs.getString("buy"), thisX + 10, thisY + 10, 90, 30);
+                        final MyActor close = new MyActor(prefs.getString("close"), thisX + 110, thisY + 10, 90, 30);
                         final MyActor foodStatBg = new MyActor("menubg.png", thisX, thisY, 300, 180);
                         final MyActor blueBar = new MyActor("blue.png", thisX + 10, thisY + 125, foodActors.get(fIndex).getEnergy() * 280, 15);
                         final MyActor redBar = new MyActor("red.png", thisX + 10, thisY + 100, foodActors.get(fIndex).getWeight() * 280, 15);
@@ -506,6 +514,7 @@ class ShopScreen implements Screen {
 
     @Override
     public void resume() {
+
     }
 
     @Override
@@ -515,5 +524,7 @@ class ShopScreen implements Screen {
 
     @Override
     public void dispose() {
+        batch.dispose();
+        fontZ.dispose();
     }
 }
