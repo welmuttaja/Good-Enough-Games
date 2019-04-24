@@ -76,6 +76,8 @@ class ApartmentScreen implements Screen {
     private final Sound closeSound = Gdx.audio.newSound(Gdx.files.internal("close.wav"));
     Music music = Gdx.audio.newMusic(Gdx.files.internal("apartmentMusic.mp3"));
 
+    MyActor mute;
+    MyActor unmute;
 
     public boolean musicON = true;
 
@@ -124,6 +126,34 @@ class ApartmentScreen implements Screen {
         weightIcon = new MyActor("paino.png", 460, 527, 25, 25);
         healthinessIcon = new MyActor("terveys.png", 460, 498, 25, 25);
         happinessIcon = new MyActor("onnellisuus.png", 460, 465, 25, 25);
+
+        mute = new MyActor("mute_button.png", 700, 0, 100, 100);
+        unmute = new MyActor("unmute_button.png", 700, 0, 100, 100);
+
+        apartmentStage.addActor(mute);
+        apartmentStage.addActor(unmute);
+        unmute.setVisible(false);
+
+        //Ääninappula
+        mute.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                music.stop();
+                mute.setVisible(false);
+                unmute.setVisible(true);
+                return false;
+            }
+        });
+
+        unmute.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                music.setLooping(true);
+                music.play();
+                mute.setVisible(true);
+                unmute.setVisible(false);
+                return false;
+            }
+        });
+
 
 
         //Lisää ruoat jääkaappiin

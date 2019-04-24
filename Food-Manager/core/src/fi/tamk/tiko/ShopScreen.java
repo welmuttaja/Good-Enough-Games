@@ -117,6 +117,9 @@ class ShopScreen implements Screen {
     final int SCREEN_WIDTH = 800;
     final int SCREEN_HEIGHT = 600;
 
+    MyActor mute;
+    MyActor unmute;
+
     //Kauppanäkymän constructori.
     public ShopScreen(final Main game, final String LANG, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
@@ -143,6 +146,33 @@ class ShopScreen implements Screen {
         parameter.borderWidth = 0.5f;
         parameter.borderColor = Color.WHITE;
         fontZ = generator.generateFont(parameter);
+
+        mute = new MyActor("mute_button.png", 700, 505, 100, 100);
+        unmute = new MyActor("unmute_button.png", 700, 505, 100, 100);
+
+        foodStage.addActor(mute);
+        foodStage.addActor(unmute);
+        unmute.setVisible(false);
+
+        //Ääninappula
+        mute.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                music.stop();
+                mute.setVisible(false);
+                unmute.setVisible(true);
+                return false;
+            }
+        });
+
+        unmute.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                music.setLooping(true);
+                music.play();
+                mute.setVisible(true);
+                unmute.setVisible(false);
+                return false;
+            }
+        });
 
         // Luodaan ruokia ja ostoskori.
         Eggs = new FoodActor(0, x2, y2, w, h);
@@ -409,6 +439,8 @@ class ShopScreen implements Screen {
         foodStage.addActor(Vegetables);
         foodStage.addActor(Extras);
         foodStage.addActor(Meat);
+        foodStage.addActor(mute);
+        foodStage.addActor(unmute);
     }
 
 

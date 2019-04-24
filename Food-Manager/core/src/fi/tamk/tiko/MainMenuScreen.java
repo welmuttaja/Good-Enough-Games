@@ -37,6 +37,9 @@ class MainMenuScreen implements Screen {
     MyActor ENGButton;
     MyActor FINButton;
 
+    MyActor mute;
+    MyActor unmute;
+
     private final Sound click = Gdx.audio.newSound(Gdx.files.internal("klikkausaani.wav"));
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("intro.mp3"));
 
@@ -59,6 +62,9 @@ class MainMenuScreen implements Screen {
         parameter.borderColor = Color.WHITE;
         font = generator.generateFont(parameter);
 
+        mute = new MyActor("mute_button.png", 700, 0, 100, 100);
+        unmute = new MyActor("unmute_button.png", 700, 0, 100, 100);
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
 
@@ -69,6 +75,28 @@ class MainMenuScreen implements Screen {
 
         //Stagen määrittely
         menuStage = new Stage(new FitViewport(800, 600), game.batch);
+
+        //Ääninappula
+        mute.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                music.stop();
+                mute.setVisible(false);
+                unmute.setVisible(true);
+                return false;
+            }
+        });
+
+        unmute.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                music.setLooping(true);
+                music.play();
+                mute.setVisible(true);
+                unmute.setVisible(false);
+                return false;
+            }
+        });
+
+
         //Painikkeiden määrittely
         playButton = new MyActor("en_startgame.png", 300, 400, 200, 50);
         HTPButton = new MyActor("en_instructions.png", 300, 300, 200, 50);
@@ -79,6 +107,8 @@ class MainMenuScreen implements Screen {
         menuStage.addActor(HTPButton);
         menuStage.addActor(FINButton);
         menuStage.addActor(ENGButton);
+        menuStage.addActor(mute);
+        menuStage.addActor(unmute);
 
         //Lisää stageen inputprocessorin
         Gdx.input.setInputProcessor(menuStage);
