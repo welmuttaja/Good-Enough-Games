@@ -501,7 +501,6 @@ class ShopScreen implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
