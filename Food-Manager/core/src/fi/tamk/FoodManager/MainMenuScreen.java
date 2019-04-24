@@ -56,6 +56,7 @@ class MainMenuScreen implements Screen {
 
         if(lang_pref.getString("lang") != "preferences_en") {
             lang_pref.putString("lang", "preferences_fi");
+            lang_pref.flush();
         }
 
         String lang = lang_pref.getString("lang");
@@ -171,7 +172,6 @@ class MainMenuScreen implements Screen {
         FINButton.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 langSound.play();
-                Preferences lang_pref = Gdx.app.getPreferences("preferences_lang");
                 lang_pref.putString("lang", "preferences_fi");
                 lang_pref.flush();
 
@@ -186,7 +186,6 @@ class MainMenuScreen implements Screen {
         ENGButton.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 langSound.play();
-                Preferences lang_pref = Gdx.app.getPreferences("preferences_lang");
                 lang_pref.putString("lang", "preferences_en");
                 lang_pref.flush();
 

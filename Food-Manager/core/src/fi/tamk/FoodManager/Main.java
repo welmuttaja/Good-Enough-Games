@@ -374,14 +374,10 @@ class GameTime {
 
 public class Main extends Game {
 
-    String LANG = "";
-
 	SpriteBatch batch;
 	BitmapFont font;
     BitmapFont font_white;
     FreeTypeFontGenerator generator;
-
-    Preferences prefs;
 
 	GameTime gt;
 
@@ -390,8 +386,7 @@ public class Main extends Game {
 
 	@Override
 	public void create () {
-	    // Alkusplash
-	    // setScreen(new SplashScreen());
+
 		batch = new SpriteBatch();
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Black.ttf"));
@@ -404,8 +399,6 @@ public class Main extends Game {
 
         parameter.color = Color.WHITE;
         font_white = generator.generateFont(parameter);
-
-        prefs = Gdx.app.getPreferences("my-preferences");
 
 		gt = new GameTime();
 
