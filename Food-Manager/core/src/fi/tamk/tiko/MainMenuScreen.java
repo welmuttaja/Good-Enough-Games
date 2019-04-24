@@ -2,9 +2,14 @@ package fi.tamk.tiko;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -32,6 +37,14 @@ class MainMenuScreen implements Screen {
     MyActor ENGButton;
     MyActor FINButton;
 
+    MyActor mute;
+    MyActor unmute;
+
+    private final Sound click = Gdx.audio.newSound(Gdx.files.internal("klikkausaani.wav"));
+    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("intro.mp3"));
+
+    BitmapFont font;
+
     //Päävalikon constructor, täällä määritellään uudet elementit
     public MainMenuScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
@@ -40,13 +53,50 @@ class MainMenuScreen implements Screen {
         this.player = player;
         this.foods = foods;
 
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Black.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        parameter.size = 14;
+        parameter.color = Color.BLACK;
+        parameter.borderWidth = 0.2f;
+        parameter.borderColor = Color.WHITE;
+        font = generator.generateFont(parameter);
+
+        mute = new MyActor("mute_button.png", 700, 0, 100, 100);
+        unmute = new MyActor("unmute_button.png", 700, 0, 100, 100);
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
 
         tausta = new Texture("taustaFHD.png");
 
+        music.setLooping(true);
+        music.play();
+
         //Stagen määrittely
         menuStage = new Stage(new FitViewport(800, 600), game.batch);
+
+        //Ääninappula
+        mute.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                music.stop();
+                mute.setVisible(false);
+                unmute.setVisible(true);
+                return false;
+            }
+        });
+
+        unmute.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                music.setLooping(true);
+                music.play();
+                mute.setVisible(true);
+                unmute.setVisible(false);
+                return false;
+            }
+        });
+
+
         //Painikkeiden määrittely
         if(LANG == "fi"){
             playButton = new MyActor("fi_startgame.png", 300, 400, 200, 50);
@@ -63,12 +113,16 @@ class MainMenuScreen implements Screen {
         menuStage.addActor(HTPButton);
         menuStage.addActor(FINButton);
         menuStage.addActor(ENGButton);
+        menuStage.addActor(mute);
+        menuStage.addActor(unmute);
 
         //Lisää stageen inputprocessorin
         Gdx.input.setInputProcessor(menuStage);
         //Lisää play painikkeeseen kosketuksen tunnistamisen
         playButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                music.stop();
+                click.play(1.0f);
                 //Vaihtaa asunto näkymään
                 game.setScreen(new ApartmentScreen(game, LANG, gt, player, foods));
                 return false;
@@ -102,7 +156,7 @@ class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         //Asettaa taustan värin
-        Gdx.gl.glClearColor(0.5f, 0.5f, 0.7f, 1);
+        Gdx.gl.glClearColor(176f/255, 216f/255, 230f/255, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Päivittää kameran
         camera.update();
@@ -110,6 +164,8 @@ class MainMenuScreen implements Screen {
 
         game.batch.begin();
         game.batch.draw(tausta, 0, 0, 800, 600);
+        font.draw(game.batch, "Songs: Chibi Ninja - Resistor Anthems, HHavok-intro - Resistor Anthems, A night Of Dizzy Spells", 10, 40);
+        font.draw(game.batch, "Music by Eric Skiff - Available at http://EricSkiff.com/music", 10, 20);
         game.batch.end();
 
         //tekee actorien toiminnot

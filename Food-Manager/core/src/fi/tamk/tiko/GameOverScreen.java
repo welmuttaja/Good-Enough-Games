@@ -44,7 +44,7 @@ class GameOverScreen implements Screen {
         gameOverStage = new Stage(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT), game.batch);
 
         gameoverbg = new Texture("gameoverbg.png");
-        exitbutton = new MyActor("en_exit.png", 500, 150, 240, 80);
+        exitbutton = new MyActor("exit.png", 500, 150, 240, 80);
 
         gameOverStage.addActor(exitbutton);
 
