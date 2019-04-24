@@ -1,4 +1,4 @@
-package fi.tamk.tiko;
+package fi.tamk.FoodManager;
 
 class Player {
     private float energy;

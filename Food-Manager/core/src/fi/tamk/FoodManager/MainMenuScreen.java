@@ -1,4 +1,4 @@
-package fi.tamk.tiko;
+package fi.tamk.FoodManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -165,7 +165,7 @@ class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        menuStage.getViewport().update(width,height);
     }
 
     @Override
@@ -185,6 +185,5 @@ class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        music.dispose();
     }
 }

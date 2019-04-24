@@ -1,7 +1,6 @@
-package fi.tamk.tiko;
+package fi.tamk.FoodManager;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -525,6 +523,7 @@ class ApartmentScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        apartmentStage.getViewport().update(width,height);
     }
 
     @Override
@@ -545,6 +544,5 @@ class ApartmentScreen implements Screen {
 
     @Override
     public void dispose() {
-        music.dispose();
     }
 }

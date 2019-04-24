@@ -1,4 +1,4 @@
-package fi.tamk.tiko;
+package fi.tamk.FoodManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -15,9 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 
@@ -498,6 +496,7 @@ class ShopScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        foodStage.getViewport().update(width,height);
     }
 
     @Override
@@ -507,7 +506,6 @@ class ShopScreen implements Screen {
 
     @Override
     public void resume() {
-
     }
 
     @Override
@@ -517,8 +515,5 @@ class ShopScreen implements Screen {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        fontZ.dispose();
-        music.dispose();
     }
 }

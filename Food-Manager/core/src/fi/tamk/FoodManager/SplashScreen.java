@@ -1,4 +1,4 @@
-package fi.tamk.tiko;
+package fi.tamk.FoodManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

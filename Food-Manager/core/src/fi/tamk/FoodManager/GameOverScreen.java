@@ -1,4 +1,4 @@
-package fi.tamk.tiko;
+package fi.tamk.FoodManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -93,6 +93,7 @@ class GameOverScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        gameOverStage.getViewport().update(width,height);
     }
 
     @Override
