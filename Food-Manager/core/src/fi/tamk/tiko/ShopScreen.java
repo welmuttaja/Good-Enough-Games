@@ -349,7 +349,6 @@ class ShopScreen implements Screen {
                                 foods.size() < 25){
                                     buySound.play(1.0f);
                                     foods.add(foodActors.get(fIndex).getType());
-                                    System.out.println(foods);
                                     player.setMoney(player.getMoney() - foodActors.get(fIndex).getPrice());
                                 }
 
@@ -426,7 +425,7 @@ class ShopScreen implements Screen {
         gt.updateTime(Gdx.graphics.getDeltaTime());
 
         //Asettaa taustan värin
-        Gdx.gl.glClearColor(1.7f, 1.5f, 0.5f, 1);
+        Gdx.gl.glClearColor(139f/255, 69f/255, 19f/255, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Päivittää kameran
         camera.update();

@@ -387,7 +387,7 @@ class ApartmentScreen implements Screen {
         charHappiness.setWidth(player.getHappiness() * 280);
 
         //Asettaa taustan värin
-        Gdx.gl.glClearColor(0.5f, 0.7f, 0.5f, 1);
+        Gdx.gl.glClearColor(176f/255, 216f/255, 230f/255, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Päivittää kameran
         camera.update();
