@@ -374,10 +374,14 @@ class GameTime {
 
 public class Main extends Game {
 
+    String LANG = "";
+
 	SpriteBatch batch;
 	BitmapFont font;
     BitmapFont font_white;
     FreeTypeFontGenerator generator;
+
+    Preferences prefs;
 
 	GameTime gt;
 
@@ -400,6 +404,16 @@ public class Main extends Game {
 
         parameter.color = Color.WHITE;
         font_white = generator.generateFont(parameter);
+
+        prefs = Gdx.app.getPreferences("my-preferences");
+        String lang = prefs.getString("lang");
+
+        if(lang != "fi" && lang != "en"){
+            prefs.putString("lang", "en");
+            prefs.flush();
+        }
+
+        LANG = lang;
 
 		gt = new GameTime();
 
