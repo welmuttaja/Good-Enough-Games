@@ -3,6 +3,7 @@ package fi.tamk.tiko;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,6 +22,7 @@ import static java.lang.String.valueOf;
 class GameOverScreen implements Screen {
 
     final Main game;
+    final Preferences prefs;
     final float points;
 
     final int SCREEN_WIDTH = 800;
@@ -36,6 +38,7 @@ class GameOverScreen implements Screen {
     public GameOverScreen(final Main game, final float points) {
 
         this.game = game;
+        this.prefs = Gdx.app.getPreferences(Gdx.app.getPreferences("preferences_lang").getString("lang"));
         this.points = points;
 
         camera = new OrthographicCamera();
@@ -44,7 +47,7 @@ class GameOverScreen implements Screen {
         gameOverStage = new Stage(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT), game.batch);
 
         gameoverbg = new Texture("gameoverbg.png");
-        exitbutton = new MyActor("exit.png", 500, 150, 240, 80);
+        exitbutton = new MyActor(prefs.getString("exit"), 500, 150, 240, 80);
 
         gameOverStage.addActor(exitbutton);
 
@@ -81,7 +84,7 @@ class GameOverScreen implements Screen {
         //Piirtää taustan
         game.batch.draw(gameoverbg, 0, 100, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        game.font_white.draw(game.batch, "Points: " + points, 100, 200);
+        game.font_white.draw(game.batch, prefs.getString("points") + points, 100, 200);
 
         game.batch.end();
 
