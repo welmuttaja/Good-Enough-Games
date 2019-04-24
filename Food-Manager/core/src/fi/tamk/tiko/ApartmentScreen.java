@@ -3,6 +3,7 @@ package fi.tamk.tiko;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -70,9 +71,13 @@ class ApartmentScreen implements Screen {
 
     Boolean fridgeOpen = false;
 
-    Sound sound = Gdx.audio.newSound(Gdx.files.internal("eating.mp3"));
+    private final Sound eatSound = Gdx.audio.newSound(Gdx.files.internal("eating.mp3"));
+    private final Sound click = Gdx.audio.newSound(Gdx.files.internal("klikkausaani.wav"));
+    private final Sound closeSound = Gdx.audio.newSound(Gdx.files.internal("close.wav"));
+    Music music = Gdx.audio.newMusic(Gdx.files.internal("apartmentMusic.mp3"));
 
-    Sound click = Gdx.audio.newSound(Gdx.files.internal("klikkausaani.wav"));
+
+    public boolean musicON = true;
 
     //Asuntonäkymän constructor
     public ApartmentScreen(final Main game, final String LANG, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
@@ -84,6 +89,10 @@ class ApartmentScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        music.setLooping(true);
+        music.setVolume(0.3f);
+        music.play();
 
         apartmentbg = new Texture("apartmentbg.png");
 
@@ -203,7 +212,7 @@ class ApartmentScreen implements Screen {
                 for(int i = 0; i < foodActors.size(); i++){
                     foodActors.get(i).setVisible(fridgeOpen);
                 }
-
+                closeSound.play(1.0f);
                 return false;
             }
         });
@@ -240,7 +249,8 @@ class ApartmentScreen implements Screen {
                 }
 
                 //Siirtyy kauppa näkymään
-                long id = click.play(1.0f);
+                music.stop();
+                click.play(1.0f);
                 game.setScreen(new ShopScreen(game, LANG, gt, player, foods));
 
                 return false;
@@ -319,7 +329,7 @@ class ApartmentScreen implements Screen {
 
                                 foodSelected = false;
 
-                                long id = sound.play(1.0f);
+                                eatSound.play(1.0f);
 
                                 return false;
                             }
@@ -339,6 +349,8 @@ class ApartmentScreen implements Screen {
                                 happinessIconFridge.remove();
                                 eat.remove();
                                 close.remove();
+
+                                closeSound.play(1.0f);
 
                                 foodSelected = false;
 
@@ -364,6 +376,8 @@ class ApartmentScreen implements Screen {
             //päivittää pelaajan statsit ja statsi mittarit
             player.updateStats();
         } else{
+            music.stop();
+            musicON = false;
             game.setScreen(new GameOverScreen(game, Math.round(gt.getTime())));
         }
 
@@ -455,10 +469,11 @@ class ApartmentScreen implements Screen {
         //Piirtää taustan
         game.batch.draw(apartmentbg, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         game.font.draw(game.batch, "Time: " + timeString + "    " + dateString, 10, 580);
-        game.font.draw(game.batch, "Money: " + player.getMoney(), 10, 550);
+        game.font.draw(game.batch, "Money: " + player.getMoney() + "€", 10, 550);
 
         // Piirtää hahmon
-        if (player.getHappiness() <= 0.3f) {
+        if (player.getHappiness() <= 0.3f || player.getEnergy() <= 0.3f
+                || player.getHealthiness() <= 0.3f) {
             game.batch.draw(sadHuman, 460, 0, 400, 400);
         }
         if (player.getWeight() >= 0.8f) {

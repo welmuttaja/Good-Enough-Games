@@ -17,10 +17,10 @@ class Player {
 
     public void updateStats(){
         if(this.energy > 0 && this.weight > 0 && this.healthiness > 0 && this.happiness > 0) {
-            this.energy -= 0.0003f;
-            this.weight -= 0.0003f;
-            this.healthiness -= 0.0003f;
-            this.happiness -= 0.0003f;
+            this.energy -= 0.0002f;
+            this.weight -= 0.0002f;
+            this.healthiness -= 0.0002f;
+            this.happiness -= 0.0002f;
         }
 
     }

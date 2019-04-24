@@ -8,6 +8,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -65,13 +66,6 @@ class FoodActor extends Actor {
     private float healthiness;
     private float happiness;
     private float price;
-    private float x;
-    private float y;
-
-    private float cartX = 315;
-    private float cartY = 49;
-
-    Sound sound = Gdx.audio.newSound(Gdx.files.internal("cha-ching.wav"));
 
     //Ruoka tavaroiden constructor
     public FoodActor(final int type, final float x, final float y, final float w, final float h){
@@ -191,7 +185,7 @@ class FoodActor extends Actor {
                 price = 1.5f;
                 break;
             case 14:
-                textureStr = "chocolatecereal.png";
+                textureStr = "tortilla.png";
                 energy = 0.1f;
                 weight = 0.2f;
                 healthiness = 0.1f;
@@ -224,10 +218,10 @@ class FoodActor extends Actor {
                 break;
             case 18:
                 textureStr = "chips.png";
-                energy = 0.4f;
-                weight = 0.2f;
+                energy = 0.2f;
+                weight = 0.4f;
                 healthiness = 0f;
-                happiness = 0.4f;
+                happiness = 0.3f;
                 price = 2.0f;
                 break;
             case 19:
@@ -256,10 +250,6 @@ class FoodActor extends Actor {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public float getXX() {
-        return x;
     }
 
     public float getEnergy(){
@@ -461,6 +451,5 @@ public class Main extends Game {
 		batch.dispose();
 		font.dispose();
         font_white.dispose();
-        generator.dispose();
 	}
 }

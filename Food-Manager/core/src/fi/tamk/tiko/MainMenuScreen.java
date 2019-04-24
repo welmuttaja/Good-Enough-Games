@@ -2,9 +2,14 @@ package fi.tamk.tiko;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -32,6 +37,11 @@ class MainMenuScreen implements Screen {
     MyActor ENGButton;
     MyActor FINButton;
 
+    private final Sound click = Gdx.audio.newSound(Gdx.files.internal("klikkausaani.wav"));
+    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("intro.mp3"));
+
+    BitmapFont font;
+
     //Päävalikon constructor, täällä määritellään uudet elementit
     public MainMenuScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
@@ -40,10 +50,22 @@ class MainMenuScreen implements Screen {
         this.player = player;
         this.foods = foods;
 
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Black.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        parameter.size = 14;
+        parameter.color = Color.BLACK;
+        parameter.borderWidth = 0.2f;
+        parameter.borderColor = Color.WHITE;
+        font = generator.generateFont(parameter);
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
 
         tausta = new Texture("taustaFHD.png");
+
+        music.setLooping(true);
+        music.play();
 
         //Stagen määrittely
         menuStage = new Stage(new FitViewport(800, 600), game.batch);
@@ -63,6 +85,8 @@ class MainMenuScreen implements Screen {
         //Lisää play painikkeeseen kosketuksen tunnistamisen
         playButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                music.stop();
+                click.play(1.0f);
                 //Vaihtaa asunto näkymään
                 game.setScreen(new ApartmentScreen(game, LANG, gt, player, foods));
                 return false;
@@ -86,6 +110,8 @@ class MainMenuScreen implements Screen {
 
         game.batch.begin();
         game.batch.draw(tausta, 0, 0, 800, 600);
+        font.draw(game.batch, "Songs: Chibi Ninja - Resistor Anthems, HHavok-intro - Resistor Anthems, A night Of Dizzy Spells", 10, 40);
+        font.draw(game.batch, "Music by Eric Skiff - Available at http://EricSkiff.com/music", 10, 20);
         game.batch.end();
 
         //tekee actorien toiminnot
