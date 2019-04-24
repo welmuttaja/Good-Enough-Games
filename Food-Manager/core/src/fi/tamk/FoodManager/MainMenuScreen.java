@@ -1,6 +1,7 @@
 package fi.tamk.FoodManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -20,10 +21,12 @@ import java.util.ArrayList;
 class MainMenuScreen implements Screen {
 
     final Main game;
-    final String LANG;
     final GameTime gt;
     final Player player;
     final ArrayList<Integer> foods;
+
+    Preferences lang_pref;
+    Preferences prefs;
 
     OrthographicCamera camera;
 
@@ -49,7 +52,15 @@ class MainMenuScreen implements Screen {
     //Päävalikon constructor, täällä määritellään uudet elementit
     public MainMenuScreen(final Main game, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
-        this.LANG = Gdx.app.getPreferences("my-preferences").getString("lang");
+        lang_pref = Gdx.app.getPreferences("preferences_lang");
+
+        if(lang_pref.getString("lang") != "preferences_en") {
+            lang_pref.putString("lang", "preferences_fi");
+        }
+
+        String lang = lang_pref.getString("lang");
+        this.prefs = Gdx.app.getPreferences(lang);
+
         this.gt = gt;
         this.player = player;
         this.foods = foods;
@@ -62,6 +73,54 @@ class MainMenuScreen implements Screen {
         parameter.borderWidth = 0.2f;
         parameter.borderColor = Color.WHITE;
         font = generator.generateFont(parameter);
+
+        //asettaa localisaation
+
+        if(lang == "preferences_fi"){
+
+            prefs.putString("close", "fi_close");
+            prefs.putString("eat", "fi_eat.png");
+            prefs.putString("close", "fi_close.png");
+            prefs.putString("time", "Aika: ");
+            prefs.putString("money", "Rahat: ");
+            prefs.putString("instructions", "fi_instructions.png");
+            prefs.putString("startgame", "fi_startgame.png");
+            prefs.putString("frozen", "fi_frozen.png");
+            prefs.putString("sauces", "fi_sauces.png");
+            prefs.putString("drinks", "fi_drinks.png");
+            prefs.putString("fruits-vegetables", "fi_fruits-vegetables.png");
+            prefs.putString("dairy", "fi_dairy.png");
+            prefs.putString("sales", "fi_sales.png");
+            prefs.putString("buy", "fi_buy.png");
+            prefs.putString("exit", "fi_exit.png");
+            prefs.putString("points", "Pisteet: ");
+            prefs.putString("extras", "fi_extras.png");
+            prefs.putString("meat", "fi_meat.png");
+
+        } else if(lang == "preferences_en") {
+
+            prefs.putString("close", "en_close");
+            prefs.putString("eat", "en_eat.png");
+            prefs.putString("close", "en_close.png");
+            prefs.putString("time", "Time: ");
+            prefs.putString("money", "Money: ");
+            prefs.putString("instructions", "en_instructions.png");
+            prefs.putString("startgame", "en_startgame.png");
+            prefs.putString("frozen", "en_frozen.png");
+            prefs.putString("sauces", "en_sauces.png");
+            prefs.putString("drinks", "en_drinks.png");
+            prefs.putString("fruits-vegetables", "en_fruits-vegetables.png");
+            prefs.putString("dairy", "en_dairy.png");
+            prefs.putString("sales", "en_sales.png");
+            prefs.putString("buy", "en_buy.png");
+            prefs.putString("exit", "en_exit.png");
+            prefs.putString("points", "Points: ");
+            prefs.putString("extras", "en_extras.png");
+            prefs.putString("meat", "en_meat.png");
+        }
+
+        lang_pref.flush();
+        prefs.flush();
 
         mute = new MyActor("mute_button.png", 700, 0, 100, 100);
         unmute = new MyActor("unmute_button.png", 700, 0, 100, 100);
@@ -99,7 +158,7 @@ class MainMenuScreen implements Screen {
 
 
         //Painikkeiden määrittely
-        playButton = new MyActor("en_startgame.png", 300, 300, 200, 50);
+        playButton = new MyActor(prefs.getString("startgame"), 300, 300, 200, 50);
         FINButton = new MyActor("fin.png", 670, 540, 100, 50);
         ENGButton = new MyActor("eng.png", 550, 540, 100, 50);
         //Lisää painikkeet stageen
@@ -112,6 +171,14 @@ class MainMenuScreen implements Screen {
         FINButton.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 langSound.play();
+                Preferences lang_pref = Gdx.app.getPreferences("preferences_lang");
+                lang_pref.putString("lang", "preferences_fi");
+                lang_pref.flush();
+
+                music.stop();
+                click.play(1.0f);
+
+                game.setScreen(new MainMenuScreen(game, gt, player, foods));
                 return false;
             }
         });
@@ -119,6 +186,14 @@ class MainMenuScreen implements Screen {
         ENGButton.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 langSound.play();
+                Preferences lang_pref = Gdx.app.getPreferences("preferences_lang");
+                lang_pref.putString("lang", "preferences_en");
+                lang_pref.flush();
+
+                music.stop();
+                click.play(1.0f);
+
+                game.setScreen(new MainMenuScreen(game, gt, player, foods));
                 return false;
             }
         });
@@ -131,7 +206,7 @@ class MainMenuScreen implements Screen {
                 music.stop();
                 click.play(1.0f);
                 //Vaihtaa asunto näkymään
-                game.setScreen(new ApartmentScreen(game, LANG, gt, player, foods));
+                game.setScreen(new ApartmentScreen(game, prefs, gt, player, foods));
                 return false;
             }
         });

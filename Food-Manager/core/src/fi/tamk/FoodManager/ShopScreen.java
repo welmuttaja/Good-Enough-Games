@@ -1,6 +1,7 @@
 package fi.tamk.FoodManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -25,6 +26,7 @@ import static com.badlogic.gdx.math.MathUtils.random;
 class ShopScreen implements Screen {
     // Tausta
     private final Stage foodStage;
+
     // Ruoat
     private Actor Eggs;
     private Actor Beans;
@@ -66,7 +68,7 @@ class ShopScreen implements Screen {
     private final GameTime gt;
     private final Player player;
     private final ArrayList<Integer> foods;
-    private final String LANG;
+    private final Preferences prefs;
 
     // Ruokien sijainti.
     private float x1 = 200;
@@ -119,12 +121,12 @@ class ShopScreen implements Screen {
     MyActor unmute;
 
     //Kauppanäkymän constructori.
-    public ShopScreen(final Main game, final String LANG, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
+    public ShopScreen(final Main game, final Preferences prefs, final GameTime gt, final Player player, final ArrayList<Integer> foods) {
         this.game = game;
+        this.prefs = prefs;
         this.gt = gt;
         this.player = player;
         this.foods = foods;
-        this.LANG = LANG;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -233,10 +235,10 @@ class ShopScreen implements Screen {
         backButton = new MyActor("koti.png", 0, 0, 80, 80);
 
         // Kategoria nappulat.
-        Vegetables = new MyActor("Vegetables.png", 600, 0, 160, 50);
-        Extras = new MyActor("Extras.png", 400, 0, 160, 50);
-        Meat = new MyActor("Meat.png", 200, 0, 160, 50);
-        Alennukset = new MyActor("en_sales.png", 317, 530, 200, 50);
+        Vegetables = new MyActor(prefs.getString("fruits-vegetables"), 600, 0, 160, 50);
+        Extras = new MyActor(prefs.getString("extras"), 400, 0, 160, 50);
+        Meat = new MyActor(prefs.getString("meat"), 200, 0, 160, 50);
+        Alennukset = new MyActor(prefs.getString("sales"), 317, 530, 200, 50);
 
         // Alkunäkymä, sisältää random alennukset.
         addUi();
@@ -255,7 +257,7 @@ class ShopScreen implements Screen {
                 //Vaihtaa menu näkymään
                 music.stop();
                 click.play(1.0f);
-                game.setScreen(new ApartmentScreen(game, LANG, gt, player, foods));
+                game.setScreen(new ApartmentScreen(game, prefs, gt, player, foods));
                 return false;
             }
         });
@@ -266,7 +268,7 @@ class ShopScreen implements Screen {
                 changeFoodSound.play(1.0f);
                 foodStage.clear();
                 addUi();
-                VegetablesTop = new MyActor("Vegetables.png", 317, 530, 200, 50);
+                VegetablesTop = new MyActor(prefs.getString("fruits-vegetables"), 317, 530, 200, 50);
                 foodStage.addActor(VegetablesTop);
                 foodStage.addActor(Porridge);
                 foodStage.addActor(Munakas);
@@ -284,7 +286,7 @@ class ShopScreen implements Screen {
                 changeFoodSound.play(1.0f);
                 foodStage.clear();
                 addUi();
-                MeatTop = new MyActor("Meat.png", 317, 530, 200, 50);
+                MeatTop = new MyActor(prefs.getString("meat"), 317, 530, 200, 50);
                 foodStage.addActor(MeatTop);
                 foodStage.addActor(Tuna);
                 foodStage.addActor(MeatBalls);
@@ -302,7 +304,7 @@ class ShopScreen implements Screen {
                 changeFoodSound.play(1.0f);
                 foodStage.clear();
                 addUi();
-                ExtrasTop = new MyActor("Extras.png", 317, 530, 200, 50);
+                ExtrasTop = new MyActor(prefs.getString("extras"), 317, 530, 200, 50);
                 foodStage.addActor(ExtrasTop);
                 foodStage.addActor(Chips);
                 foodStage.addActor(Coffee);
@@ -339,8 +341,8 @@ class ShopScreen implements Screen {
                             thisY = foodActors.get(fIndex).getY() - 100;
                         }
 
-                        final MyActor buy = new MyActor("en_buy.png", thisX + 10, thisY + 10, 90, 30);
-                        final MyActor close = new MyActor("en_close.png", thisX + 110, thisY + 10, 90, 30);
+                        final MyActor buy = new MyActor(prefs.getString("buy"), thisX + 10, thisY + 10, 90, 30);
+                        final MyActor close = new MyActor(prefs.getString("close"), thisX + 110, thisY + 10, 90, 30);
                         final MyActor foodStatBg = new MyActor("menubg.png", thisX, thisY, 300, 180);
                         final MyActor blueBar = new MyActor("blue.png", thisX + 10, thisY + 125, foodActors.get(fIndex).getEnergy() * 280, 15);
                         final MyActor redBar = new MyActor("red.png", thisX + 10, thisY + 100, foodActors.get(fIndex).getWeight() * 280, 15);
@@ -471,7 +473,7 @@ class ShopScreen implements Screen {
             player.updateStats();
         } else{
             music.stop();
-            game.setScreen(new ApartmentScreen(game, LANG, gt, player, foods));
+            game.setScreen(new ApartmentScreen(game, prefs, gt, player, foods));
         }
 
         // Kaupan tausta
@@ -501,6 +503,7 @@ class ShopScreen implements Screen {
 
     @Override
     public void pause() {
+
     }
 
     @Override

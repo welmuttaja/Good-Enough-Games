@@ -406,14 +406,6 @@ public class Main extends Game {
         font_white = generator.generateFont(parameter);
 
         prefs = Gdx.app.getPreferences("my-preferences");
-        String lang = prefs.getString("lang");
-
-        if(lang != "fi" && lang != "en"){
-            prefs.putString("lang", "en");
-            prefs.flush();
-        }
-
-        LANG = lang;
 
 		gt = new GameTime();
 
